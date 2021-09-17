@@ -11,6 +11,10 @@
         public DbSet<Applicant> Applicants { get; set; }
         public DbSet<Intern> Interns { get; set; }
         public DbSet<Owner> Owners { get; set; }
+        public DbSet<Loan> Loans { get; set; }
+        public DbSet<LoanDetail> LoanDetails { get; set; }
+        public DbSet<Material> Materials { get; set; }
+        public DbSet<Status> Statuses { get; set; }
 
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
