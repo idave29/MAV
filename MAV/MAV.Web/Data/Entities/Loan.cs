@@ -1,7 +1,7 @@
 ﻿namespace MAV.Web.Data.Entities
 {
     using System.Collections.Generic;
-    public class Loan
+    public class Loan:IEntity
     {
         public int Id { get; set; }
         public Applicant Applicant { get; set; }
