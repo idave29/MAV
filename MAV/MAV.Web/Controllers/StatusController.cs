@@ -54,7 +54,7 @@ namespace MAV.Web.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id")] Status status)
+        public async Task<IActionResult> Create([Bind("Id,Name")] Status status)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +86,7 @@ namespace MAV.Web.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id")] Status status)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Status status)
         {
             if (id != status.Id)
             {

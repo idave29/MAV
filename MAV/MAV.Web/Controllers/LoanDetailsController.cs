@@ -54,7 +54,7 @@ namespace MAV.Web.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id")] LoanDetail loanDetail)
+        public async Task<IActionResult> Create([Bind("Id,Observations,DateTimeOut,DateTimeIn")] LoanDetail loanDetail)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +86,7 @@ namespace MAV.Web.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id")] LoanDetail loanDetail)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Observations,DateTimeOut,DateTimeIn")] LoanDetail loanDetail)
         {
             if (id != loanDetail.Id)
             {
