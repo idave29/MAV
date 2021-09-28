@@ -34,6 +34,8 @@
 
         public Status Status { get; set; }
 
+        public Owner Owner { get; set; }
+
         public ICollection<LoanDetail> LoanDetails { set; get; }
     }
 }

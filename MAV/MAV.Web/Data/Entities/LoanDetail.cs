@@ -16,8 +16,6 @@
         public DateTime DateTimeIn { set; get; }
 
         public Material Material { get; set; }
-
-        public Status Status { get; set; }
-
+        public Loan Loan { get; set; }
     }
 }
