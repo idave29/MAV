@@ -3,10 +3,22 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MAV.Web.Migrations
 {
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "ApplicantTypes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApplicantTypes", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -46,6 +58,32 @@ namespace MAV.Web.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MaterialTypes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(maxLength: 30, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MaterialTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Statuses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(maxLength: 20, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Statuses", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -94,11 +132,18 @@ namespace MAV.Web.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(nullable: true)
+                    UserId = table.Column<string>(nullable: true),
+                    ApplicantTypeId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Applicants", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Applicants_ApplicantTypes_ApplicantTypeId",
+                        column: x => x.ApplicantTypeId,
+                        principalTable: "ApplicantTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Applicants_AspNetUsers_UserId",
                         column: x => x.UserId,
@@ -230,10 +275,108 @@ namespace MAV.Web.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Loans",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ApplicantId = table.Column<int>(nullable: true),
+                    InternId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Loans", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Loans_Applicants_ApplicantId",
+                        column: x => x.ApplicantId,
+                        principalTable: "Applicants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Loans_Interns_InternId",
+                        column: x => x.InternId,
+                        principalTable: "Interns",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Materials",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(maxLength: 30, nullable: false),
+                    Label = table.Column<string>(maxLength: 6, nullable: false),
+                    Brand = table.Column<string>(maxLength: 50, nullable: false),
+                    MaterialModel = table.Column<string>(maxLength: 15, nullable: false),
+                    SerialNum = table.Column<string>(maxLength: 15, nullable: false),
+                    StatusId = table.Column<int>(nullable: true),
+                    OwnerId = table.Column<int>(nullable: true),
+                    MaterialTypeId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Materials", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Materials_MaterialTypes_MaterialTypeId",
+                        column: x => x.MaterialTypeId,
+                        principalTable: "MaterialTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Materials_Owners_OwnerId",
+                        column: x => x.OwnerId,
+                        principalTable: "Owners",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Materials_Statuses_StatusId",
+                        column: x => x.StatusId,
+                        principalTable: "Statuses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LoanDetails",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Observations = table.Column<string>(nullable: true),
+                    DateTimeOut = table.Column<DateTime>(nullable: false),
+                    DateTimeIn = table.Column<DateTime>(nullable: false),
+                    MaterialId = table.Column<int>(nullable: true),
+                    LoanId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LoanDetails", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_LoanDetails_Loans_LoanId",
+                        column: x => x.LoanId,
+                        principalTable: "Loans",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_LoanDetails_Materials_MaterialId",
+                        column: x => x.MaterialId,
+                        principalTable: "Materials",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Administrators_UserId",
                 table: "Administrators",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Applicants_ApplicantTypeId",
+                table: "Applicants",
+                column: "ApplicantTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Applicants_UserId",
@@ -285,6 +428,41 @@ namespace MAV.Web.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_LoanDetails_LoanId",
+                table: "LoanDetails",
+                column: "LoanId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LoanDetails_MaterialId",
+                table: "LoanDetails",
+                column: "MaterialId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Loans_ApplicantId",
+                table: "Loans",
+                column: "ApplicantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Loans_InternId",
+                table: "Loans",
+                column: "InternId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Materials_MaterialTypeId",
+                table: "Materials",
+                column: "MaterialTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Materials_OwnerId",
+                table: "Materials",
+                column: "OwnerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Materials_StatusId",
+                table: "Materials",
+                column: "StatusId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Owners_UserId",
                 table: "Owners",
                 column: "UserId");
@@ -294,9 +472,6 @@ namespace MAV.Web.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Administrators");
-
-            migrationBuilder.DropTable(
-                name: "Applicants");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
@@ -314,13 +489,34 @@ namespace MAV.Web.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "LoanDetails");
+
+            migrationBuilder.DropTable(
+                name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Loans");
+
+            migrationBuilder.DropTable(
+                name: "Materials");
+
+            migrationBuilder.DropTable(
+                name: "Applicants");
+
+            migrationBuilder.DropTable(
                 name: "Interns");
+
+            migrationBuilder.DropTable(
+                name: "MaterialTypes");
 
             migrationBuilder.DropTable(
                 name: "Owners");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoles");
+                name: "Statuses");
+
+            migrationBuilder.DropTable(
+                name: "ApplicantTypes");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

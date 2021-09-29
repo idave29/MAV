@@ -43,14 +43,31 @@ namespace MAV.Web.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("ApplicantTypeId")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ApplicantTypeId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Applicants");
+                });
+
+            modelBuilder.Entity("MAV.Web.Data.Entities.ApplicantType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ApplicantTypes");
                 });
 
             modelBuilder.Entity("MAV.Web.Data.Entities.Intern", b =>
@@ -114,16 +131,11 @@ namespace MAV.Web.Migrations
                     b.Property<string>("Observations")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("StatusId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("LoanId");
 
                     b.HasIndex("MaterialId");
-
-                    b.HasIndex("StatusId");
 
                     b.ToTable("LoanDetails");
                 });
@@ -150,10 +162,16 @@ namespace MAV.Web.Migrations
                         .HasColumnType("nvarchar(15)")
                         .HasMaxLength(15);
 
+                    b.Property<int?>("MaterialTypeId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(30)")
                         .HasMaxLength(30);
+
+                    b.Property<int?>("OwnerId")
+                        .HasColumnType("int");
 
                     b.Property<string>("SerialNum")
                         .IsRequired()
@@ -165,9 +183,30 @@ namespace MAV.Web.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("MaterialTypeId");
+
+                    b.HasIndex("OwnerId");
+
                     b.HasIndex("StatusId");
 
                     b.ToTable("Materials");
+                });
+
+            modelBuilder.Entity("MAV.Web.Data.Entities.MaterialType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MaterialTypes");
                 });
 
             modelBuilder.Entity("MAV.Web.Data.Entities.Owner", b =>
@@ -421,6 +460,10 @@ namespace MAV.Web.Migrations
 
             modelBuilder.Entity("MAV.Web.Data.Entities.Applicant", b =>
                 {
+                    b.HasOne("MAV.Web.Data.Entities.ApplicantType", "ApplicantType")
+                        .WithMany("Applicants")
+                        .HasForeignKey("ApplicantTypeId");
+
                     b.HasOne("MAV.Web.Data.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
@@ -446,21 +489,25 @@ namespace MAV.Web.Migrations
 
             modelBuilder.Entity("MAV.Web.Data.Entities.LoanDetail", b =>
                 {
-                    b.HasOne("MAV.Web.Data.Entities.Loan", null)
+                    b.HasOne("MAV.Web.Data.Entities.Loan", "Loan")
                         .WithMany("LoanDetails")
                         .HasForeignKey("LoanId");
 
                     b.HasOne("MAV.Web.Data.Entities.Material", "Material")
                         .WithMany("LoanDetails")
                         .HasForeignKey("MaterialId");
-
-                    b.HasOne("MAV.Web.Data.Entities.Status", "Status")
-                        .WithMany("LoanDetails")
-                        .HasForeignKey("StatusId");
                 });
 
             modelBuilder.Entity("MAV.Web.Data.Entities.Material", b =>
                 {
+                    b.HasOne("MAV.Web.Data.Entities.MaterialType", null)
+                        .WithMany("Materials")
+                        .HasForeignKey("MaterialTypeId");
+
+                    b.HasOne("MAV.Web.Data.Entities.Owner", "Owner")
+                        .WithMany("Materials")
+                        .HasForeignKey("OwnerId");
+
                     b.HasOne("MAV.Web.Data.Entities.Status", "Status")
                         .WithMany("Materials")
                         .HasForeignKey("StatusId");

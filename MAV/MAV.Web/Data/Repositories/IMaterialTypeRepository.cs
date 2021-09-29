@@ -3,8 +3,8 @@
     using MAV.Web.Data.Entities;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using System.Collections.Generic;
-    public interface IStatusRepository : IGenericRepository<Status>
+    public interface IMaterialTypeRepository : IGenericRepository<MaterialType>
     {
-        IEnumerable<SelectListItem> GetComboStatuses();
+        IEnumerable<SelectListItem> GetComboMateriaType();
     }
 }

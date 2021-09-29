@@ -7,25 +7,25 @@ using System.Threading.Tasks;
 
 namespace MAV.Web.Data.Repositories
 {
-    public class StatusRepository : GenericRepository<Status>, IStatusRepository
+    public class MaterialTypeRepository : GenericRepository<MaterialType>, IMaterialTypeRepository
     {
         private readonly DataContext dataContext;
 
-        public StatusRepository(DataContext dataContext) : base(dataContext)
+        public MaterialTypeRepository(DataContext dataContext) : base(dataContext)
         {
             this.dataContext = dataContext;
         }
 
-        public IEnumerable<SelectListItem> GetComboStatuses()
+        public IEnumerable<SelectListItem> GetComboMateriaType()
         {
-            var list = this.dataContext.Statuses.Select(st => new SelectListItem
+            var list = this.dataContext.MaterialTypes.Select(st => new SelectListItem
             {
                 Text = st.Name,
                 Value = $"{st.Id}"
             }).ToList();
             list.Insert(0, new SelectListItem
             {
-                Text = "(Selecciona un Estado...)",
+                Text = "(Selecciona un Tipo Materia...)",
                 Value = "0"
             });
             return list;

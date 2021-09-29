@@ -1,5 +1,6 @@
 using MAV.Web.Data;
 using MAV.Web.Data.Entities;
+using MAV.Web.Data.Repositories;
 using MAV.Web.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -44,6 +45,8 @@ namespace MAV.Web
 
             services.AddScoped<IUserHelper, UserHelper>();
             services.AddScoped<IImageHelper, ImageHelper>();
+            services.AddScoped<IStatusRepository, StatusRepository>();
+            services.AddScoped<IMaterialTypeRepository, MaterialTypeRepository>();
 
             services.AddControllersWithViews();
         }

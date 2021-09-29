@@ -10,14 +10,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MAV.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210917230558_Initial2")]
-    partial class Initial2
+    [Migration("20210928235157_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.15")
+                .HasAnnotation("ProductVersion", "3.1.18")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -45,14 +45,31 @@ namespace MAV.Web.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("ApplicantTypeId")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ApplicantTypeId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Applicants");
+                });
+
+            modelBuilder.Entity("MAV.Web.Data.Entities.ApplicantType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ApplicantTypes");
                 });
 
             modelBuilder.Entity("MAV.Web.Data.Entities.Intern", b =>
@@ -101,22 +118,26 @@ namespace MAV.Web.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<DateTime>("DateTimeIn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateTimeOut")
+                        .HasColumnType("datetime2");
+
                     b.Property<int?>("LoanId")
                         .HasColumnType("int");
 
                     b.Property<int?>("MaterialId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("StatusId")
-                        .HasColumnType("int");
+                    b.Property<string>("Observations")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("LoanId");
 
                     b.HasIndex("MaterialId");
-
-                    b.HasIndex("StatusId");
 
                     b.ToTable("LoanDetails");
                 });
@@ -128,14 +149,66 @@ namespace MAV.Web.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Brand")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Label")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(6)")
+                        .HasMaxLength(6);
+
+                    b.Property<string>("MaterialModel")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(15)")
+                        .HasMaxLength(15);
+
+                    b.Property<int?>("MaterialTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
+
+                    b.Property<int?>("OwnerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SerialNum")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(15)")
+                        .HasMaxLength(15);
+
                     b.Property<int?>("StatusId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("MaterialTypeId");
+
+                    b.HasIndex("OwnerId");
+
                     b.HasIndex("StatusId");
 
                     b.ToTable("Materials");
+                });
+
+            modelBuilder.Entity("MAV.Web.Data.Entities.MaterialType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MaterialTypes");
                 });
 
             modelBuilder.Entity("MAV.Web.Data.Entities.Owner", b =>
@@ -161,6 +234,11 @@ namespace MAV.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
 
                     b.HasKey("Id");
 
@@ -384,6 +462,10 @@ namespace MAV.Web.Migrations
 
             modelBuilder.Entity("MAV.Web.Data.Entities.Applicant", b =>
                 {
+                    b.HasOne("MAV.Web.Data.Entities.ApplicantType", "ApplicantType")
+                        .WithMany("Applicants")
+                        .HasForeignKey("ApplicantTypeId");
+
                     b.HasOne("MAV.Web.Data.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
@@ -409,21 +491,25 @@ namespace MAV.Web.Migrations
 
             modelBuilder.Entity("MAV.Web.Data.Entities.LoanDetail", b =>
                 {
-                    b.HasOne("MAV.Web.Data.Entities.Loan", null)
+                    b.HasOne("MAV.Web.Data.Entities.Loan", "Loan")
                         .WithMany("LoanDetails")
                         .HasForeignKey("LoanId");
 
                     b.HasOne("MAV.Web.Data.Entities.Material", "Material")
                         .WithMany("LoanDetails")
                         .HasForeignKey("MaterialId");
-
-                    b.HasOne("MAV.Web.Data.Entities.Status", "Status")
-                        .WithMany("LoanDetails")
-                        .HasForeignKey("StatusId");
                 });
 
             modelBuilder.Entity("MAV.Web.Data.Entities.Material", b =>
                 {
+                    b.HasOne("MAV.Web.Data.Entities.MaterialType", null)
+                        .WithMany("Materials")
+                        .HasForeignKey("MaterialTypeId");
+
+                    b.HasOne("MAV.Web.Data.Entities.Owner", "Owner")
+                        .WithMany("Materials")
+                        .HasForeignKey("OwnerId");
+
                     b.HasOne("MAV.Web.Data.Entities.Status", "Status")
                         .WithMany("Materials")
                         .HasForeignKey("StatusId");
