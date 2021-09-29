@@ -5,7 +5,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    interface IApplicantRepository : IGenericRepository<Applicant>
+    public interface IApplicantRepository : IGenericRepository<Applicant>
     {
         IEnumerable<SelectListItem> GetComboApplicants();
         IQueryable GetApplicantsWithUser();

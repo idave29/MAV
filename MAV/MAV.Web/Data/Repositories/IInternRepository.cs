@@ -5,7 +5,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    interface IInternRepository : IGenericRepository<Intern>
+    public interface IInternRepository : IGenericRepository<Intern>
     {
         IEnumerable<SelectListItem> GetComboInterns();
         IQueryable GetInternsWithUser();

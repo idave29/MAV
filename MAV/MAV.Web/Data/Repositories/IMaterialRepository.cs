@@ -5,9 +5,10 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    public interface IAdministratorRepository : IGenericRepository<Administrator>
+    public interface IMaterialRepository : IGenericRepository<Material>
     {
-        IEnumerable<SelectListItem> GetComboAdministrators();
-        IQueryable GetAdministratorsWithUser();
+        IEnumerable<SelectListItem> GetComboMaterial();
+
+        IQueryable GetMaterialsWithOwner();
     }
 }
