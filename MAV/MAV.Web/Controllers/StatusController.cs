@@ -29,13 +29,13 @@
                 return NotFound();
             }
 
-            var weekDay = await this.statusRepository.GetByIdAsync(id.Value);
-            if (weekDay == null)
+            var status = await this.statusRepository.GetByIdAsync(id.Value);
+            if (status == null)
             {
                 return NotFound();
             }
 
-            return View(weekDay);
+            return View(status);
         }
 
         public IActionResult Create()
@@ -45,14 +45,14 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Status weekDay)
+        public async Task<IActionResult> Create(Status status)
         {
             if (ModelState.IsValid)
             {
-                await this.statusRepository.CreateAsync(weekDay);
+                await this.statusRepository.CreateAsync(status);
                 return RedirectToAction(nameof(Index));
             }
-            return View(weekDay);
+            return View(status);
         }
 
         public async Task<IActionResult> Edit(int? id)
@@ -62,12 +62,12 @@
                 return NotFound();
             }
 
-            var weekDay = await this.statusRepository.GetByIdAsync(id.Value);
-            if (weekDay == null)
+            var status = await this.statusRepository.GetByIdAsync(id.Value);
+            if (status == null)
             {
                 return NotFound();
             }
-            return View(weekDay);
+            return View(status);
         }
 
         [HttpPost]
@@ -108,12 +108,12 @@
                 return NotFound();
             }
 
-            var weekDay = await this.statusRepository.GetByIdAsync(id.Value);
-            if (weekDay == null)
+            var status = await this.statusRepository.GetByIdAsync(id.Value);
+            if (status == null)
             {
                 return NotFound();
             }
-            await this.statusRepository.DeleteAsync(weekDay);
+            await this.statusRepository.DeleteAsync(status);
             return RedirectToAction(nameof(Index));
         }
     }

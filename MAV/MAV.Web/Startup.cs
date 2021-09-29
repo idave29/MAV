@@ -47,6 +47,7 @@ namespace MAV.Web
             services.AddScoped<IImageHelper, ImageHelper>();
             services.AddScoped<IStatusRepository, StatusRepository>();
             services.AddScoped<IMaterialTypeRepository, MaterialTypeRepository>();
+            services.AddScoped<IApplicantTypeRepository, ApplicantTypeRepository>();
 
             services.AddControllersWithViews();
         }

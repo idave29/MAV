@@ -1,12 +1,10 @@
-﻿using MAV.Web.Data.Entities;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace MAV.Web.Data.Repositories
+﻿namespace MAV.Web.Data.Repositories
 {
+    using MAV.Web.Data.Entities;
+    using Microsoft.AspNetCore.Mvc.Rendering;
+    using System.Collections.Generic;
+    using System.Linq;
+
     public class StatusRepository : GenericRepository<Status>, IStatusRepository
     {
         private readonly DataContext dataContext;
@@ -25,7 +23,7 @@ namespace MAV.Web.Data.Repositories
             }).ToList();
             list.Insert(0, new SelectListItem
             {
-                Text = "(Selecciona un Estado...)",
+                Text = "(Select a Status...)",
                 Value = "0"
             });
             return list;

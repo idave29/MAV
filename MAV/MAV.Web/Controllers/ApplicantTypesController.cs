@@ -1,23 +1,25 @@
 ﻿namespace MAV.Web.Controllers
 {
+    using MAV.Web.Data;
     using MAV.Web.Data.Entities;
     using MAV.Web.Data.Repositories;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
+    using System.Linq;
     using System.Threading.Tasks;
 
-    public class MaterialTypesController : Controller
+    public class ApplicantTypesController : Controller
     {
-        private readonly IMaterialTypeRepository materialTypeRepository;
+        private readonly IApplicantTypeRepository applicantTypeRepository;
 
-        public MaterialTypesController(IMaterialTypeRepository materialTypeRepository)
+        public ApplicantTypesController(IApplicantTypeRepository applicantTypeRepository)
         {
-            this.materialTypeRepository = materialTypeRepository;
+            this.applicantTypeRepository = applicantTypeRepository;
         }
 
         public IActionResult Index()
         {
-            return View(this.materialTypeRepository.GetAll());
+            return View(this.applicantTypeRepository.GetAll());
         }
 
         public async Task<IActionResult> Details(int? id)
@@ -27,13 +29,13 @@
                 return NotFound();
             }
 
-            var materialType = await this.materialTypeRepository.GetByIdAsync(id.Value);
-            if (materialType == null)
+            var status = await this.applicantTypeRepository.GetByIdAsync(id.Value);
+            if (status == null)
             {
                 return NotFound();
             }
 
-            return View(materialType);
+            return View(status);
         }
 
         public IActionResult Create()
@@ -43,14 +45,14 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(MaterialType materialType)
+        public async Task<IActionResult> Create(ApplicantType applicantType)
         {
             if (ModelState.IsValid)
             {
-                await this.materialTypeRepository.CreateAsync(materialType);
+                await this.applicantTypeRepository.CreateAsync(applicantType);
                 return RedirectToAction(nameof(Index));
             }
-            return View(materialType);
+            return View(applicantType);
         }
 
         public async Task<IActionResult> Edit(int? id)
@@ -60,19 +62,19 @@
                 return NotFound();
             }
 
-            var materialType = await this.materialTypeRepository.GetByIdAsync(id.Value);
-            if (materialType == null)
+            var applicantType = await this.applicantTypeRepository.GetByIdAsync(id.Value);
+            if (applicantType == null)
             {
                 return NotFound();
             }
-            return View(materialType);
+            return View(applicantType);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, MaterialType materialType)
+        public async Task<IActionResult> Edit(int id, ApplicantType applicantType)
         {
-            if (id != materialType.Id)
+            if (id != applicantType.Id)
             {
                 return NotFound();
             }
@@ -81,11 +83,11 @@
             {
                 try
                 {
-                    await this.materialTypeRepository.UpdateAsync(materialType);
+                    await this.applicantTypeRepository.UpdateAsync(applicantType);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!await this.materialTypeRepository.ExistAsync(materialType.Id))
+                    if (!await this.applicantTypeRepository.ExistAsync(applicantType.Id))
                     {
                         return NotFound();
                     }
@@ -96,7 +98,7 @@
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(materialType);
+            return View(applicantType);
         }
 
         public async Task<IActionResult> Delete(int? id)
@@ -106,12 +108,12 @@
                 return NotFound();
             }
 
-            var materialType = await this.materialTypeRepository.GetByIdAsync(id.Value);
-            if (materialType == null)
+            var applicantType = await this.applicantTypeRepository.GetByIdAsync(id.Value);
+            if (applicantType == null)
             {
                 return NotFound();
             }
-            await this.materialTypeRepository.DeleteAsync(materialType);
+            await this.applicantTypeRepository.DeleteAsync(applicantType);
             return RedirectToAction(nameof(Index));
         }
     }
