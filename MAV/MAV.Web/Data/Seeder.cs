@@ -1,8 +1,8 @@
 ﻿using MAV.Web.Data.Entities;
 using MAV.Web.Helpers;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -39,13 +39,48 @@ namespace MAV.Web.Data
             }
             if (!this.dataContext.Interns.Any())
             {
-                var user = await CheckUserAsync("Espitia", "Mauricio", "mauricio.espitia@gmail.com", "987654321", "123456", "Intern");
+                var user = await CheckUserAsync("Hernandez", "David", "deivi.hr@gmail.com", "987654321", "123456", "Intern");
                 await CheckInternAsync(user);
             }
             if (!this.dataContext.Owners.Any())
             {
                 var user = await CheckUserAsync("Reeves", "Keanu", "keanu.reeves@gmail.com", "987654321", "123456", "Owner");
                 await CheckOwnerAsync(user);
+            }
+            if (!this.dataContext.ApplicantTypes.Any())
+            {
+                await CheckMaterialTypeAsync("Cable");
+            }
+            if (!this.dataContext.Loans.Any())
+            {
+                var applicant = this.dataContext.Applicants
+                    .Include(c => c.User)
+                    .FirstOrDefault(c => c.User.FirstName == "Natalia");
+                var intern = this.dataContext.Interns
+                    .Include(c => c.User)
+                    .FirstOrDefault(c => c.User.FirstName == "David");
+                await CheckLoanAsync(applicant,intern);
+            }
+            if (!this.dataContext.Materials.Any())
+            {
+                var owner = this.dataContext.Owners
+                    .Include(c => c.User)
+                    .FirstOrDefault(c => c.User.FirstName == "Keanu");
+                var status = this.dataContext.Statuses
+                    .FirstOrDefault(s => s.Name == "Disponible");
+                var materialType = this.dataContext.MaterialTypes
+                    .FirstOrDefault(s => s.Name == "Cable");
+                await this.CheckMaterialAsync(owner, materialType, status);
+            }
+            if (!this.dataContext.LoanDetails.Any())
+            {
+                //var loan = this.dataContext.Loans
+                //    .Include(c => c.User)
+                //    .FirstOrDefault(c => c.User.FirstName == "Natalia");
+                //var material = this.dataContext.Interns
+                //    .Include(c => c.User)
+                //    .FirstOrDefault(c => c.User.FirstName == "David");
+                //await CheckLoanDetailAsync(loan, material);
             }
         }
 
@@ -83,10 +118,15 @@ namespace MAV.Web.Data
             this.dataContext.Applicants.Add(new Applicant { User = user });
             await this.dataContext.SaveChangesAsync();
         }
+        private async Task CheckApplicantTypeAsync(string name)
+        {
+            this.dataContext.ApplicantTypes.Add(new ApplicantType { Name = name });
+            await this.dataContext.SaveChangesAsync();
+        }
         private async Task CheckInternAsync(User user)
         {
-            this.dataContext.Interns.Add(new Intern 
-            { 
+            this.dataContext.Interns.Add(new Intern
+            {
                 User = user,
             });
             await this.dataContext.SaveChangesAsync();
@@ -108,9 +148,36 @@ namespace MAV.Web.Data
             this.dataContext.Statuses.Add(new Status { Name = name });
             await this.dataContext.SaveChangesAsync();
         }
-        private async Task CheckApplicantTypeAsync(string name)
+
+
+        private async Task CheckLoanAsync(Applicant applicant, Intern intern)
         {
-            this.dataContext.ApplicantTypes.Add(new ApplicantType { Name = name });
+            this.dataContext.Loans.Add(new Loan
+            {
+                Applicant = applicant,
+                Intern = intern
+            });
+            await this.dataContext.SaveChangesAsync();
+        }
+
+        private async Task CheckLoanDetailAsync(Loan loan, Material material)
+        {
+            this.dataContext.LoanDetails.Add(new LoanDetail
+            {
+                Loan = loan,
+                Material = material
+            });
+            await this.dataContext.SaveChangesAsync();
+        }
+
+        private async Task CheckMaterialAsync(Owner owner, MaterialType materialType, Status status)
+        {
+            this.dataContext.Materials.Add(new Material
+            {
+                Owner = owner,
+                Status = status,
+                MaterialType = materialType
+            });
             await this.dataContext.SaveChangesAsync();
         }
 

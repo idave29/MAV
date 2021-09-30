@@ -37,5 +37,7 @@
         public Owner Owner { get; set; }
 
         public ICollection<LoanDetail> LoanDetails { set; get; }
+
+        public MaterialType MaterialType { set; get; }
     }
 }
