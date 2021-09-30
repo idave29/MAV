@@ -11,5 +11,7 @@
         IQueryable GetInternsWithUser();
         Task<Intern> GetByIdInternWithLoansAsync(int id);
         Task<Intern> GetByIdInternWithLoansLoansDetailsAsync(int id);
+
+        Task<Intern> GetByIdWithUserAsync(int id);
     }
 }

@@ -33,6 +33,13 @@
                 .FirstOrDefaultAsync(t => t.Id == id);
         }
 
+        public Task<Intern> GetByIdWithUserAsync(int id)
+        {
+            return this.dataContext.Interns
+                 .Include(t => t.User)
+                 .FirstOrDefaultAsync(e => e.Id == id);
+        }
+
         public IEnumerable<SelectListItem> GetComboInterns()
         {
             var list = this.dataContext.Interns.Select(t => new SelectListItem

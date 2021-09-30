@@ -48,6 +48,8 @@ namespace MAV.Web
             services.AddScoped<IStatusRepository, StatusRepository>();
             services.AddScoped<IMaterialTypeRepository, MaterialTypeRepository>();
             services.AddScoped<IApplicantTypeRepository, ApplicantTypeRepository>();
+            services.AddScoped<IAdministratorRepository, AdministratorRepository>();
+            services.AddScoped<IInternRepository, InternRepository>();
 
             services.AddControllersWithViews();
         }

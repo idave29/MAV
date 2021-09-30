@@ -2,6 +2,7 @@
 using MAV.Web.Helpers;
 using Microsoft.AspNetCore.Identity;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -84,7 +85,10 @@ namespace MAV.Web.Data
         }
         private async Task CheckInternAsync(User user)
         {
-            this.dataContext.Interns.Add(new Intern { User = user });
+            this.dataContext.Interns.Add(new Intern 
+            { 
+                User = user,
+            });
             await this.dataContext.SaveChangesAsync();
         }
         private async Task CheckOwnerAsync(User user)
@@ -92,5 +96,23 @@ namespace MAV.Web.Data
             this.dataContext.Owners.Add(new Owner { User = user });
             await this.dataContext.SaveChangesAsync();
         }
+
+        private async Task CheckMaterialTypeAsync(string name)
+        {
+            this.dataContext.MaterialTypes.Add(new MaterialType { Name = name });
+            await this.dataContext.SaveChangesAsync();
+        }
+
+        private async Task CheckStatusAsync(string name)
+        {
+            this.dataContext.Statuses.Add(new Status { Name = name });
+            await this.dataContext.SaveChangesAsync();
+        }
+        private async Task CheckApplicantTypeAsync(string name)
+        {
+            this.dataContext.ApplicantTypes.Add(new ApplicantType { Name = name });
+            await this.dataContext.SaveChangesAsync();
+        }
+
     }
 }

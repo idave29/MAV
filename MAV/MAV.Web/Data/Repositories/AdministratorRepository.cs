@@ -5,6 +5,8 @@
     using Microsoft.EntityFrameworkCore;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
+
     public class AdministratorRepository : GenericRepository<Administrator>, IAdministratorRepository
     {
         private readonly DataContext dataContext;
@@ -33,6 +35,13 @@
         {
             return this.dataContext.Administrators
                 .Include(t => t.User);
+        }
+
+        public Task<Administrator> GetByIdWithUserAsync(int id)
+        {
+            return this.dataContext.Administrators
+                .Include(t => t.User)
+                .FirstOrDefaultAsync(e => e.Id == id);
         }
     }
 }
