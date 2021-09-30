@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MAV.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210930171049_initial")]
+    [Migration("20210930213659_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -507,7 +507,7 @@ namespace MAV.Web.Migrations
 
             modelBuilder.Entity("MAV.Web.Data.Entities.Material", b =>
                 {
-                    b.HasOne("MAV.Web.Data.Entities.MaterialType", null)
+                    b.HasOne("MAV.Web.Data.Entities.MaterialType", "MaterialType")
                         .WithMany("Materials")
                         .HasForeignKey("MaterialTypeId");
 

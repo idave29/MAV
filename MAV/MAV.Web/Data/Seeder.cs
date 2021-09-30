@@ -21,15 +21,16 @@ namespace MAV.Web.Data
 
         public async Task SeedAsync()
         {
+            //User
             await dataContext.Database.EnsureCreatedAsync();
-            await this.userHelper.CheckRoleAsync("Admin");
+            await this.userHelper.CheckRoleAsync("Admininstrator");
             await this.userHelper.CheckRoleAsync("Applicant");
             await this.userHelper.CheckRoleAsync("Intern");
             await this.userHelper.CheckRoleAsync("Owner");
-
+            //Roles
             if (!this.dataContext.Administrators.Any())
             {
-                var user = await CheckUserAsync("Fong", "Eduardo", "eduardo.fong@gmail.com", "987654321", "123456", "Admin");
+                var user = await CheckUserAsync("Fong", "Eduardo", "eduardo.fong@gmail.com", "987654321", "123456", "Admininstrator");
                 await CheckAdminAsync(user);
             }
             if (!this.dataContext.Applicants.Any())
@@ -47,10 +48,22 @@ namespace MAV.Web.Data
                 var user = await CheckUserAsync("Reeves", "Keanu", "keanu.reeves@gmail.com", "987654321", "123456", "Owner");
                 await CheckOwnerAsync(user);
             }
+            //ApplicantTypes
             if (!this.dataContext.ApplicantTypes.Any())
+            {
+                await CheckApplicantTypeAsync("No deudor");
+            }
+            //MaterialType
+            if (!this.dataContext.MaterialTypes.Any())
             {
                 await CheckMaterialTypeAsync("Cable");
             }
+            //Status
+            if (!this.dataContext.Statuses.Any())
+            {
+                await CheckStatusAsync("Disponible");
+            }
+            //Loan
             if (!this.dataContext.Loans.Any())
             {
                 var applicant = this.dataContext.Applicants
@@ -61,6 +74,7 @@ namespace MAV.Web.Data
                     .FirstOrDefault(c => c.User.FirstName == "David");
                 await CheckLoanAsync(applicant,intern);
             }
+            //Material
             if (!this.dataContext.Materials.Any())
             {
                 var owner = this.dataContext.Owners
@@ -70,17 +84,14 @@ namespace MAV.Web.Data
                     .FirstOrDefault(s => s.Name == "Disponible");
                 var materialType = this.dataContext.MaterialTypes
                     .FirstOrDefault(s => s.Name == "Cable");
-                await this.CheckMaterialAsync(owner, materialType, status);
+                await this.CheckMaterialAsync("HDMI1",owner, materialType, status, "Sony", "MAV01", "Azul","897654");
             }
+            //LoanDetail
             if (!this.dataContext.LoanDetails.Any())
             {
-                //var loan = this.dataContext.Loans
-                //    .Include(c => c.User)
-                //    .FirstOrDefault(c => c.User.FirstName == "Natalia");
-                //var material = this.dataContext.Interns
-                //    .Include(c => c.User)
-                //    .FirstOrDefault(c => c.User.FirstName == "David");
-                //await CheckLoanDetailAsync(loan, material);
+                var loan = this.dataContext.Loans.FirstOrDefault();
+                var material = this.dataContext.Materials.FirstOrDefault();
+                await CheckLoanDetailAsync(loan, material);
             }
         }
 
@@ -170,13 +181,18 @@ namespace MAV.Web.Data
             await this.dataContext.SaveChangesAsync();
         }
 
-        private async Task CheckMaterialAsync(Owner owner, MaterialType materialType, Status status)
+        private async Task CheckMaterialAsync(string name, Owner owner, MaterialType materialType, Status status, string brand, string label, string materialModel, string serialNum)
         {
             this.dataContext.Materials.Add(new Material
             {
+                Name = name,
                 Owner = owner,
                 Status = status,
-                MaterialType = materialType
+                MaterialType = materialType,
+                Brand = brand,
+                Label = label,
+                MaterialModel = materialModel,
+                SerialNum = serialNum
             });
             await this.dataContext.SaveChangesAsync();
         }

@@ -505,7 +505,7 @@ namespace MAV.Web.Migrations
 
             modelBuilder.Entity("MAV.Web.Data.Entities.Material", b =>
                 {
-                    b.HasOne("MAV.Web.Data.Entities.MaterialType", null)
+                    b.HasOne("MAV.Web.Data.Entities.MaterialType", "MaterialType")
                         .WithMany("Materials")
                         .HasForeignKey("MaterialTypeId");
 
