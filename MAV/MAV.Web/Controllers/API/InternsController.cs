@@ -15,7 +15,7 @@
         [HttpGet]
         public IActionResult GetStatus()
         {
-            return Ok(this.internRepository.GetAll());
+            return Ok(this.internRepository.GetInternsWithUser());
         }
     }
 }

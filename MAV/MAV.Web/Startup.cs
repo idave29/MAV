@@ -50,6 +50,8 @@ namespace MAV.Web
             services.AddScoped<IApplicantTypeRepository, ApplicantTypeRepository>();
             services.AddScoped<IAdministratorRepository, AdministratorRepository>();
             services.AddScoped<IInternRepository, InternRepository>();
+            services.AddScoped<IApplicantRepository, ApplicantRepository>();
+            services.AddScoped<IOwnerRepository, OwnerRepository>();
 
             services.AddControllersWithViews();
         }

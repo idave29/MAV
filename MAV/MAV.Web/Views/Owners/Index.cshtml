@@ -1,10 +1,10 @@
-﻿@model IEnumerable<MAV.Web.Data.Entities.Intern>
+﻿@model IEnumerable<MAV.Web.Data.Entities.Owner>
 
 @{
-    ViewData["Title"] = "Interns";
+    ViewData["Title"] = "Owners";
 }
 
-<h1>Interns</h1>
+<h1>Index</h1>
 
 <p>
     <a asp-action="Create" class="btn btn-success">Create New</a>
@@ -15,7 +15,6 @@
             <th>@Html.DisplayNameFor(model => model.User.FullName)</th>
             <th>@Html.DisplayNameFor(model => model.User.Email)</th>
             <th>@Html.DisplayNameFor(model => model.User.PhoneNumber)</th>
-
         </tr>
     </thead>
     <tbody>
@@ -37,7 +36,6 @@
                     <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
                 </td>
             </tr>
-}
-
+        }
     </tbody>
 </table>

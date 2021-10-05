@@ -15,7 +15,7 @@
         [HttpGet]
         public IActionResult GetStatus()
         {
-            return Ok(this.administratorRepository.GetAll());
+            return Ok(this.administratorRepository.GetAdministratorsWithUser());
         }
     }
 }
