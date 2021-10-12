@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MAV.UIForms.Views.LoginPage"
+             BindingContext="{Binding Main, Source={StaticResource Locator}}"
+             Title="Login">
+    <ContentPage.Content>
+        <ScrollView BindingContext="{Binding Login}">
+            <StackLayout Padding="10">
+                <Label Text="Email"></Label>
+                <Entry Keyboard="Email" 
+                       Placeholder="Introduce tu email..."
+                       Text="{Binding Email}"></Entry>
+                <Label Text="Password"></Label>
+                <Entry IsPassword="True" 
+                       Placeholder="Introduce tu contraseña..."
+                       Text="{Binding Password}"></Entry>
+                <Button Text="Login" 
+                        Command="{Binding LoginCommand}"
+                        Background="#3595EA" 
+                        TextColor="White" ></Button>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
