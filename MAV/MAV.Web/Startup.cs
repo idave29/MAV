@@ -71,6 +71,7 @@ namespace MAV.Web
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseAuthentication();
 
             app.UseRouting();
 
