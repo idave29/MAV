@@ -1,4 +1,5 @@
-﻿using MAV.UIForms.Views;
+﻿using MAV.UIForms.ViewModels;
+using MAV.UIForms.Views;
 using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -11,6 +12,7 @@ namespace MAV.UIForms
         {
             InitializeComponent();
 
+            MainViewModel.GetInstance().Login = new LoginViewModel();
             MainPage = new NavigationPage(new LoginPage());
         }
 

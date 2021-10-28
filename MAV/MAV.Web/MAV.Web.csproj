@@ -28,4 +28,8 @@
     <Folder Include="Migrations\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MAV.Common\MAV.Common.csproj" />
+  </ItemGroup>
+
 </Project>
