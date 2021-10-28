@@ -15,8 +15,11 @@
                 <Entry IsPassword="True" 
                        Placeholder="Introduce tu contraseña..."
                        Text="{Binding Password}"></Entry>
+                <ActivityIndicator IsRunning="{Binding IsRunning}">
+                </ActivityIndicator>
                 <Button Text="Login" 
                         Command="{Binding LoginCommand}"
+                        IsEnabled="{Binding IsEnabled}"
                         Background="#3595EA" 
                         TextColor="White" ></Button>
             </StackLayout>

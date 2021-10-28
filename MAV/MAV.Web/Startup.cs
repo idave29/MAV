@@ -47,9 +47,9 @@ namespace MAV.Web
                 cfg.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidIssuer = this.Configuration["Tokens:Issuer"],
-                    ValidAudience = this.Configuration["Tokens:Issuer"],
+                    ValidAudience = this.Configuration["Tokens:Issuer"]
                     //IssuerSigningKey = new Sy
-                }
+                };
             });
 
             services.AddTransient<Seeder>();

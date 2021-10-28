@@ -6,7 +6,7 @@ namespace MAV.Common.Models
 {
     public class Response
     {
-        public bool IsSucces { get; set; }
+        public bool IsSuccess { get; set; }
         public string Message { get; set; }
         public object Result { get; set; }
 
