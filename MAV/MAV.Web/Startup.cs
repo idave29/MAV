@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace MAV.Web
 {
@@ -47,8 +48,9 @@ namespace MAV.Web
                 cfg.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidIssuer = this.Configuration["Tokens:Issuer"],
-                    ValidAudience = this.Configuration["Tokens:Issuer"]
-                    //IssuerSigningKey = new Sy
+                    ValidAudience = this.Configuration["Tokens:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey
+                    (Encoding.UTF8.GetBytes(this.Configuration["Tokens:Key"]))
                 };
             });
 
