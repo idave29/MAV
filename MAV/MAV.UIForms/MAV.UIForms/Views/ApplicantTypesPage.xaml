@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MAV.UIForms.Views.MaterialTypesPage"
+             x:Class="MAV.UIForms.Views.ApplicantTypesPage"
              BindingContext="{Binding Main, Source={StaticResource Locator}}"
-             Title="Material Type">
+             Title="Applicant Type">
     <ContentPage.Content>
         <StackLayout
-            BindingContext="{Binding MaterialTypes}"
+            BindingContext="{Binding ApplicantTypes}"
             Padding="10">
             <ListView 
                 HasUnevenRows="True"
-                ItemsSource="{Binding MaterialTypes}">
+                ItemsSource="{Binding ApplicantTypes}">
             </ListView>
         </StackLayout>
     </ContentPage.Content>

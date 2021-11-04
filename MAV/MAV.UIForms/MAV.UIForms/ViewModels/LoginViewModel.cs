@@ -47,6 +47,12 @@ namespace MAV.UIForms.ViewModels
             MainViewModel.GetInstance().MaterialTypes = new MaterialTypesViewModel();
             await Application.Current.MainPage.Navigation.PushAsync(new MaterialTypesPage());
 
+            MainViewModel.GetInstance().ApplicantTypes = new ApplicantTypesViewModel();
+            await Application.Current.MainPage.Navigation.PushAsync(new ApplicantTypesPage());
+
+            MainViewModel.GetInstance().Interns = new InternsViewModel();
+            await Application.Current.MainPage.Navigation.PushAsync(new InternsPage());
+
 
         }
     }

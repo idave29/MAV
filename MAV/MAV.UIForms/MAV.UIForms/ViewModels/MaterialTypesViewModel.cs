@@ -26,7 +26,7 @@
             var response = await this.apiService.GetListAsync<MaterialType>(
                 "https://mavweb1.azurewebsites.net",
                 "/api",
-                "/MaterialType");
+                "/MaterialTypes");
             if (!response.IsSuccess)
             {
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");

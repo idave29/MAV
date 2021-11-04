@@ -7,8 +7,9 @@
         //public AdministratorsViewModel Administrators { get; set; }
         public StatusesViewModel Statuses { get; set; }
         public OwnersViewModel Owners { get; set; }
-
         public MaterialTypesViewModel MaterialTypes { get; set; }
+        public ApplicantTypesViewModel ApplicantTypes { get; set; }
+        public InternsViewModel Interns { get; set; }
 
         public MainViewModel()
         {
