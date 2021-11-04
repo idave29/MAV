@@ -6,6 +6,8 @@
         public LoginViewModel Login { get; set; }
         //public AdministratorsViewModel Administrators { get; set; }
         public StatusesViewModel Statuses { get; set; }
+        public OwnersViewModel Owners { get; set; }
+
         public MainViewModel()
         {
             instance = this;

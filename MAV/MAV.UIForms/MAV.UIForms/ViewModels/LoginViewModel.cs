@@ -40,6 +40,11 @@ namespace MAV.UIForms.ViewModels
             //return;
             MainViewModel.GetInstance().Statuses = new StatusesViewModel();
             await Application.Current.MainPage.Navigation.PushAsync(new StatusesPage());
+
+            MainViewModel.GetInstance().Owners = new OwnersViewModel();
+            await Application.Current.MainPage.Navigation.PushAsync(new OwnersPage());
+
+
         }
     }
 }
