@@ -44,6 +44,9 @@ namespace MAV.UIForms.ViewModels
             MainViewModel.GetInstance().Owners = new OwnersViewModel();
             await Application.Current.MainPage.Navigation.PushAsync(new OwnersPage());
 
+            MainViewModel.GetInstance().MaterialTypes = new MaterialTypesViewModel();
+            await Application.Current.MainPage.Navigation.PushAsync(new MaterialTypesPage());
+
 
         }
     }

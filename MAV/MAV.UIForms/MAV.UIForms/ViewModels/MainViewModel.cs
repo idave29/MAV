@@ -8,6 +8,8 @@
         public StatusesViewModel Statuses { get; set; }
         public OwnersViewModel Owners { get; set; }
 
+        public MaterialTypesViewModel MaterialTypes { get; set; }
+
         public MainViewModel()
         {
             instance = this;

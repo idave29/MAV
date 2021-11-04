@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MAV.UIForms.Views.MaterialTypesPage"
+             BindingContext="{Binding Main, Source={StaticResource Locator}}"             Title="Material Type">
+    <ContentPage.Content>
+        <StackLayout            BindingContext="{Binding MaterialTypes}"            Padding="10">            <ListView                 HasUnevenRows="True"                ItemsSource="{Binding MaterialTypes}">            </ListView>        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
