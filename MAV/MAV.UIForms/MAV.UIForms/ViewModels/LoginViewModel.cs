@@ -50,6 +50,9 @@ namespace MAV.UIForms.ViewModels
             MainViewModel.GetInstance().ApplicantTypes = new ApplicantTypesViewModel();
             await Application.Current.MainPage.Navigation.PushAsync(new ApplicantTypesPage());
 
+            MainViewModel.GetInstance().Interns = new InternsViewModel();
+            await Application.Current.MainPage.Navigation.PushAsync(new InternsPage());
+
 
         }
     }
