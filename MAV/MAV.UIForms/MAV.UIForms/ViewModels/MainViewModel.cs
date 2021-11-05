@@ -10,6 +10,7 @@
         public MaterialTypesViewModel MaterialTypes { get; set; }
         public ApplicantTypesViewModel ApplicantTypes { get; set; }
         public InternsViewModel Interns { get; set; }
+        public ApplicantsViewModel Applicants { get; set; }
 
         public MainViewModel()
         {
