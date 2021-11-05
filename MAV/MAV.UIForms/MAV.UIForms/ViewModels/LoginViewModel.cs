@@ -55,6 +55,9 @@ namespace MAV.UIForms.ViewModels
 
             MainViewModel.GetInstance().Applicants = new ApplicantsViewModel();
             await Application.Current.MainPage.Navigation.PushAsync(new ApplicantPage());
+
+            MainViewModel.GetInstance().Administrators = new AdministratorsViewModel();
+            await Application.Current.MainPage.Navigation.PushAsync(new AdministratorsPage());
         }
     }
 }
