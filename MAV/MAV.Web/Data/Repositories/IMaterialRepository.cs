@@ -10,5 +10,6 @@
         IEnumerable<SelectListItem> GetComboMaterial();
 
         IQueryable GetMaterialsWithOwner();
+        IQueryable GetMaterials(); 
     }
 }

@@ -1,0 +1,46 @@
+﻿@model IEnumerable<MAV.Web.Data.Entities.Loan>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Loan</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-success"> Create new </a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Applicant)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Intern)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LoanDetails)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Applicant)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Intern)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LoanDetails)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

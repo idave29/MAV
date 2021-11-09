@@ -1,0 +1,59 @@
+﻿@model IEnumerable<MAV.Web.Data.Entities.LoanDetail>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Loan Detail</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-success"> Create new </a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Observations)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateTimeOut)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateTimeIn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Material)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Loan)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Observations)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateTimeOut)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateTimeIn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Material)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Loan)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

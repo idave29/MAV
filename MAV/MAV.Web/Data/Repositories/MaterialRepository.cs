@@ -5,6 +5,8 @@
     using Microsoft.EntityFrameworkCore;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
+
     public class MaterialRepository : GenericRepository<Material>, IMaterialRepository
     {
         private readonly DataContext dataContext;
@@ -34,5 +36,14 @@
             return this.dataContext.Materials
                 .Include(t => t.Owner);
         }
+
+        public IQueryable GetMaterials()
+        {
+            return this.dataContext.Materials
+                .Include(t => t.Id)
+                .Include(t => t.Name)
+                .Include(t => t.Label);
+        }
+
     }
 }
