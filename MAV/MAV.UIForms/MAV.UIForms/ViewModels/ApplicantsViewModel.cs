@@ -28,7 +28,7 @@ namespace MAV.UIForms.ViewModels
         private async void LoadApplicants()
         {
             var response = await this.apiService.GetListAsync<Applicant>(
-                "https://mavweb1.azurewebsites.net",
+                "https://mediosaudiovisualesweb.azurewebsites.net/",
                 "/api",
                 "/Applicants");
             if (!response.IsSuccess)

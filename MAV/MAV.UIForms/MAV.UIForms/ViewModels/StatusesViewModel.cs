@@ -25,7 +25,7 @@
         private async void LoadStatuses()
         {
             var response = await this.apiService.GetListAsync<Status>(
-                "https://mavweb1.azurewebsites.net",
+                "https://mediosaudiovisualesweb.azurewebsites.net/",
                 "/api",
                 "/Status");
             if(!response.IsSuccess)

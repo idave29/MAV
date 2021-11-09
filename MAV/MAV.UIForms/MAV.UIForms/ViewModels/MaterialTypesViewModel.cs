@@ -24,7 +24,7 @@
         private async void LoadMaterialTypes()
         {
             var response = await this.apiService.GetListAsync<MaterialType>(
-                "https://mavweb1.azurewebsites.net",
+                "https://mediosaudiovisualesweb.azurewebsites.net/",
                 "/api",
                 "/MaterialTypes");
             if (!response.IsSuccess)

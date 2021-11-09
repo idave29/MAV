@@ -26,7 +26,7 @@ namespace MAV.UIForms.ViewModels
         private async void LoadOwners()
         {
             var response = await this.apiService.GetListAsync<Owner>(
-                "https://mavweb1.azurewebsites.net",
+                "https://mediosaudiovisualesweb.azurewebsites.net/",
                 "/api",
                 "/Owners");
             if (!response.IsSuccess)

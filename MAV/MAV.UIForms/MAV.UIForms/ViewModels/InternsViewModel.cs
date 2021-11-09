@@ -24,7 +24,7 @@
         private async void LoadInterns()
         {
             var response = await this.apiService.GetListAsync<Intern>(
-                "https://mavweb1.azurewebsites.net",
+                "https://mediosaudiovisualesweb.azurewebsites.net/",
                 "/api",
                 "/Interns");
             if (!response.IsSuccess)

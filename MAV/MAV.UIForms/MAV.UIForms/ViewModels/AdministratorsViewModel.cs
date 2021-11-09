@@ -24,7 +24,7 @@
         private async void LoadAdministrators()
         {
             var response = await this.apiService.GetListAsync<Administrator>(
-                "https://mavweb1.azurewebsites.net",
+                "https://mediosaudiovisualesweb.azurewebsites.net/",
                 "/api",
                 "/Administrators");
             if (!response.IsSuccess)

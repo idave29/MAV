@@ -25,7 +25,7 @@
         private async void LoadApplicantTypes()
         {
             var response = await this.apiService.GetListAsync<ApplicantType>(
-                "https://mavweb1.azurewebsites.net",
+                "https://mediosaudiovisualesweb.azurewebsites.net/",
                 "/api",
                 "/ApplicantTypes");
             if (!response.IsSuccess)

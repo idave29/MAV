@@ -5,7 +5,7 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     [Route("api/[Controller]")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme) ]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme) ]
     public class StatusController : Controller
     {
         private readonly IStatusRepository statusRepository;
