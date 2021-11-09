@@ -4,37 +4,37 @@
     ViewData["Title"] = "Login";
 }
 
-<h1>Login</h1>
-
-<h4>xd</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<h1 style="text-align: center">Login</h1>
+<br />
+<div>
+    <div style="text-align: center">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
             <div class="form-group">
-                <label asp-for="Username" class="Control-label"></label>
+                <label asp-for="Username" class="Control-label">User Name</label>
+                <br />
                 <input asp-for="Username" class="form-label" />
+                <br />
                 <span asp-validation-for="Username" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="Password" class="Control-label"></label>
+                <label asp-for="Password" class="Control-label">Password</label>
+                <br />
                 <input asp-for="Password" class="form-label" type="password" />
+                <br />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="RememberMe" class="Control-label"></label>
+                <label asp-for="RememberMe" class="Control-label">Remember Me</label>
                 <input asp-for="RememberMe" class="form-label" type="checkbox" />
                 <span asp-validation-for="RememberMe" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-outline-primary" />
             </div>
         </form>
     </div>
