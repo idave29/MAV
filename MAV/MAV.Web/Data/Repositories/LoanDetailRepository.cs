@@ -13,6 +13,13 @@ namespace MAV.Web.Data.Repositories
             this.dataContext = dataContext;
         }
 
+        public IQueryable GetLoanDetailsWithMaterialAndLoan()
+        {
+            return this.dataContext.LoanDetails
+                .Include(t => t.Material)
+                .Include(t => t.Loan);
+        }
+
         public IQueryable GetLoanDetails()
         {
             return this.dataContext.LoanDetails

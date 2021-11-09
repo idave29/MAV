@@ -6,6 +6,8 @@
     {
         //IEnumerable<SelectListItem> GetComboMaterial();
 
+        IQueryable GetLoanDetailsWithMaterialAndLoan();
+
         IQueryable GetLoanDetails();
     }
 }

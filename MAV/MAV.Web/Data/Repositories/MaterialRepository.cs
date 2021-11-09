@@ -31,10 +31,12 @@
             return list;
         }
 
-        public IQueryable GetMaterialsWithOwner()
+        public IQueryable GetMaterialsWithTypeAndStatus()
         {
             return this.dataContext.Materials
-                .Include(t => t.Owner);
+                .Include(t => t.MaterialType)
+                .Include(t => t.Status)
+                .Include(t => t.Owner.User);
         }
 
         public IQueryable GetMaterials()

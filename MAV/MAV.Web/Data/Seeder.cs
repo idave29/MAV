@@ -87,7 +87,7 @@ namespace MAV.Web.Data
                 var intern = this.dataContext.Interns
                     .Include(c => c.User)
                     .FirstOrDefault(c => c.User.FirstName == "David");
-                await CheckLoanAsync(applicant,intern);
+                await CheckLoanAsync(applicant, intern);
                 applicant = this.dataContext.Applicants
                     .Include(c => c.User)
                     .FirstOrDefault(c => c.User.FirstName == "Raquel");

@@ -25,7 +25,7 @@ namespace MAV.Web.Controllers
         // GET: Loans
         public IActionResult Index()
         {
-            return View(this.loanRepository.GetAll());
+            return View(this.loanRepository.GetLoanWithAplicantAndIntern());
         }
 
         // GET: Loans/Details/5

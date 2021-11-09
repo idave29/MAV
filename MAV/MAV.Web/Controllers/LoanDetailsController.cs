@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using MAV.Web.Data;
+﻿using MAV.Web.Data;
 using MAV.Web.Data.Entities;
 using MAV.Web.Data.Repositories;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MAV.Web.Controllers
 {
@@ -25,7 +22,7 @@ namespace MAV.Web.Controllers
         // GET: LoanDetails
         public IActionResult Index()
         {
-            return View(this.loanDetailRepository.GetAll());
+            return View(this.loanDetailRepository.GetLoanDetailsWithMaterialAndLoan());
         }
 
         // GET: LoanDetails/Details/5

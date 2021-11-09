@@ -33,11 +33,15 @@
             <th>
                 @Html.DisplayNameFor(model => model.MaterialType)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Owner)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in Model)
+        {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
@@ -55,10 +59,13 @@
                 @Html.DisplayFor(modelItem => item.SerialNum)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Status)
+                @Html.DisplayFor(modelItem => item.Status.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MaterialType)
+                @Html.DisplayFor(modelItem => item.MaterialType.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Owner.User.FullName)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning">Edit</a> |
@@ -66,6 +73,8 @@
                 <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">Delete</a>
             </td>
         </tr>
-}
+        }
     </tbody>
 </table>
+
+

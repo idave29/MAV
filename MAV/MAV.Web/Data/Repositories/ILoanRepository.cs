@@ -5,6 +5,8 @@
 
     public interface ILoanRepository : IGenericRepository<Loan>
     {
+        IQueryable GetLoanWithAplicantAndIntern();
+
         IQueryable GetLoan();
     }
 }
