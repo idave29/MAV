@@ -1,6 +1,4 @@
-﻿
-
-namespace MAV.Common.Models
+﻿namespace MAV.Common.Models
 {
     using Newtonsoft.Json;
     public class MaterialType

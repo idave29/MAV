@@ -58,6 +58,15 @@ namespace MAV.UIForms.ViewModels
 
             MainViewModel.GetInstance().Administrators = new AdministratorsViewModel();
             await Application.Current.MainPage.Navigation.PushAsync(new AdministratorsPage());
+
+            MainViewModel.GetInstance().Materials = new MaterialsViewModel();
+            await Application.Current.MainPage.Navigation.PushAsync(new MaterialsPage());
+
+            MainViewModel.GetInstance().Loans = new LoansViewModel();
+            await Application.Current.MainPage.Navigation.PushAsync(new LoansPage());
+
+            MainViewModel.GetInstance().LoanDetails = new LoanDetailsViewModel();
+            await Application.Current.MainPage.Navigation.PushAsync(new LoanDetailsPage());
         }
     }
 }

@@ -4,7 +4,6 @@
     {
         private static MainViewModel instance;
         public LoginViewModel Login { get; set; }
-        //public AdministratorsViewModel Administrators { get; set; }
         public StatusesViewModel Statuses { get; set; }
         public OwnersViewModel Owners { get; set; }
         public MaterialTypesViewModel MaterialTypes { get; set; }
@@ -12,6 +11,9 @@
         public InternsViewModel Interns { get; set; }
         public ApplicantsViewModel Applicants { get; set; }
         public AdministratorsViewModel Administrators { get; set; }
+        public MaterialsViewModel Materials { get; set; }
+        public LoansViewModel Loans { get; set; }
+        public LoanDetailsViewModel LoanDetails { get; set; }
 
         public MainViewModel()
         {
