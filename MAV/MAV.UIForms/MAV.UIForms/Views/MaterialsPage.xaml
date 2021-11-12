@@ -6,11 +6,11 @@
              Title="Material">
     <ContentPage.Content>
         <StackLayout
-            BindingContext="{Binding MaterialTypes}"
+            BindingContext="{Binding Materials}"
             Padding="10">
             <ListView 
                 HasUnevenRows="True"
-                ItemsSource="{Binding MaterialTypes}">
+                ItemsSource="{Binding Materials}">
             </ListView>
         </StackLayout>
     </ContentPage.Content>
