@@ -3,10 +3,10 @@
     using Newtonsoft.Json;
     public class TokenRequest
     {
-        [JsonProperty("token")]
+        //[JsonProperty("token")]
         public string Username { get; set; }
 
-        [JsonProperty("expiration")]
+        //[JsonProperty("expiration")]
         public string Password { get; set; }
     }
 }

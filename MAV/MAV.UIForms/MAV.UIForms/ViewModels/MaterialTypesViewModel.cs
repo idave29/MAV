@@ -15,6 +15,14 @@
             get { return this.materialTypes; }
             set { this.SetValue(ref this.materialTypes, value); }
         }
+
+        private bool isRefreshing;
+        public bool IsRefreshing
+        {
+            get { return this.isRefreshing; }
+            set { this.SetValue(ref this.isRefreshing, value); }
+        }
+
         public MaterialTypesViewModel()
         {
             this.apiService = new ApiService();
@@ -23,10 +31,15 @@
 
         private async void LoadMaterialTypes()
         {
+            this.IsRefreshing = true;
+            var url = Application.Current.Resources["URLApi"].ToString();
             var response = await this.apiService.GetListAsync<MaterialType>(
-                "https://mediosaudiovisualesweb.azurewebsites.net/",
+                url,
                 "/api",
-                "/MaterialTypes");
+                "/MaterialTypes",
+                "bearer",
+                MainViewModel.GetInstance().Token.Token);
+            this.IsRefreshing = false;
             if (!response.IsSuccess)
             {
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");

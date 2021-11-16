@@ -20,7 +20,7 @@
         public bool IsRefreshing
         {
             get { return this.isRefreshing; }
-            set { this.isRefreshing = value; }
+            set { this.SetValue(ref this.isRefreshing, value); }
         }
         public ApplicantTypesViewModel()
         {

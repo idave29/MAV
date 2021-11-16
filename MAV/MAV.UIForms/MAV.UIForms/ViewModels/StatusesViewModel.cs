@@ -16,6 +16,14 @@
             get { return this.statuses; }
             set { this.SetValue(ref this.statuses, value); }
         }
+
+        private bool isRefreshing;
+        public bool IsRefreshing
+        {
+            get { return this.isRefreshing; }
+            set { this.SetValue(ref this.isRefreshing, value); }
+        }
+
         public StatusesViewModel()
         {
             this.apiService = new ApiService();
@@ -24,11 +32,16 @@
 
         private async void LoadStatuses()
         {
+            this.IsRefreshing = true;
+            var url = Application.Current.Resources["URLApi"].ToString();
             var response = await this.apiService.GetListAsync<Status>(
-                "https://mediosaudiovisualesweb.azurewebsites.net/",
+                url,
                 "/api",
-                "/Status");
-            if(!response.IsSuccess)
+                "/Status",
+                "bearer",
+                MainViewModel.GetInstance().Token.Token);
+            this.IsRefreshing = false;
+            if (!response.IsSuccess)
             {
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
