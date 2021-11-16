@@ -1,8 +1,11 @@
-﻿namespace MAV.UIForms.ViewModels
+﻿using MAV.Common.Models;
+
+namespace MAV.UIForms.ViewModels
 {
     public class MainViewModel
     {
         private static MainViewModel instance;
+        public TokenResponse Token { get; set; }
         public LoginViewModel Login { get; set; }
         public StatusesViewModel Statuses { get; set; }
         public OwnersViewModel Owners { get; set; }

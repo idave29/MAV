@@ -1,10 +1,10 @@
 {
   "dependencies": {
     "mssql1": {
-      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/mavwebdbserver/databases/MAV.Web_db",
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/mavdb1/databases/MAV.Web_db",
       "type": "mssql.azure",
-      "connectionId": "DefaultConnection",
-      "secretStore": "AzureAppSettings"
+      "connectionId": "ConnectionStrings:DefaultConnection"
     }
   }
 }

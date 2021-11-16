@@ -9,8 +9,29 @@
             BindingContext="{Binding ApplicantTypes}"
             Padding="10">
             <ListView 
+                IsPullToRefreshEnabled="True"
+                IsRefreshing="{Binding IsRefreshing}"
                 HasUnevenRows="True"
-                ItemsSource="{Binding ApplicantTypes}">
+                ItemsSource="{Binding ApplicantTypes}"
+                RefreshCommand="{Binding RefreshCommand}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackLayout Grid.Column="0" VerticalOptions="Center">
+                                    <Label Text="{Binding Id}" FontAttributes="Bold" FontSize="Small" TextColor="Red"/>
+                                </StackLayout>
+                                <StackLayout Grid.Column="1" VerticalOptions="Center">
+                                    <Label Text="{Binding Name}" FontSize="Small" TextColor="Blue"/> 
+                                </StackLayout>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
             </ListView>
         </StackLayout>
     </ContentPage.Content>

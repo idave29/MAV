@@ -11,6 +11,11 @@ namespace MAV.Common.Models
         [JsonProperty("name")]
         public string Name { get; set; }
 
+        public override string ToString()
+        {
+            return $"{this.Id} {this.Name}";
+        }
+
         [JsonProperty("applicants")]
         public object Applicants { get; set; }
     }

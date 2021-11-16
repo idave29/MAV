@@ -16,6 +16,12 @@
             get { return this.applicantTypes; }
             set { this.SetValue(ref this.applicantTypes, value); }
         }
+        private bool isRefreshing; 
+        public bool IsRefreshing
+        {
+            get { return this.isRefreshing; }
+            set { this.isRefreshing = value; }
+        }
         public ApplicantTypesViewModel()
         {
             this.apiService = new ApiService();
@@ -24,10 +30,15 @@
 
         private async void LoadApplicantTypes()
         {
+            this.IsRefreshing=true;
+            var url = Application.Current.Resources["URLApi"].ToString();
             var response = await this.apiService.GetListAsync<ApplicantType>(
-                "https://mediosaudiovisualesweb.azurewebsites.net/",
+                url,
                 "/api",
-                "/ApplicantTypes");
+                "/ApplicantTypes", 
+                "bearer",
+                MainViewModel.GetInstance().Token.Token);
+            this.IsRefreshing = false;
             if (!response.IsSuccess)
             {
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
