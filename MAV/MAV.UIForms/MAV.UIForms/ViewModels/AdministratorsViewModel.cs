@@ -15,6 +15,13 @@
             get { return this.administrators; }
             set { this.SetValue(ref this.administrators, value); }
         }
+
+        private bool isRefreshing;
+        public bool IsRefreshing
+        {
+            get { return this.isRefreshing; }
+            set { this.SetValue(ref this.isRefreshing, value); }
+        }
         public AdministratorsViewModel()
         {
             this.apiService = new ApiService();
@@ -23,10 +30,15 @@
 
         private async void LoadAdministrators()
         {
+            this.IsRefreshing = true;
+            var url = Application.Current.Resources["URLApi"].ToString();
             var response = await this.apiService.GetListAsync<Administrator>(
-                "https://mediosaudiovisualesweb.azurewebsites.net/",
+                url,
                 "/api",
-                "/Administrators");
+                "/Administrators",
+                "bearer",
+                MainViewModel.GetInstance().Token.Token);
+            this.IsRefreshing = false;
             if (!response.IsSuccess)
             {
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");

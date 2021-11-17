@@ -3,8 +3,6 @@
     using Newtonsoft.Json;
     public class Material
     {
-        public class Root
-        {
             [JsonProperty("id")]
             public int Id { get; set; }
 
@@ -34,6 +32,5 @@
 
             [JsonProperty("materialType")]
             public object MaterialType { get; set; }
-        }
     }
 }

@@ -9,8 +9,59 @@
             BindingContext="{Binding Materials}"
             Padding="10">
             <ListView 
+                IsPullToRefreshEnabled="True"
+                IsRefreshing="{Binding IsRefresing}"
                 HasUnevenRows="True"
-                ItemsSource="{Binding Materials}">
+                ItemsSource="{Binding Materials}"
+                RefreshCommand="{Binding RefreshCommand}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackLayout Grid.Column="0" VerticalOptions="Center">
+                                    <Label Text="{Binding Id}" 
+                                           FontSize="Small" 
+                                           FontAttributes="Bold" 
+                                           TextColor="Red"></Label>
+                                </StackLayout>
+                                <StackLayout Grid.Column="1" VerticalOptions="Center">
+                                    <Label Text="{Binding Name}" 
+                                           FontSize="Small"
+                                           TextColor="Blue"></Label>
+                                </StackLayout>
+                                <StackLayout Grid.Column="2" VerticalOptions="Center">
+                                    <Label Text="{Binding Label}" 
+                                           FontSize="Small"
+                                           TextColor="Blue"></Label>
+                                </StackLayout>
+                                <StackLayout Grid.Column="3" VerticalOptions="Center">
+                                    <Label Text="{Binding Brand}" 
+                                           FontSize="Small"
+                                           TextColor="Blue"></Label>
+                                </StackLayout>
+                                <StackLayout Grid.Column="4" VerticalOptions="Center">
+                                    <Label Text="{Binding MaterialModel}" 
+                                           FontSize="Small"
+                                           TextColor="Blue"></Label>
+                                </StackLayout>
+                                <StackLayout Grid.Column="5" VerticalOptions="Center">
+                                    <Label Text="{Binding SerialNum}" 
+                                           FontSize="Small"
+                                           TextColor="Blue"></Label>
+                                </StackLayout>
+                                <StackLayout Grid.Column="6" VerticalOptions="Center">
+                                    <Label Text="{Binding Status}" 
+                                           FontSize="Small"
+                                           TextColor="Blue"></Label>
+                                </StackLayout>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
             </ListView>
         </StackLayout>
     </ContentPage.Content>

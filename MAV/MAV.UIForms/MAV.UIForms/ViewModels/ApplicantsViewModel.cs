@@ -19,6 +19,13 @@ namespace MAV.UIForms.ViewModels
             get { return this.applicants; }
             set { this.SetValue(ref this.applicants, value); }
         }
+
+        private bool isRefreshing;
+        public bool IsRefreshing
+        {
+            get { return this.isRefreshing; }
+            set { this.SetValue(ref this.isRefreshing, value); }
+        }
         public ApplicantsViewModel()
         {
             this.apiService = new ApiService();
@@ -27,10 +34,15 @@ namespace MAV.UIForms.ViewModels
 
         private async void LoadApplicants()
         {
+            this.IsRefreshing = true;
+            var url = Application.Current.Resources["URLApi"].ToString();
             var response = await this.apiService.GetListAsync<Applicant>(
-                "https://mediosaudiovisualesweb.azurewebsites.net/",
+                url,
                 "/api",
-                "/Applicants");
+                "/Applicants",
+                "bearer",
+                MainViewModel.GetInstance().Token.Token);
+            this.IsRefreshing = false;
             if (!response.IsSuccess)
             {
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");

@@ -15,6 +15,13 @@
             get { return this.interns; }
             set { this.SetValue(ref this.interns, value); }
         }
+
+        private bool isRefreshing;
+        public bool IsRefreshing
+        {
+            get { return this.isRefreshing; }
+            set { this.SetValue(ref this.isRefreshing, value); }
+        }
         public InternsViewModel()
         {
             this.apiService = new ApiService();
@@ -23,10 +30,15 @@
 
         private async void LoadInterns()
         {
+            this.IsRefreshing = true;
+            var url = Application.Current.Resources["URLApi"].ToString();
             var response = await this.apiService.GetListAsync<Intern>(
-                "https://mediosaudiovisualesweb.azurewebsites.net/",
+                url,
                 "/api",
-                "/Interns");
+                "/Interns",
+                "bearer",
+                MainViewModel.GetInstance().Token.Token);
+            this.IsRefreshing = false;
             if (!response.IsSuccess)
             {
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");

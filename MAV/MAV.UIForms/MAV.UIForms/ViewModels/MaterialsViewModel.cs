@@ -6,6 +6,7 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using Xamarin.Forms;
+
     public class MaterialsViewModel : BaseViewModel
     {
         private ApiService apiService;
@@ -15,6 +16,13 @@
             get { return this.material; }
             set { this.SetValue(ref this.material, value); }
         }
+
+        private bool isRefreshing;
+        public bool IsRefreshing
+        {
+            get { return this.isRefreshing; }
+            set { this.SetValue(ref this.isRefreshing, value); }
+        }
         public MaterialsViewModel()
         {
             this.apiService = new ApiService();
@@ -23,10 +31,15 @@
 
         private async void LoadMaterials()
         {
+            this.IsRefreshing = true;
+            var url = Application.Current.Resources["URLApi"].ToString();
             var response = await this.apiService.GetListAsync<Material>(
-                "https://mediosaudiovisualesweb.azurewebsites.net/",
+                url,
                 "/api",
-                "/Materials");
+                "/Materials",
+                "bearer",
+                MainViewModel.GetInstance().Token.Token);
+            this.IsRefreshing = false;
             if (!response.IsSuccess)
             {
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");

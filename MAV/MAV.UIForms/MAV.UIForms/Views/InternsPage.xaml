@@ -9,8 +9,44 @@
             BindingContext="{Binding Interns}"
             Padding="10">
             <ListView 
+                IsPullToRefreshEnabled="True"
+                IsRefreshing="{Binding IsRefresing}"
                 HasUnevenRows="True"
-                ItemsSource="{Binding Interns}">
+                ItemsSource="{Binding Interns}"
+                RefreshCommand="{Binding RefreshCommand}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackLayout Grid.Column="0" VerticalOptions="Center">
+                                    <Label Text="{Binding Id}" 
+                                           FontSize="Small" 
+                                           FontAttributes="Bold" 
+                                           TextColor="Red"></Label>
+                                </StackLayout>
+                                <StackLayout Grid.Column="1" VerticalOptions="Center">
+                                    <Label Text="{Binding User.FullName}" 
+                                           FontSize="Small"
+                                           TextColor="Blue"></Label>
+                                </StackLayout>
+                                <StackLayout Grid.Column="2" VerticalOptions="Center">
+                                    <Label Text="{Binding User.Email}" 
+                                           FontSize="Small"
+                                           TextColor="Blue"></Label>
+                                </StackLayout>
+                                <StackLayout Grid.Column="3" VerticalOptions="Center">
+                                    <Label Text="{Binding User.PhoneNumber}" 
+                                           FontSize="Small"
+                                           TextColor="Blue"></Label>
+                                </StackLayout>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
             </ListView>
         </StackLayout>
     </ContentPage.Content>
