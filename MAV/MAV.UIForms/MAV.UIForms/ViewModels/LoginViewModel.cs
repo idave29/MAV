@@ -80,35 +80,36 @@ namespace MAV.UIForms.ViewModels
             var mainViewModel = MainViewModel.GetInstance();
             mainViewModel.Token = token;
 
-            MainViewModel.GetInstance().Statuses = new StatusesViewModel();
-            await Application.Current.MainPage.Navigation.PushAsync(new StatusesPage());
+            //MainViewModel.GetInstance().Statuses = new StatusesViewModel();
+            //await Application.Current.MainPage.Navigation.PushAsync(new StatusesPage());
 
-            MainViewModel.GetInstance().Owners = new OwnersViewModel();
-            await Application.Current.MainPage.Navigation.PushAsync(new OwnersPage());
+            //MainViewModel.GetInstance().Owners = new OwnersViewModel();
+            //await Application.Current.MainPage.Navigation.PushAsync(new OwnersPage());
 
-            MainViewModel.GetInstance().MaterialTypes = new MaterialTypesViewModel();
-            await Application.Current.MainPage.Navigation.PushAsync(new MaterialTypesPage());
+            //MainViewModel.GetInstance().MaterialTypes = new MaterialTypesViewModel();
+            //await Application.Current.MainPage.Navigation.PushAsync(new MaterialTypesPage());
 
-            MainViewModel.GetInstance().ApplicantTypes = new ApplicantTypesViewModel();
-            await Application.Current.MainPage.Navigation.PushAsync(new ApplicantTypesPage());
+            //MainViewModel.GetInstance().ApplicantTypes = new ApplicantTypesViewModel();
+            //await Application.Current.MainPage.Navigation.PushAsync(new ApplicantTypesPage());
 
-            MainViewModel.GetInstance().Interns = new InternsViewModel();
-            await Application.Current.MainPage.Navigation.PushAsync(new InternsPage());
+            //MainViewModel.GetInstance().Interns = new InternsViewModel();
+            //await Application.Current.MainPage.Navigation.PushAsync(new InternsPage());
 
-            MainViewModel.GetInstance().Applicants = new ApplicantsViewModel();
-            await Application.Current.MainPage.Navigation.PushAsync(new ApplicantPage());
+            //MainViewModel.GetInstance().Applicants = new ApplicantsViewModel();
+            //await Application.Current.MainPage.Navigation.PushAsync(new ApplicantPage());
 
             MainViewModel.GetInstance().Administrators = new AdministratorsViewModel();
-            await Application.Current.MainPage.Navigation.PushAsync(new AdministratorsPage());
+            //await Application.Current.MainPage.Navigation.PushAsync(new AdministratorsPage());
+            Application.Current.MainPage = new MasterPage();
 
-            MainViewModel.GetInstance().Materials = new MaterialsViewModel();
-            await Application.Current.MainPage.Navigation.PushAsync(new MaterialsPage());
+            //MainViewModel.GetInstance().Materials = new MaterialsViewModel();
+            //await Application.Current.MainPage.Navigation.PushAsync(new MaterialsPage());
 
-            MainViewModel.GetInstance().Loans = new LoansViewModel();
-            await Application.Current.MainPage.Navigation.PushAsync(new LoansPage());
+            //MainViewModel.GetInstance().Loans = new LoansViewModel();
+            //await Application.Current.MainPage.Navigation.PushAsync(new LoansPage());
 
-            MainViewModel.GetInstance().LoanDetails = new LoanDetailsViewModel();
-            await Application.Current.MainPage.Navigation.PushAsync(new LoanDetailsPage());
+            //MainViewModel.GetInstance().LoanDetails = new LoanDetailsViewModel();
+            //await Application.Current.MainPage.Navigation.PushAsync(new LoanDetailsPage());
         }
     }
 }

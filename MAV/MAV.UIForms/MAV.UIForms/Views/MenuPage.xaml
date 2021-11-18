@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MAV.UIForms.Views.MenuPage"
+             BackgroundColor="Azure"
+             BindingContext="{Binding Main, Source={StaticResource Locator}}"
+             Title="Login">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="M E N U"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand" TextColor="Black" FontSize="Large"/>
+            <ListView 
+                HasUnevenRows="True"
+                ItemsSource="{Binding Menus}"
+                SeparatorVisibility="None">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid HorizontalOptions="Center" Margin="0,20,0,20">
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding SelectMenuCommand}"/>
+                                </Grid.GestureRecognizers>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Image Grid.Column="0" HeightRequest="20" 
+                                       WidthRequest="20"
+                                       Source="{Binding Icon}">
+                                </Image>
+                                <Label Grid.Column="1" 
+                                       TextColor="Gray"
+                                       FontAttributes="Bold"
+                                       FontSize="Medium"
+                                       VerticalOptions="Center"
+                                       Text="{Binding Title}">
+                                </Label>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Image Source="logoumad" HeightRequest="100" WidthRequest="100" Margin="0,10,0,50"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
