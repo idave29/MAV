@@ -5,9 +5,13 @@
              Title="Home">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <Image Source="logoumad" Margin="0,10,0,50"/>
+            <Label FontSize="Title" Text="Bienvenidos a"
+                VerticalOptions="Center" 
+                HorizontalOptions="Center" />
+            <Label Text="Medios Audiovisuales" FontSize="Title"
+                VerticalOptions="Center" 
+                HorizontalOptions="Center" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
