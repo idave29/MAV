@@ -5,7 +5,7 @@
              BindingContext="{Binding Main, Source={StaticResource Locator}}"
              Title="Administrators">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Hello" Command="{Binding HelloCommand}"/>
+        <ToolbarItem Text="Home" Command="{Binding HelloCommand}"/>
         <ToolbarItem IconImageSource="ic_action_add_circle" Command="{Binding AddCommand}"/>
         <ToolbarItem Text="Delete" Command="{Binding DeleteCommand}"/>
     </ContentPage.ToolbarItems>

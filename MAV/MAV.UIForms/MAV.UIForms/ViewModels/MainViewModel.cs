@@ -3,7 +3,6 @@
     using GalaSoft.MvvmLight.Command;
     using MAV.Common.Models;
     using MAV.UIForms.Views;
-    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
@@ -30,20 +29,80 @@
 
         private async void Hello()
         {
-            await App.Navigator.PushAsync(new AboutPage());
+            await App.Navigator.PushAsync(new HomePage());
         }
 
         public MainViewModel()
         {
             instance = this;
             //this.Login = new LoginViewModel();
-            LoadMenu(); 
+            LoadMenu();
         }
 
         private void LoadMenu()
         {
             var menus = new List<Menu>
             {
+                new Menu
+                {
+                    Icon = "",
+                    PageName = "AdministratorsPage",
+                    Title = "Administrators"
+                },
+                new Menu
+                {
+                    Icon = "",
+                    PageName = "ApplicantPage",
+                    Title = "Applicants"
+                },
+                new Menu
+                {
+                    Icon = "",
+                    PageName = "ApplicantTypesPage",
+                    Title = "Applicant Types"
+                },
+                new Menu
+                {
+                    Icon = "",
+                    PageName = "InternsPage",
+                    Title = "Interns"
+                },
+                new Menu
+                {
+                    Icon = "",
+                    PageName = "LoansPage",
+                    Title = "Loans"
+                },
+                new Menu
+                {
+                    Icon = "",
+                    PageName = "LoanDetailsPage",
+                    Title = "Loan Details"
+                },
+                new Menu
+                {
+                    Icon = "",
+                    PageName = "MaterialsPage",
+                    Title = "Materials"
+                },
+                new Menu
+                {
+                    Icon = "",
+                    PageName = "MaterialTypesPage",
+                    Title = "Material Types"
+                },
+                new Menu
+                {
+                    Icon = "",
+                    PageName = "OwnersPage",
+                    Title = "Owners"
+                },
+                new Menu
+                {
+                    Icon = "",
+                    PageName = "StatusesPage",
+                    Title = "Status"
+                },
                 new Menu
                 {
                     Icon = "setup",

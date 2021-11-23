@@ -9,7 +9,7 @@
     <MasterDetailPage.Detail>
         <NavigationPage x:Name="Navigator">
             <x:Arguments>
-                <pages:AdministratorsPage/>
+                <pages:HomePage/>
             </x:Arguments>
         </NavigationPage>
     </MasterDetailPage.Detail>

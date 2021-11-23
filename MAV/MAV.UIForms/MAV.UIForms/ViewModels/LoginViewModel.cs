@@ -81,7 +81,8 @@ namespace MAV.UIForms.ViewModels
             mainViewModel.Token = token;
 
             //MainViewModel.GetInstance().Statuses = new StatusesViewModel();
-            //await Application.Current.MainPage.Navigation.PushAsync(new StatusesPage());
+            ////await Application.Current.MainPage.Navigation.PushAsync(new StatusesPage());
+            //Application.Current.MainPage = new MasterPage();
 
             //MainViewModel.GetInstance().Owners = new OwnersViewModel();
             //await Application.Current.MainPage.Navigation.PushAsync(new OwnersPage());
@@ -98,18 +99,22 @@ namespace MAV.UIForms.ViewModels
             //MainViewModel.GetInstance().Applicants = new ApplicantsViewModel();
             //await Application.Current.MainPage.Navigation.PushAsync(new ApplicantPage());
 
-            MainViewModel.GetInstance().Administrators = new AdministratorsViewModel();
-            //await Application.Current.MainPage.Navigation.PushAsync(new AdministratorsPage());
-            Application.Current.MainPage = new MasterPage();
+            //MainViewModel.GetInstance().Administrators = new AdministratorsViewModel();
+            ////await Application.Current.MainPage.Navigation.PushAsync(new AdministratorsPage());
+            //Application.Current.MainPage = new MasterPage();
 
             //MainViewModel.GetInstance().Materials = new MaterialsViewModel();
             //await Application.Current.MainPage.Navigation.PushAsync(new MaterialsPage());
 
             //MainViewModel.GetInstance().Loans = new LoansViewModel();
+            //Application.Current.MainPage = new MasterPage();
             //await Application.Current.MainPage.Navigation.PushAsync(new LoansPage());
 
             //MainViewModel.GetInstance().LoanDetails = new LoanDetailsViewModel();
             //await Application.Current.MainPage.Navigation.PushAsync(new LoanDetailsPage());
+
+            Application.Current.MainPage = new MasterPage();
+
         }
     }
 }

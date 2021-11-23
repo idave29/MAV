@@ -4,6 +4,11 @@
              x:Class="MAV.UIForms.Views.MaterialsPage"
              BindingContext="{Binding Main, Source={StaticResource Locator}}"
              Title="Material">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Home" Command="{Binding HelloCommand}"/>
+        <ToolbarItem IconImageSource="ic_action_add_circle" Command="{Binding AddCommand}"/>
+        <ToolbarItem Text="Delete" Command="{Binding DeleteCommand}"/>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout
             BindingContext="{Binding Materials}"
