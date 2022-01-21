@@ -39,9 +39,9 @@ namespace MAV.UIForms.ViewModels
             var response = await this.apiService.GetListAsync<Applicant>(
                 url,
                 "/api",
-                "/Applicants",
-                "bearer",
-                MainViewModel.GetInstance().Token.Token);
+                "/Applicants");
+                //"bearer",
+                //MainViewModel.GetInstance().Token.Token);
             this.IsRefreshing = false;
             if (!response.IsSuccess)
             {

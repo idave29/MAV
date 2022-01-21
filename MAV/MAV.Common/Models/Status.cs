@@ -14,7 +14,5 @@
             return $"{this.Id}.- {this.Name}";
         }
 
-        [JsonProperty("materials")]
-        public object Materials { get; set; }
     }
 }
