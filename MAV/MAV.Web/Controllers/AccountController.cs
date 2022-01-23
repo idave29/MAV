@@ -82,7 +82,7 @@
                             this.configuration["Tokens:Issuer"], 
                             this.configuration["Tokens:Audience"],
                             claims,
-                            expires:DateTime.UtcNow.AddDays(365),
+                            expires:DateTime.UtcNow.AddDays(15),
                             signingCredentials:credentials);
                         var results = new
                         {

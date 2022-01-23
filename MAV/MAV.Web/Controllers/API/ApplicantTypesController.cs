@@ -4,6 +4,7 @@
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    
     [Route("api/[Controller]")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme) ]
     public class ApplicantTypesController : Controller
