@@ -1,6 +1,8 @@
 ﻿namespace MAV.Common.Models
 {
     using Newtonsoft.Json;
+    using System.Collections.Generic;
+
     public class Applicant
     {
         [JsonProperty("id")]
@@ -10,9 +12,10 @@
         public User User { get; set; }
 
         [JsonProperty("applicantType")]
-        public object ApplicantType { get; set; }
+        public ApplicantType ApplicantType { get; set; }
+        //public string ApplicantType;
 
         [JsonProperty("loans")]
-        public object Loans { get; set; }
+        public ICollection<Loan> Loans { get; set; }
     }
 }

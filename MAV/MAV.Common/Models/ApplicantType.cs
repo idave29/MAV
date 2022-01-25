@@ -15,8 +15,5 @@ namespace MAV.Common.Models
         {
             return $"{this.Id} {this.Name}";
         }
-
-        [JsonProperty("applicants")]
-        public object Applicants { get; set; }
     }
 }
