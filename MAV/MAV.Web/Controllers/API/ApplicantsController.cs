@@ -31,7 +31,7 @@
             }
             var entityApplicant = new MAV.Web.Data.Entities.Applicant
             {
-                User = 
+                //User = 
             };
             var newApplicant = await this.applicantRepository.CreateAsync(entityApplicant);
             return Ok(newApplicant);

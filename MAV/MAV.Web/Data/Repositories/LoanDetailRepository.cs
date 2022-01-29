@@ -23,9 +23,11 @@ namespace MAV.Web.Data.Repositories
         public IQueryable GetLoanDetails()
         {
             return this.dataContext.LoanDetails
-                .Include(t => t.Id)
-                .Include(t => t.Loan)
-                .Include(t => t.Material);
+                .Include(ld => ld.Loan)
+                .ThenInclude(l => l.Applicant)
+                .ThenInclude(a => a.User)
+                .Include(ld => ld.Material)
+                .Where(ld => ld.DateTimeIn != null);
         }
     }
 }

@@ -7,7 +7,7 @@
     using System.Threading.Tasks;
 
     [Route("api/[Controller]")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class LoanDetailsController : Controller
     {
         private readonly ILoanDetailRepository loanDetailRepository;
@@ -20,7 +20,8 @@
         [HttpGet]
         public IActionResult GetLoanDetail()
         {
-            return Ok(this.loanDetailRepository.GetAll());
+            var x = this.loanDetailRepository.GetLoanDetails();
+            return Ok(x);
         }
         [HttpPost]
         public async Task<IActionResult> PostLoanDetail([FromBody] MAV.Common.Models.LoanDetails loanDetails)
