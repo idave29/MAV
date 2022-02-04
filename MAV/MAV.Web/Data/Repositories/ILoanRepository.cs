@@ -2,6 +2,7 @@
 {
     using MAV.Common.Models;
     using System.Linq;
+    using System.Threading.Tasks;
 
     public interface ILoanRepository : IGenericRepository<MAV.Web.Data.Entities.Loan>
     {
@@ -9,6 +10,6 @@
 
         IQueryable GetLoan();
 
-        IQueryable GetApplicantLoansByEmail(EmailRequest emailRequest);
+        Task<MAV.Web.Data.Entities.Applicant> GetApplicantLoansByEmail(EmailRequest emailRequest);
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace MAV.Common.Models
+﻿using System.Collections.Generic;
+
+namespace MAV.Common.Models
 {
     public class ApplicantRequest
     {
@@ -13,5 +15,7 @@
         public string PhoneNumber { get; set; }
 
         public string ApplicantType { get; set; }
+
+        public ICollection<LoanRequest> Loans { get; set; }
     }
 }

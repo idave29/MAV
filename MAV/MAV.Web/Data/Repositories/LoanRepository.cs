@@ -4,6 +4,8 @@
     using MAV.Web.Data.Entities;
     using Microsoft.EntityFrameworkCore;
     using System.Linq;
+    using System.Threading.Tasks;
+
     public class LoanRepository : GenericRepository<MAV.Web.Data.Entities.Loan>, ILoanRepository
     {
         private readonly DataContext dataContext;
@@ -27,20 +29,22 @@
             return this.dataContext.Loans
                 .Include(t => t.Id);
         }
-        public IQueryable GetApplicantLoansByEmail(EmailRequest emailRequest)
+        public async Task<MAV.Web.Data.Entities.Applicant> GetApplicantLoansByEmail(EmailRequest emailRequest)
         {
-            return this.dataContext.Loans
-                .Include(l => l.LoanDetails)
+            return await this.dataContext.Applicants
+                .Include(a => a.User)
+                .Include(a=> a.Loans)
+                .ThenInclude(l => l.LoanDetails)
                 .ThenInclude(ld => ld.Material)
                 .ThenInclude(m => m.Status)
-                .Include(l => l.LoanDetails)
+                .Include(a => a.Loans)
+                .ThenInclude(l => l.LoanDetails)
                 .ThenInclude(ld => ld.Material)
                 .ThenInclude(m => m.MaterialType)
-                .Include(l => l.Intern)
+                .Include(a => a.Loans)
+                .ThenInclude(l => l.Intern)
                 .ThenInclude(a => a.User)
-                .Include(l => l.Applicant)
-                .ThenInclude(a => a.User)
-                .Where(l => l.Applicant.User.Email.ToLower() == emailRequest.Email);
+                .FirstOrDefaultAsync(l => l.User.Email.ToLower() == emailRequest.Email);
         }
     }
 }
