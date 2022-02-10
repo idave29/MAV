@@ -11,5 +11,7 @@
         IQueryable GetLoan();
 
         Task<MAV.Web.Data.Entities.Applicant> GetApplicantLoansByEmail(EmailRequest emailRequest);
+
+        MAV.Common.Models.ApplicantRequest GetLoans (EmailRequest emailApplicant);
     }
 }
