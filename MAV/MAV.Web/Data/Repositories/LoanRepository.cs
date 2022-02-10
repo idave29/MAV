@@ -1,8 +1,6 @@
 ﻿namespace MAV.Web.Data.Repositories
 {
     using MAV.Common.Models;
-    using MAV.Web.Data.Entities;
-    using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using System.Linq;
     using System.Threading.Tasks;
