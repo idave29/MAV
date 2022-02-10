@@ -28,23 +28,6 @@
             return this.dataContext.Loans
                 .Include(t => t.Id);
         }
-        public async Task<MAV.Web.Data.Entities.Applicant> GetApplicantLoansByEmail(EmailRequest emailRequest)
-        {
-            return await this.dataContext.Applicants
-                .Include(a => a.User)
-                .Include(a => a.Loans)
-                .ThenInclude(l => l.LoanDetails)
-                .ThenInclude(ld => ld.Material)
-                .ThenInclude(m => m.Status)
-                .Include(a => a.Loans)
-                .ThenInclude(l => l.LoanDetails)
-                .ThenInclude(ld => ld.Material)
-                .ThenInclude(m => m.MaterialType)
-                .Include(a => a.Loans)
-                .ThenInclude(l => l.Intern)
-                .ThenInclude(a => a.User)
-                .FirstOrDefaultAsync(l => l.User.Email.ToLower() == emailRequest.Email);
-        }
 
         public MAV.Common.Models.ApplicantRequest GetLoans(EmailRequest emailApplicant)
         {
