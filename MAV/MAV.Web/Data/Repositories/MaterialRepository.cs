@@ -1,5 +1,6 @@
 ﻿namespace MAV.Web.Data.Repositories
 {
+    using MAV.Common.Models;
     using MAV.Web.Data.Entities;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.EntityFrameworkCore;
@@ -7,7 +8,7 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    public class MaterialRepository : GenericRepository<Material>, IMaterialRepository
+    public class MaterialRepository : GenericRepository<MAV.Web.Data.Entities.Material>, IMaterialRepository
     {
         private readonly DataContext dataContext;
 
@@ -39,13 +40,35 @@
                 .Include(t => t.Owner.User);
         }
 
-        public IQueryable GetMaterials()
+        public MAV.Common.Models.MaterialRequest GetMaterials()
         {
-            return this.dataContext.Materials
-                .Include(t => t.Id)
-                .Include(t => t.Name)
-                .Include(t => t.Label);
-        }
+            var a = this.dataContext.Materials
+                .Include(s => s.Status)
+                .Include(o => o.Owner)
+                .Include(l => l.LoanDetails)
+                .ThenInclude(ld => ld.Material)
+                .ThenInclude(m => m.MaterialType)
+                .FirstOrDefault();
+        
+            if (a == null)
+            {
+                return null;
+            } 
 
+            var x = new MaterialRequest
+            {
+                Id = a.Id,
+                Name = a.Name,
+                Label = a.Label,
+                Brand = a.Brand,
+                MaterialModel = a.MaterialModel,
+                SerialNum = a.SerialNum,
+                Status = a.Status.Name,
+                MaterialType = a.MaterialType.Name
+                
+            };
+            return x;
+
+        }
     }
 }

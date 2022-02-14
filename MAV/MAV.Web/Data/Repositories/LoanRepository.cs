@@ -32,20 +32,21 @@
         public MAV.Common.Models.ApplicantRequest GetLoans(EmailRequest emailApplicant)
         {
             var a = this.dataContext.Applicants
-    .Include(a => a.User)
-    .Include(a => a.Loans)
-    .ThenInclude(l => l.LoanDetails)
-    .ThenInclude(ld => ld.Material)
-    .ThenInclude(m => m.Status)
-    .Include(a => a.Loans)
-    .ThenInclude(l => l.LoanDetails)
-    .ThenInclude(ld => ld.Material)
-    .ThenInclude(m => m.MaterialType)
-    .Include(a => a.Loans)
-    .ThenInclude(l => l.Intern)
-    .ThenInclude(a => a.User)
-    .Include(a => a.ApplicantType)
-    .FirstOrDefault(a => a.User.Email.ToLower() == emailApplicant.Email);
+                    .Include(a => a.User)
+                    .Include(a => a.Loans)
+                    .ThenInclude(l => l.LoanDetails)
+                    .ThenInclude(ld => ld.Material)
+                    .ThenInclude(m => m.Status)
+                    .Include(a => a.Loans)
+                    .ThenInclude(l => l.LoanDetails)
+                    .ThenInclude(ld => ld.Material)
+                    .ThenInclude(m => m.MaterialType)
+                    .Include(a => a.Loans)
+                    .ThenInclude(l => l.Intern)
+                    .ThenInclude(a => a.User)
+                    .Include(a => a.ApplicantType)
+                    .FirstOrDefault(a => a.User.Email.ToLower() == emailApplicant.Email);
+            
             if (a == null)
             {
                 return null;
@@ -71,7 +72,6 @@
                     },
                     LoanDetails = l.LoanDetails?.Select(ld => new LoanDetailsRequest
                     {
-                        Id = ld.Id,
                         DateTimeIn = ld.DateTimeIn,
                         DateTimeOut = ld.DateTimeOut,
                         Observations = ld.Observations,

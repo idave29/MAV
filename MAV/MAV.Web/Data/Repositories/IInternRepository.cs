@@ -8,7 +8,7 @@
     public interface IInternRepository : IGenericRepository<Intern>
     {
         IEnumerable<SelectListItem> GetComboInterns();
-        IQueryable GetInternsWithUser();
+        MAV.Common.Models.InternRequest GetInternsWithUser();
         Task<Intern> GetByIdInternWithLoansAsync(int id);
         Task<Intern> GetByIdInternWithLoansLoansDetailsAsync(int id);
 

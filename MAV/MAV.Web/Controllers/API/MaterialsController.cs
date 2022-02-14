@@ -20,7 +20,7 @@
         [HttpGet]
         public IActionResult GetMaterial()
         {
-            return Ok(this.materialRepository.GetAll());
+            return Ok(this.materialRepository.GetMaterials());
         }
     }
 }

@@ -1,9 +1,13 @@
 ﻿namespace MAV.Web.Controllers.API
 {
+    using MAV.Common.Models;
+    using MAV.Web.Data;
     using MAV.Web.Data.Repositories;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
+    using System.Linq;
     using System.Threading.Tasks;
 
     [Route("api/[Controller]")]
@@ -11,18 +15,26 @@
     public class LoanDetailsController : Controller
     {
         private readonly ILoanDetailRepository loanDetailRepository;
+        private readonly DataContext dataContext;
 
-        public LoanDetailsController(ILoanDetailRepository loanDetailRepository)
+        public LoanDetailsController(ILoanDetailRepository loanDetailRepository, DataContext dataContext)
         {
             this.loanDetailRepository = loanDetailRepository;
+            this.dataContext = dataContext;
         }
 
-        [HttpGet]
+        //[HttpGet]
         public IActionResult GetLoanDetail()
         {
-            var x = this.loanDetailRepository.GetLoanDetails();
-            return Ok(x);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var emailApplicant = new EmailRequest { Email = "natalia.xambrano@gmail.com" };
+            return Ok(this.loanDetailRepository.GetLoanDetailsWithEmail(emailApplicant));
         }
+
         [HttpPost]
         public async Task<IActionResult> PostLoanDetail([FromBody] MAV.Common.Models.LoanDetails loanDetails)
         {

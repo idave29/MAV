@@ -29,7 +29,17 @@
         //[Route("GetLoanByEmail")]
         public IActionResult GetLoansController()
         {
-           var emailApplicant = new EmailRequest {Email = "natalia.xambrano@gmail.com" };
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            //var email = this.dataContext.Applicants
+            //    .Include(a => a.User.Email);
+            //string emails = email.ToString(); 
+            //var emailApplicant = new EmailRequest { Email = emails };
+
+            var emailApplicant = new EmailRequest {Email = "natalia.xambrano@gmail.com" };
             return Ok(this.loanRepository.GetLoans(emailApplicant));
         }
 

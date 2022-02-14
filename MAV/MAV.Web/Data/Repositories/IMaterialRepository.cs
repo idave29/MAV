@@ -10,6 +10,7 @@
         IEnumerable<SelectListItem> GetComboMaterial();
 
         IQueryable GetMaterialsWithTypeAndStatus();
-        IQueryable GetMaterials(); 
+        MAV.Common.Models.MaterialRequest GetMaterials(); 
+         
     }
 }

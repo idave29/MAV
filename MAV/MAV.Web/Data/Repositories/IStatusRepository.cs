@@ -6,5 +6,7 @@
     public interface IStatusRepository : IGenericRepository<Status>
     {
         IEnumerable<SelectListItem> GetComboStatuses();
+
+        MAV.Common.Models.StatusRequest GetStatus();
     }
 }

@@ -6,5 +6,7 @@
     public interface IMaterialTypeRepository : IGenericRepository<MaterialType>
     {
         IEnumerable<SelectListItem> GetComboMateriaType();
+
+        MAV.Common.Models.MaterialTypeRequest GetMaterialTypes();
     }
 }

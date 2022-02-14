@@ -7,6 +7,6 @@
 
         public InternRequest Intern { get; set; }
 
-        public ICollection<LoanDetailsRequest> LoanDetails { set; get; }
+        public ICollection<LoanDetailsRequest> LoanDetails { get; set; }
     }
 }

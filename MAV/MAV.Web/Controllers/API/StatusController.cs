@@ -20,7 +20,7 @@
         [HttpGet]
         public IActionResult GetStatus()
         {
-            return Ok(this.statusRepository.GetAll());
+            return Ok(this.statusRepository.GetStatus());
         }
 
         [HttpPost]

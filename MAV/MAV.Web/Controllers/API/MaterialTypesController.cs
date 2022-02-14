@@ -20,7 +20,7 @@
         [HttpGet]
         public IActionResult GetMaterialTypes()
         {
-            return Ok(this.materialTypeRepository.GetAll());
+            return Ok(this.materialTypeRepository.GetMaterialTypes());
         }
         [HttpPost]
         public async Task<IActionResult> PostMaterialType([FromBody] MAV.Common.Models.MaterialType materialType)

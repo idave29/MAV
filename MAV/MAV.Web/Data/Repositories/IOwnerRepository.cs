@@ -8,7 +8,7 @@
     public interface IOwnerRepository : IGenericRepository<Owner>
     {
         IEnumerable<SelectListItem> GetComboOwners();
-        IQueryable GetOwnersWithUser();
+        MAV.Common.Models.OwnerRequest GetOwnersWithUser();
         Task<Owner> GetByIdOwnerWithMaterialsAsync(int id);
     }
 }
