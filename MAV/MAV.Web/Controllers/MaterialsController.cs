@@ -25,7 +25,7 @@ namespace MAV.Web.Controllers
         // GET: Materials
         public IActionResult Index()
         {
-            return View(this.materialRepository.GetMaterialsWithTypeAndStatus());
+            return View(this.materialRepository.GetMaterialsWithTypeWithStatusAndOwner());
         }
 
         // GET: Materials/Details/5

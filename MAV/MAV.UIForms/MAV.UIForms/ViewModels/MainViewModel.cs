@@ -25,11 +25,13 @@
         public LoanDetailsViewModel LoanDetails { get; set; }
 
         public ObservableCollection<MenuItemViewModel> Menus { get; set; }
-        public ICommand HelloCommand { get { return new RelayCommand(Hello); } }
+        public AddStatusViewModel AddStatus { get; set; }
+        public ICommand AddStatusCommand { get { return new RelayCommand(GoStatusCommand); } }
 
-        private async void Hello()
+        private async void GoStatusCommand()
         {
-            await App.Navigator.PushAsync(new HomePage());
+            this.AddStatus = new AddStatusViewModel();
+            await App.Navigator.PushAsync(new AddStatusPage());
         }
 
         public MainViewModel()

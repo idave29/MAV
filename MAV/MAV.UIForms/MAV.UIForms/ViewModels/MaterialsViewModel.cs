@@ -10,8 +10,8 @@
     public class MaterialsViewModel : BaseViewModel
     {
         private ApiService apiService;
-        private ObservableCollection<Material> material;
-        public ObservableCollection<Material> Materials
+        private ObservableCollection<MaterialRequest> material;
+        public ObservableCollection<MaterialRequest> Materials
         {
             get { return this.material; }
             set { this.SetValue(ref this.material, value); }
@@ -33,7 +33,7 @@
         {
             this.IsRefreshing = true;
             var url = Application.Current.Resources["URLApi"].ToString();
-            var response = await this.apiService.GetListAsync<Material>(
+            var response = await this.apiService.GetListAsync<MaterialRequest>(
                 url,
                 "/api",
                 "/Materials",
@@ -45,8 +45,8 @@
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
             }
-            var myMaterial = (List<Material>)response.Result;
-            this.Materials = new ObservableCollection<Material>(myMaterial);
+            var myMaterial = (List<MaterialRequest>)response.Result;
+            this.Materials = new ObservableCollection<MaterialRequest>(myMaterial);
         }
     }
 }

@@ -7,6 +7,7 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
+    using System;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -24,19 +25,25 @@
         }
 
         //[HttpGet]
-        public IActionResult GetLoanDetail()
+        public IActionResult GetLoanDetails()
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var emailApplicant = new EmailRequest { Email = "natalia.xambrano@gmail.com" };
-            return Ok(this.loanDetailRepository.GetLoanDetailsWithEmail(emailApplicant));
+            return Ok(this.loanDetailRepository.GetLoanDetails());
+            //return Ok(this.loanDetailRepository.GetLoanDetailsWithMaterialWithoutDateTimeIn()); 
+            //return Ok(this.loanDetailRepository.GetLoansDetailsWithMaterialAndOwner());
+            //return Ok(this.loanDetailRepository.GetLoanDetailWithMaterialAndOwnerById(1));
+            //return Ok(this.loanDetailRepository.GetLoanDetailById(1));
+            //DateTime thisDate = new DateTime(2021, 10, 5, 7, 30, 0);
+            //return Ok(this.loanDetailRepository.GetLoansDetailsWithMaterialByDateTimeOut(thisDate));
+            //return Ok(this.loanDetailRepository.GetLoansDetailsWithMaterialAndOwnerByNameMaterial("HDMI1"));
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostLoanDetail([FromBody] MAV.Common.Models.LoanDetails loanDetails)
+        public async Task<IActionResult> PostLoanDetail([FromBody] MAV.Common.Models.LoanDetailsRequest loanDetails)
         {
             if (!ModelState.IsValid)
             {
@@ -53,7 +60,7 @@
             return Ok(newLoanDetail);
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutLoanDetail([FromRoute] int id, [FromBody] MAV.Common.Models.LoanDetails loanDetail)
+        public async Task<IActionResult> PutLoanDetail([FromRoute] int id, [FromBody] MAV.Common.Models.LoanDetailsRequest loanDetail)
         {
             if (!ModelState.IsValid)
             {

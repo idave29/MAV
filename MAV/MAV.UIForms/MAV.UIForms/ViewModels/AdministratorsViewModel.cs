@@ -9,8 +9,8 @@
     public class AdministratorsViewModel : BaseViewModel
     {
         private ApiService apiService;
-        private ObservableCollection<Administrator> administrators;
-        public ObservableCollection<Administrator> Administrators
+        private ObservableCollection<AdministratorRequest> administrators;
+        public ObservableCollection<AdministratorRequest> Administrators
         {
             get { return this.administrators; }
             set { this.SetValue(ref this.administrators, value); }
@@ -32,7 +32,7 @@
         {
             this.IsRefreshing = true;
             var url = Application.Current.Resources["URLApi"].ToString();
-            var response = await this.apiService.GetListAsync<Administrator>(
+            var response = await this.apiService.GetListAsync<AdministratorRequest>(
                 url,
                 "/api",
                 "/Administrators",
@@ -44,8 +44,8 @@
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
             }
-            var myAdmin = (List<Administrator>)response.Result;
-            this.Administrators = new ObservableCollection<Administrator>(myAdmin);
+            var myAdmin = (List<AdministratorRequest>)response.Result;
+            this.Administrators = new ObservableCollection<AdministratorRequest>(myAdmin);
         }
     }
 }

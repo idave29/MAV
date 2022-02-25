@@ -34,6 +34,8 @@ namespace MAV.Web.Data
                 await CheckAdminAsync(user);
                 user = await CheckUserAsync("Ochoa", "Miguel", "miguel.ochoa@gmail.com", "987654321", "123456", "Admininstrator");
                 await CheckAdminAsync(user);
+                user = await CheckUserAsync("Garcia", "Miguel", "miguel.garcia@gmail.com", "123456789", "123456", "Admininstrator");
+                await CheckAdminAsync(user); 
             }
             //ApplicantTypes
             if (!this.dataContext.ApplicantTypes.Any())
@@ -124,10 +126,11 @@ namespace MAV.Web.Data
                 var dateTimeIn = new DateTime(2021, 10, 5, 8, 18, 0);
                 var dateTimeOut = new DateTime(2021, 10, 6, 8, 30, 0);
                 await CheckLoanDetailAsync(loan, material, dateTimeIn, dateTimeOut);
-                loan = this.dataContext.Loans.FirstOrDefault();
-                material = this.dataContext.Materials.FirstOrDefault();
+                loan = this.dataContext.Loans.FirstOrDefault(i => i.Id == 2);
+                material = this.dataContext.Materials.FirstOrDefault(nm => nm.Name == "VGA");
                 dateTimeIn = new DateTime(2021, 10, 4, 12, 18, 0);
                 dateTimeOut = new DateTime(2021, 10, 5, 7, 30, 0);
+                //dateTimeOut = new DateTime(0, 0, 0);
                 await CheckLoanDetailAsync(loan, material, dateTimeIn, dateTimeOut);
             }
         }

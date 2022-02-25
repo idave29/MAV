@@ -5,7 +5,8 @@
     {
         public int Id { get; set; }
 
-        public InternRequest Intern { get; set; }
+        public string Intern { get; set; }
+        public string Applicant { get; set; }
 
         public ICollection<LoanDetailsRequest> LoanDetails { get; set; }
     }

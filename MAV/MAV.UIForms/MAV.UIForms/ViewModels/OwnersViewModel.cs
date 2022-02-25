@@ -11,8 +11,8 @@ namespace MAV.UIForms.ViewModels
     public class OwnersViewModel : BaseViewModel
     {
         private ApiService apiService;
-        private ObservableCollection<Owner> owners;
-        public ObservableCollection<Owner> Owners
+        private ObservableCollection<OwnerRequest> owners;
+        public ObservableCollection<OwnerRequest> Owners
         {
             get { return this.owners; }
             set { this.SetValue(ref this.owners, value); }
@@ -33,7 +33,7 @@ namespace MAV.UIForms.ViewModels
         {
             this.IsRefreshing = true;
             var url = Application.Current.Resources["URLApi"].ToString();
-            var response = await this.apiService.GetListAsync<Owner>(
+            var response = await this.apiService.GetListAsync<OwnerRequest>(
                 url,
                 "/api",
                 "/Owners",
@@ -45,8 +45,8 @@ namespace MAV.UIForms.ViewModels
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
             }
-            var myOwners = (List<Owner>)response.Result;
-            this.Owners = new ObservableCollection<Owner>(myOwners);
+            var myOwners = (List<OwnerRequest>)response.Result;
+            this.Owners = new ObservableCollection<OwnerRequest>(myOwners);
         }
     }
 }

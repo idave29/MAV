@@ -10,8 +10,8 @@
     public class ApplicantTypesViewModel : BaseViewModel
     {
         private ApiService apiService;
-        private ObservableCollection<ApplicantType> applicantTypes;
-        public ObservableCollection<ApplicantType> ApplicantTypes
+        private ObservableCollection<ApplicantTypeRequest> applicantTypes;
+        public ObservableCollection<ApplicantTypeRequest> ApplicantTypes
         {
             get { return this.applicantTypes; }
             set { this.SetValue(ref this.applicantTypes, value); }
@@ -32,7 +32,7 @@
         {
             this.IsRefreshing=true;
             var url = Application.Current.Resources["URLApi"].ToString();
-            var response = await this.apiService.GetListAsync<ApplicantType>(
+            var response = await this.apiService.GetListAsync<ApplicantTypeRequest>(
                 url,
                 "/api",
                 "/ApplicantTypes", 
@@ -44,8 +44,8 @@
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
             }
-            var myApplicantType = (List<ApplicantType>)response.Result;
-            this.ApplicantTypes = new ObservableCollection<ApplicantType>(myApplicantType);
+            var myApplicantType = (List<ApplicantTypeRequest>)response.Result;
+            this.ApplicantTypes = new ObservableCollection<ApplicantTypeRequest>(myApplicantType);
         }
 
     }

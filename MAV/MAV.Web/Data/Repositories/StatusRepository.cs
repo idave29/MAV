@@ -6,7 +6,7 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    public class StatusRepository : GenericRepository<MAV.Web.Data.Entities.Status>, IStatusRepository
+    public class StatusRepository : GenericRepository<Status>, IStatusRepository
     {
         private readonly DataContext dataContext;
 
@@ -30,9 +30,14 @@
             return list;
         }
 
-        public MAV.Common.Models.StatusRequest GetStatus()
+        public IQueryable GetStatus()
         {
-            var a = this.dataContext.Statuses.FirstOrDefault();
+            return this.dataContext.Statuses;
+        }
+
+        public StatusRequest GetStatusById(int id)
+        {
+            var a = this.dataContext.Statuses.FirstOrDefault(s => s.Id == id);
 
             if (a == null)
             {
@@ -44,6 +49,27 @@
                 Id = a.Id,
                 Name = a.Name
             };
+
+            return x;
+        }
+
+        public IEnumerable<StatusRequest> GetStatusByName(string name)
+        {
+            var a = this.dataContext.Statuses
+                .Where(n => n.Name == name);
+
+            if (a == null)
+            {
+                return null;
+            }
+
+            var x = a.Select(a => new StatusRequest
+            {
+                Id = a.Id,
+                Name = a.Name
+
+            }).ToList();
+
             return x;
         }
     }

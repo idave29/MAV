@@ -10,8 +10,8 @@
     public class StatusesViewModel : BaseViewModel
     {
         private ApiService apiService;
-        private ObservableCollection<Status> statuses;
-        public ObservableCollection<Status> Statuses
+        private ObservableCollection<StatusRequest> statuses;
+        public ObservableCollection<StatusRequest> Statuses
         {
             get { return this.statuses; }
             set { this.SetValue(ref this.statuses, value); }
@@ -34,7 +34,7 @@
         {
             this.IsRefreshing = true;
             var url = Application.Current.Resources["URLApi"].ToString();
-            var response = await this.apiService.GetListAsync<Status>(
+            var response = await this.apiService.GetListAsync<StatusRequest>(
                 url,
                 "/api",
                 "/Status",
@@ -46,8 +46,8 @@
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
             }
-            var myStatuses = (List<Status>)response.Result;
-            this.Statuses = new ObservableCollection<Status>(myStatuses);
+            var myStatuses = (List<StatusRequest>)response.Result;
+            this.Statuses = new ObservableCollection<StatusRequest>(myStatuses);
         }
     }
 }

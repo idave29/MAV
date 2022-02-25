@@ -13,8 +13,8 @@ namespace MAV.UIForms.ViewModels
     public class ApplicantsViewModel : BaseViewModel
     {
         private ApiService apiService;
-        private ObservableCollection<Applicant> applicants;
-        public ObservableCollection<Applicant> Applicants
+        private ObservableCollection<ApplicantRequest> applicants;
+        public ObservableCollection<ApplicantRequest> Applicants
         {
             get { return this.applicants; }
             set { this.SetValue(ref this.applicants, value); }
@@ -36,7 +36,7 @@ namespace MAV.UIForms.ViewModels
         {
             this.IsRefreshing = true;
             var url = Application.Current.Resources["URLApi"].ToString();
-            var response = await this.apiService.GetListAsync<Applicant>(
+            var response = await this.apiService.GetListAsync<ApplicantRequest>(
                 url,
                 "/api",
                 "/Applicants", 
@@ -48,8 +48,8 @@ namespace MAV.UIForms.ViewModels
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
             }
-            var myApplicants = (List<Applicant>)response.Result;
-            this.Applicants = new ObservableCollection<Applicant>(myApplicants);
+            var myApplicants = (List<ApplicantRequest>)response.Result;
+            this.Applicants = new ObservableCollection<ApplicantRequest>(myApplicants);
 
         }
     }

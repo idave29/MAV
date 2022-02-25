@@ -17,6 +17,6 @@
 
         public string MaterialType { set; get; }
 
-        //public string Owner { get; set; }
+        public string Owner { get; set; }
     }
 }

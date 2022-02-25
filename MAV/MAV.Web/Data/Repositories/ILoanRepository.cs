@@ -2,14 +2,21 @@
 {
     using MAV.Common.Models;
     using System.Linq;
+    using MAV.Web.Data.Entities;
     using System.Threading.Tasks;
+    using System.Collections.Generic;
 
-    public interface ILoanRepository : IGenericRepository<MAV.Web.Data.Entities.Loan>
+    public interface ILoanRepository : IGenericRepository<Loan>
     {
-        IQueryable GetLoanWithAplicantAndIntern();
+        IQueryable GetLoanWithAplicantsAndInterns();
+        IEnumerable<LoanRequest> GetLoans();
+        IEnumerable<LoanRequest> GetLoansWithInternsAndLoanDetails();
+        IEnumerable<LoanRequest> GetLoansWithLoanDetailsAndMaterial();
+        LoanRequest GetLoanWithLoanDetailsById(int id);
+        LoanRequest GetLoanWithLoanDetailsAndMaterialById(int id);
+        IEnumerable<LoanRequest> GetLoansWithLoanDetailsWithMaterialAndOwnerByNameMaterial(string nameMaterial);
 
-        IQueryable GetLoan();
+        // LoanRequest GetLoansWithLoanDetails();
 
-        MAV.Common.Models.ApplicantRequest GetLoans (EmailRequest emailApplicant);
     }
 }

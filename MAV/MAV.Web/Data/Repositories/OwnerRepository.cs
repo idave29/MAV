@@ -39,24 +39,160 @@
             return list;
         }
 
-        public MAV.Common.Models.OwnerRequest GetOwnersWithUser()
+        public IQueryable GetOwnersWithUser()
         {
-            var a = this.dataContext.Owners
-                .Include(a => a.User)
-                .Include(m => m.Materials)
-                .FirstOrDefault();
+            return this.dataContext.Owners
+                .Include(a => a.User);
+        }
 
-            if (a == null)
+        public IEnumerable<OwnerRequest> GetOwnersWithMaterials()
+        {
+            var o = this.dataContext.Owners
+                .Include(a => a.User)
+                .Include(m => m.Materials);
+
+            if (o == null)
             {
                 return null;
             }
+
+            var x = o.Select(or => new OwnerRequest
+            {
+                Id = or.Id,
+                FirstName = or.User.FirstName,
+                LastName = or.User.LastName,
+                Email = or.User.Email,
+                PhoneNumber = or.User.PhoneNumber,
+                Materials = or.Materials.Select(m => new MaterialRequest
+                {
+                    Id = m.Id,
+                    Brand = m.Brand,
+                    Label = m.Label,
+                    MaterialModel = m.MaterialModel,
+                    MaterialType = m.MaterialType.Name,
+                    Name = m.Name,
+                    SerialNum = m.SerialNum,
+                    Status = m.Status.Name,
+                    Owner = m.Owner.User.FullName
+
+                }).ToList()
+            }).ToList();
+
+            return x;
+        }
+
+        public OwnerRequest GetOwnerWithMaterialsByEmail(EmailRequest emailOwner)
+        {
+            var o = this.dataContext.Owners
+                    .Include(u => u.User)
+                    .Include(m => m.Materials)
+                    .ThenInclude(mt => mt.MaterialType)
+                    .Include(m => m.Materials)
+                    .ThenInclude(s => s.Status)
+                    .FirstOrDefault(o => o.User.Email.ToLower() == emailOwner.Email);
+
+            if (o == null)
+            {
+                return null;
+            }
+
             var x = new OwnerRequest
             {
-                Id = a.Id,
-                FirstName = a.User.FirstName,
-                LastName = a.User.LastName,
-                Email = a.User.Email,
-                PhoneNumber = a.User.PhoneNumber
+                Id = o.Id,
+                FirstName = o.User.FirstName,
+                LastName = o.User.LastName,
+                Email = o.User.Email,
+                PhoneNumber = o.User.PhoneNumber,
+                Materials = o.Materials.Select(m => new MaterialRequest
+                {
+                    Id = m.Id,
+                    Brand = m.Brand,
+                    Label = m.Label,
+                    MaterialModel = m.MaterialModel,
+                    MaterialType = m.MaterialType.Name,
+                    Name = m.Name,
+                    SerialNum = m.SerialNum,
+                    Status = m.Status.Name,
+                    Owner = m.Owner.User.FullName
+                }).ToList()
+            };
+
+            return x;
+        }
+
+        public IEnumerable<OwnerRequest> GetOwnersWithMaterialsByName(string name)
+        {
+            var o = this.dataContext.Owners
+                    .Include(u => u.User)
+                    .Include(m => m.Materials)
+                    .ThenInclude(mt => mt.MaterialType)
+                    .Include(m => m.Materials)
+                    .ThenInclude(s => s.Status)
+                    .Where(n => n.User.FirstName == name);
+
+            if (o == null)
+            {
+                return null;
+            }
+
+            var x = o.Select(or => new OwnerRequest
+            {
+                Id = or.Id,
+                FirstName = or.User.FirstName,
+                LastName = or.User.LastName,
+                Email = or.User.Email,
+                PhoneNumber = or.User.PhoneNumber,
+                Materials = or.Materials.Select(m => new MaterialRequest
+                {
+                    Id = m.Id,
+                    Brand = m.Brand,
+                    Label = m.Label,
+                    MaterialModel = m.MaterialModel,
+                    MaterialType = m.MaterialType.Name,
+                    Name = m.Name,
+                    SerialNum = m.SerialNum,
+                    Status = m.Status.Name,
+                    Owner = m.Owner.User.FirstName
+                }).ToList()
+            }).ToList();
+
+            return x;
+        }
+
+        public OwnerRequest GetOwnerWithMaterialsById(int id)
+        {
+            var o = this.dataContext.Owners
+                    .Include(u => u.User)
+                    .Include(m => m.Materials)
+                    .ThenInclude(mt => mt.MaterialType)
+                    .Include(m => m.Materials)
+                    .ThenInclude(s => s.Status)
+                    .FirstOrDefault(o => o.Id == id);
+
+            if (o == null)
+            {
+                return null;
+            }
+
+            var x = new OwnerRequest
+            {
+                Id = o.Id,
+                FirstName = o.User.FirstName,
+                LastName = o.User.LastName,
+                Email = o.User.Email,
+                PhoneNumber = o.User.PhoneNumber,
+                Materials = o.Materials.Select(m => new MaterialRequest
+                {
+                    Id = m.Id,
+                    Brand = m.Brand,
+                    Label = m.Label,
+                    MaterialModel = m.MaterialModel,
+                    MaterialType = m.MaterialType.Name,
+                    Name = m.Name,
+                    SerialNum = m.SerialNum,
+                    Status = m.Status.Name,
+                    Owner = m.Owner.User.FirstName
+                }).ToList()
             };
 
             return x;

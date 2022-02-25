@@ -34,17 +34,17 @@
                 return BadRequest(ModelState);
             }
 
-            //var email = this.dataContext.Applicants
-            //    .Include(a => a.User.Email);
-            //string emails = email.ToString(); 
-            //var emailApplicant = new EmailRequest { Email = emails };
+            return Ok(this.loanRepository.GetLoans());
+            //return Ok(this.loanRepository.GetLoansWithInternsAndLoanDetails());
+            //return Ok(this.loanRepository.GetLoansWithLoanDetailsAndMaterial());
+            //return Ok(this.loanRepository.GetLoanWithLoanDetailsById(1));
+            //return Ok(this.loanRepository.GetLoanWithLoanDetailsAndMaterialById(1));
+            //return Ok(this.loanRepository.GetLoansWithLoanDetailsWithMaterialAndOwnerByNameMaterial("VGA"));
 
-            var emailApplicant = new EmailRequest {Email = "natalia.xambrano@gmail.com" };
-            return Ok(this.loanRepository.GetLoans(emailApplicant));
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostLoan([FromBody] MAV.Common.Models.Loan loan)
+        public async Task<IActionResult> PostLoan([FromBody] MAV.Common.Models.LoanRequest loan)
         {
             if (!ModelState.IsValid)
             {

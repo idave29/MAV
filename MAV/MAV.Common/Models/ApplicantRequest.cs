@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace MAV.Common.Models
+﻿namespace MAV.Common.Models
 {
+    using System.Collections.Generic;
     public class ApplicantRequest
     {
         public int Id { get; set; }

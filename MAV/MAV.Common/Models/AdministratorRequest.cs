@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace MAV.Common.Models
 {
-    public class InternRequest
+    public class AdministratorRequest
     {
         public int Id { get; set; }
 
@@ -13,8 +15,5 @@ namespace MAV.Common.Models
         public string Email { get; set; }
 
         public string PhoneNumber { get; set; }
-
-        public ICollection<LoanRequest> Loans { get; set; }
-
     }
 }

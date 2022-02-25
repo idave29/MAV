@@ -9,8 +9,8 @@
     public class InternsViewModel: BaseViewModel
     {
         private ApiService apiService;
-        private ObservableCollection<Intern> interns;
-        public ObservableCollection<Intern> Interns
+        private ObservableCollection<InternRequest> interns;
+        public ObservableCollection<InternRequest> Interns
         {
             get { return this.interns; }
             set { this.SetValue(ref this.interns, value); }
@@ -32,7 +32,7 @@
         {
             this.IsRefreshing = true;
             var url = Application.Current.Resources["URLApi"].ToString();
-            var response = await this.apiService.GetListAsync<Intern>(
+            var response = await this.apiService.GetListAsync<InternRequest>(
                 url,
                 "/api",
                 "/Interns",
@@ -44,8 +44,8 @@
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
             }
-            var myIntern = (List<Intern>)response.Result;
-            this.Interns = new ObservableCollection<Intern>(myIntern);
+            var myIntern = (List<InternRequest>)response.Result;
+            this.Interns = new ObservableCollection<InternRequest>(myIntern);
         }
 
     }

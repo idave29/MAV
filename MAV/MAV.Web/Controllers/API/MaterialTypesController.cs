@@ -7,7 +7,7 @@
     using System.Threading.Tasks;
 
     [Route("api/[Controller]")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class MaterialTypesController : Controller
     {
         private readonly IMaterialTypeRepository materialTypeRepository;
@@ -21,9 +21,12 @@
         public IActionResult GetMaterialTypes()
         {
             return Ok(this.materialTypeRepository.GetMaterialTypes());
+            //return Ok(this.materialTypeRepository.GetMaterialTypeById(1));
+            //return Ok(this.materialTypeRepository.GetMaterialTypesByName("Cable"));
         }
+
         [HttpPost]
-        public async Task<IActionResult> PostMaterialType([FromBody] MAV.Common.Models.MaterialType materialType)
+        public async Task<IActionResult> PostMaterialType([FromBody] MAV.Common.Models.MaterialTypeRequest materialType)
         {
             if (!ModelState.IsValid)
             {
@@ -37,7 +40,7 @@
             return Ok(newApplicantType);
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMaterialType([FromRoute] int id, [FromBody] MAV.Common.Models.MaterialType materialType)
+        public async Task<IActionResult> PutMaterialType([FromRoute] int id, [FromBody] MAV.Common.Models.MaterialTypeRequest materialType)
         {
             if (!ModelState.IsValid)
             {

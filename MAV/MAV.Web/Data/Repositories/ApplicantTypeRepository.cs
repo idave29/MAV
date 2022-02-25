@@ -1,9 +1,12 @@
 ﻿namespace MAV.Web.Data.Repositories
 {
+    using MAV.Common.Models;
     using MAV.Web.Data.Entities;
     using Microsoft.AspNetCore.Mvc.Rendering;
+    using Microsoft.EntityFrameworkCore;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
 
     public class ApplicantTypeRepository : GenericRepository<ApplicantType>, IApplicantTypeRepository
     {
@@ -27,6 +30,55 @@
                 Value = "0"
             });
             return list;
+        }
+
+        public IQueryable GetAplicantTypes()
+        {
+            return this.dataContext.ApplicantTypes;
+        }
+
+        public async Task<ApplicantType> GetByIdAplicantTypeAsync(int id)
+        {
+            return await this.dataContext.ApplicantTypes
+                .FirstOrDefaultAsync(e => e.Id == id);
+        }
+
+        public ApplicantTypeRequest GetApplicantTypeById(int id)
+        {
+            var a = this.dataContext.ApplicantTypes.FirstOrDefault(ap => ap.Id == id);
+
+            if (a == null)
+            {
+                return null;
+            }
+
+            var x = new ApplicantTypeRequest
+            {
+                Id = a.Id,
+                Name = a.Name
+            };
+
+            return x;
+        }
+
+        public IEnumerable<ApplicantTypeRequest> GetApplicantTypesByName(string name)
+        {
+            var a = this.dataContext.ApplicantTypes
+                .Where(n => n.Name == name);
+
+            if (a == null)
+            {
+                return null;
+            }
+
+            var x = this.dataContext.ApplicantTypes.Select(a => new ApplicantTypeRequest
+            {
+                Id = a.Id,
+                Name = a.Name
+
+            }).ToList();
+
+            return x;
         }
     }
 }

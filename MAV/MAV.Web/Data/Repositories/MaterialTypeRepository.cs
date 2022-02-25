@@ -3,6 +3,7 @@
     using MAV.Common.Models;
     using MAV.Web.Data.Entities;
     using Microsoft.AspNetCore.Mvc.Rendering;
+    using Microsoft.EntityFrameworkCore;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -29,10 +30,16 @@
             });
             return list;
         }
-
-        public MAV.Common.Models.MaterialTypeRequest GetMaterialTypes()
+        
+        public IQueryable GetMaterialTypes()
         {
-            var a = this.dataContext.MaterialTypes.FirstOrDefault();
+            return this.dataContext.MaterialTypes;
+        }
+
+        public MaterialTypeRequest GetMaterialTypeById(int id)
+        {
+            var a = this.dataContext.MaterialTypes
+                .FirstOrDefault(m => m.Id == id);
 
             if (a == null)
             {
@@ -44,6 +51,27 @@
                 Id = a.Id,
                 Name = a.Name
             };
+
+            return x;
+        }
+    
+        public IEnumerable<MaterialTypeRequest> GetMaterialTypesByName(string name)
+        {
+            var a = this.dataContext.MaterialTypes
+                .Where(mt => mt.Name == name);
+
+            if (a == null)
+            {
+                return null;
+            }
+
+            var x = a.Select(mt => new MaterialTypeRequest
+            {
+               Id = mt.Id,
+               Name = mt.Name
+
+            }).ToList();
+            
             return x;
         }
     }

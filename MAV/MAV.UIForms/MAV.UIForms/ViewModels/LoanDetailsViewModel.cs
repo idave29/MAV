@@ -9,8 +9,8 @@
     public class LoanDetailsViewModel : BaseViewModel
     {
         private ApiService apiService;
-        private ObservableCollection<LoanDetails> loanDetail;
-        public ObservableCollection<LoanDetails> LoanDetails
+        private ObservableCollection<LoanDetailsRequest> loanDetail;
+        public ObservableCollection<LoanDetailsRequest> LoanDetails
         {
             get { return this.loanDetail; }
             set { this.SetValue(ref this.loanDetail, value); }
@@ -32,7 +32,7 @@
         {
             this.IsRefreshing = true;
             var url = Application.Current.Resources["URLApi"].ToString();
-            var response = await this.apiService.GetListAsync<LoanDetails>(
+            var response = await this.apiService.GetListAsync<LoanDetailsRequest>(
                 url,
                 "/api",
                 "/Loandetails",
@@ -44,8 +44,8 @@
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
             }
-            var myLoanDetail = (List<LoanDetails>)response.Result;
-            this.LoanDetails = new ObservableCollection<LoanDetails>(myLoanDetail);
+            var myLoanDetail = (List<LoanDetailsRequest>)response.Result;
+            this.LoanDetails = new ObservableCollection<LoanDetailsRequest>(myLoanDetail);
         }
     }
 }

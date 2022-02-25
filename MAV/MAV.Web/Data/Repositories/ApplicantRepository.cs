@@ -1,5 +1,6 @@
 ﻿namespace MAV.Web.Data.Repositories
 {
+    using MAV.Common.Models;
     using MAV.Web.Data.Entities;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.EntityFrameworkCore;
@@ -14,24 +15,6 @@
         public ApplicantRepository(DataContext dataContext) : base(dataContext)
         {
             this.dataContext = dataContext;
-        }
-
-        public async Task<Applicant> GetByIdApplicantWithLoansAsync(int id)
-        {
-            return await this.dataContext.Applicants
-                .Include(t => t.User)
-                .Include(t => t.Loans)
-                .FirstOrDefaultAsync(t => t.Id == id);
-        }
-
-        public async Task<Applicant> GetByIdApplicantWithLoansLoanDetailsAsync(int id)
-        {
-            return await this.dataContext.Applicants
-                .Include(t => t.User)
-                .Include(t => t.Loans)
-                .ThenInclude(c => c.LoanDetails)
-                .ThenInclude(cd => cd.Material)
-                .FirstOrDefaultAsync(t => t.Id == id);
         }
 
         public IEnumerable<SelectListItem> GetComboApplicants()
@@ -52,7 +35,303 @@
         public IQueryable GetApplicantsWithUser()
         {
             return this.dataContext.Applicants
-                .Include(t => t.User);
+                .Include(a => a.User);
+        }
+
+        public async Task<Applicant> GetByIdApplicantWithLoansAsync(int id)
+        {
+            return await this.dataContext.Applicants
+                .Include(a => a.User)
+                .Include(l => l.Loans)
+                .FirstOrDefaultAsync(t => t.Id == id);
+        }
+
+        public async Task<Applicant> GetByIdApplicantWithLoansLoanDetailsAsync(int id)
+        {
+            return await this.dataContext.Applicants
+                .Include(a => a.User)
+                .Include(l => l.Loans)
+                .ThenInclude(ld => ld.LoanDetails)
+                .ThenInclude(m => m.Material)
+                .FirstOrDefaultAsync(t => t.Id == id);
+        }
+
+        public ApplicantRequest GetApplicantWithInternLoanLoanDetailsMaterialAndOwnerByEmail(EmailRequest emailApplicant)
+        {
+            var a = this.dataContext.Applicants
+                    .Include(a => a.User)
+                    .Include(a => a.Loans)
+                    .ThenInclude(l => l.LoanDetails)
+                    .ThenInclude(ld => ld.Material)
+                    .ThenInclude(m => m.Status)
+                    .Include(a => a.Loans)
+                    .ThenInclude(l => l.LoanDetails)
+                    .ThenInclude(ld => ld.Material)
+                    .ThenInclude(m => m.MaterialType)
+                    .Include(a => a.Loans)
+                    .ThenInclude(l => l.Intern)
+                    .ThenInclude(a => a.User)
+                    .Include(a => a.ApplicantType)
+                    .Include(a => a.Loans)
+                    .ThenInclude(l => l.LoanDetails)
+                    .ThenInclude(m => m.Material)
+                    .ThenInclude(o => o.Owner.User)
+                    .FirstOrDefault(a => a.User.Email.ToLower() == emailApplicant.Email);
+
+            if (a == null)
+            {
+                return null;
+            }
+            var x = new ApplicantRequest
+            {
+                Id = a.Id,
+                FirstName = a.User.FirstName,
+                LastName = a.User.LastName,
+                Email = a.User.Email,
+                PhoneNumber = a.User.PhoneNumber,
+                ApplicantType = a.ApplicantType.Name,
+                Loans = a.Loans?.Select(l => new LoanRequest
+                {
+                    Id = l.Id,
+                    Intern = l.Intern.User.FullName,
+                    LoanDetails = l.LoanDetails?.Select(ld => new LoanDetailsRequest
+                    {
+                        Id = ld.Id,
+                        DateTimeIn = ld.DateTimeIn,
+                        DateTimeOut = ld.DateTimeOut,
+                        Observations = ld.Observations,
+                        Material = new MaterialRequest
+                        {
+                            Id = ld.Material.Id,
+                            Brand = ld.Material.Brand,
+                            Label = ld.Material.Label,
+                            MaterialModel = ld.Material.MaterialModel,
+                            MaterialType = ld.Material.MaterialType.Name,
+                            Name = ld.Material.Name,
+                            SerialNum = ld.Material.SerialNum,
+                            Status = ld.Material.Status.Name,
+                            Owner = ld.Material.Owner.User.FirstName
+                        }
+                    }).ToList()
+                }).ToList()
+            };
+            //.Where(ld => ld.Observations != null)
+            return x;
+        }
+
+        public IEnumerable<ApplicantRequest> GetApplicantsWithInternLoanLoanDetailsMaterialAndOwnerByNameApplicant(string name)
+        {
+            var a = this.dataContext.Applicants
+                    .Include(a => a.User)
+                    .Include(a => a.Loans)
+                    .ThenInclude(l => l.LoanDetails)
+                    .ThenInclude(ld => ld.Material)
+                    .ThenInclude(m => m.Status)
+                    .Include(a => a.Loans)
+                    .ThenInclude(l => l.LoanDetails)
+                    .ThenInclude(ld => ld.Material)
+                    .ThenInclude(m => m.MaterialType)
+                    .Include(a => a.Loans)
+                    .ThenInclude(l => l.Intern)
+                    .ThenInclude(a => a.User)
+                    .Include(a => a.ApplicantType)
+                    .Include(a => a.Loans)
+                    .ThenInclude(l => l.LoanDetails)
+                    .ThenInclude(m => m.Material)
+                    .ThenInclude(o => o.Owner.User)
+                    .Where(n => n.User.FirstName == name);
+
+            if (a == null)
+            {
+                return null;
+            }
+
+            var x = a.Select(ar => new ApplicantRequest
+            {
+                Id = ar.Id,
+                FirstName = ar.User.FirstName,
+                LastName = ar.User.LastName,
+                Email = ar.User.Email,
+                PhoneNumber = ar.User.PhoneNumber,
+                ApplicantType = ar.ApplicantType.Name,
+                Loans = ar.Loans.Select(l => new LoanRequest
+                {
+                    Id = l.Id,
+                    Intern = l.Intern.User.FullName,
+                    LoanDetails = l.LoanDetails.Select(ld => new LoanDetailsRequest
+                    {
+                        Id = ld.Id,
+                        DateTimeIn = ld.DateTimeIn,
+                        DateTimeOut = ld.DateTimeOut,
+                        Observations = ld.Observations,
+                        Material = new MaterialRequest
+                        {
+                            Id = ld.Material.Id,
+                            Brand = ld.Material.Brand,
+                            Label = ld.Material.Label,
+                            MaterialModel = ld.Material.MaterialModel,
+                            MaterialType = ld.Material.MaterialType.Name,
+                            Name = ld.Material.Name,
+                            SerialNum = ld.Material.SerialNum,
+                            Status = ld.Material.Status.Name,
+                            Owner = ld.Material.Owner.User.FullName
+                        }
+                    }).ToList()
+                }).ToList()
+            }).ToList();
+
+            return x;
+        }
+
+        public IEnumerable<ApplicantRequest> GetApplicantsWithInternLoanLoanDetailsMaterialAndOwnerByApplicantType(string type)
+        {
+            var a = this.dataContext.Applicants
+                    .Include(a => a.User)
+                    .Include(a => a.Loans)
+                    .ThenInclude(l => l.LoanDetails)
+                    .ThenInclude(ld => ld.Material)
+                    .ThenInclude(m => m.Status)
+                    .Include(a => a.Loans)
+                    .ThenInclude(l => l.LoanDetails)
+                    .ThenInclude(ld => ld.Material)
+                    .ThenInclude(m => m.MaterialType)
+                    .Include(a => a.Loans)
+                    .ThenInclude(l => l.Intern)
+                    .ThenInclude(a => a.User)
+                    .Include(a => a.ApplicantType)
+                    .Include(a => a.Loans)
+                    .ThenInclude(l => l.LoanDetails)
+                    .ThenInclude(m => m.Material)
+                    .ThenInclude(o => o.Owner.User)
+                    .Where(t => t.ApplicantType.Name == type);
+
+            if (a == null)
+            {
+                return null;
+            }
+
+            var x = a.Select(a => new ApplicantRequest
+            {
+                Id = a.Id,
+                FirstName = a.User.FirstName,
+                LastName = a.User.LastName,
+                Email = a.User.Email,
+                PhoneNumber = a.User.PhoneNumber,
+                ApplicantType = a.ApplicantType.Name,
+                Loans = a.Loans.Select(l => new LoanRequest
+                {
+                    Id = l.Id,
+                    Intern = l.Intern.User.FullName,
+                    LoanDetails = l.LoanDetails.Select(ld => new LoanDetailsRequest
+                    {
+                        Id = ld.Id,
+                        DateTimeIn = ld.DateTimeIn,
+                        DateTimeOut = ld.DateTimeOut,
+                        Observations = ld.Observations,
+                        Material = new MaterialRequest
+                        {
+                            Id = ld.Material.Id,
+                            Brand = ld.Material.Brand,
+                            Label = ld.Material.Label,
+                            MaterialModel = ld.Material.MaterialModel,
+                            MaterialType = ld.Material.MaterialType.Name,
+                            Name = ld.Material.Name,
+                            SerialNum = ld.Material.SerialNum,
+                            Status = ld.Material.Status.Name,
+                            Owner = ld.Material.Owner.User.FullName
+                        }
+                    }).ToList()
+                }).ToList()
+            }).ToList();
+
+            return x;
+        }
+
+        public IEnumerable<ApplicantRequest> GetApplicantsWithInternLoanLoanDetailsMaterialAndOwner()
+        {
+            var a = this.dataContext.Applicants
+                    .Include(a => a.User)
+                    .Include(a => a.Loans)
+                    .ThenInclude(l => l.LoanDetails)
+                    .ThenInclude(ld => ld.Material)
+                    .ThenInclude(m => m.Status)
+                    .Include(a => a.Loans)
+                    .ThenInclude(l => l.LoanDetails)
+                    .ThenInclude(ld => ld.Material)
+                    .ThenInclude(m => m.MaterialType)
+                    .Include(a => a.Loans)
+                    .ThenInclude(l => l.Intern)
+                    .ThenInclude(a => a.User)
+                    .Include(a => a.ApplicantType)
+                    .Include(a => a.Loans)
+                    .ThenInclude(l => l.LoanDetails)
+                    .ThenInclude(m => m.Material)
+                    .ThenInclude(o => o.Owner.User);
+
+            if (a == null)
+            {
+                return null;
+            }
+
+            var x = a.Select(a => new ApplicantRequest
+            {
+                Id = a.Id,
+                FirstName = a.User.FirstName,
+                LastName = a.User.LastName,
+                Email = a.User.Email,
+                PhoneNumber = a.User.PhoneNumber,
+                ApplicantType = a.ApplicantType.Name,
+                Loans = a.Loans.Select(l => new LoanRequest
+                {
+                    Id = l.Id,
+                    Intern = l.Intern.User.FullName,
+                    LoanDetails = l.LoanDetails.Select(ld => new LoanDetailsRequest
+                    {
+                        Id = ld.Id,
+                        DateTimeIn = ld.DateTimeIn,
+                        DateTimeOut = ld.DateTimeOut,
+                        Observations = ld.Observations,
+                        Material = new MaterialRequest
+                        {
+                            Id = ld.Material.Id,
+                            Brand = ld.Material.Brand,
+                            Label = ld.Material.Label,
+                            MaterialModel = ld.Material.MaterialModel,
+                            MaterialType = ld.Material.MaterialType.Name,
+                            Name = ld.Material.Name,
+                            SerialNum = ld.Material.SerialNum,
+                            Status = ld.Material.Status.Name,
+                            Owner = ld.Material.Owner.User.FullName
+                        }
+                    }).ToList()
+                }).ToList()
+            }).ToList();
+
+            return x;
+        }
+
+        public ApplicantRequest GetByIdApplicantWithUser(int id)
+        {
+            var a = this.dataContext.Applicants
+                    .Include(a => a.User)
+                    .Include(at => at.ApplicantType)
+                    .FirstOrDefault(t => t.Id == id);
+
+            if (a == null)
+            {
+                return null;
+            }
+            var x = new ApplicantRequest
+            {
+                Id = a.Id,
+                FirstName = a.User.FirstName,
+                LastName = a.User.LastName,
+                Email = a.User.Email,
+                PhoneNumber = a.User.PhoneNumber,
+                ApplicantType = a.ApplicantType.Name
+            };
+
+            return x;
         }
     }
 }

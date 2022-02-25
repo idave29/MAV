@@ -7,7 +7,7 @@
     using System.Threading.Tasks;
 
     [Route("api/[Controller]")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme) ]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme) ]
     public class ApplicantTypesController : Controller
     {
         private readonly IApplicantTypeRepository applicantTypeRepository;
@@ -20,10 +20,12 @@
         [HttpGet]
         public IActionResult GetApplicantTypes()
         {
-            return Ok(this.applicantTypeRepository.GetAll());
+            return Ok(this.applicantTypeRepository.GetAplicantTypes());
+            //return Ok(this.applicantTypeRepository.GetApplicantTypesByName("No deudor"));
+            //return Ok(this.applicantTypeRepository.GetApplicantTypeById(1));
         }
         [HttpPost]
-        public async Task<IActionResult> PostApplicantType([FromBody] MAV.Common.Models.ApplicantType applicantType)
+        public async Task<IActionResult> PostApplicantType([FromBody] MAV.Common.Models.ApplicantTypeRequest applicantType)
         {
             if (!ModelState.IsValid)
             {
@@ -37,7 +39,7 @@
             return Ok(newApplicantType);
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutApplicantType([FromRoute] int id, [FromBody] MAV.Common.Models.ApplicantType applicantType)
+        public async Task<IActionResult> PutApplicantType([FromRoute] int id, [FromBody] MAV.Common.Models.ApplicantTypeRequest applicantType)
         {
             if (!ModelState.IsValid)
             {

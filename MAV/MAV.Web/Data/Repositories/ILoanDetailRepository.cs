@@ -2,15 +2,24 @@
 {
     using MAV.Common.Models;
     using MAV.Web.Data.Entities;
+    using Microsoft.AspNetCore.Mvc.Rendering;
+    using Newtonsoft.Json.Linq;
+    using System;
+    using System.Collections.Generic;
     using System.Linq;
     public interface ILoanDetailRepository : IGenericRepository<LoanDetail>
     {
-        //IEnumerable<SelectListItem> GetComboMaterial();
-
         IQueryable GetLoanDetailsWithMaterialAndLoan();
-
         IQueryable GetLoanDetails();
+        IEnumerable<LoanDetailsRequest> GetLoanDetailsWithMaterialWithoutDateTimeIn(); //Where(ld => ld.DateTimeIn == null)
+        IEnumerable<LoanDetailsRequest> GetLoansDetailsWithMaterialAndOwner();
+        LoanDetailsRequest GetLoanDetailWithMaterialAndOwnerById(int id);
+        LoanDetailsRequest GetLoanDetailById(int id);
+        LoanDetailsRequest GetLoansDetailsWithMaterialByDateTimeOut(DateTime time);
+        LoanDetailsRequest GetLoansDetailsWithMaterialAndOwnerByNameMaterial(string nameMaterial);
 
-        MAV.Common.Models.ApplicantRequest GetLoanDetailsWithEmail(EmailRequest emailApplicant);
+
+        //LoanDetail GetLoanDetailsWithEmail(EmailRequest emailApplicant);
+
     }
 }

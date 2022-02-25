@@ -7,7 +7,7 @@
     using System.Threading.Tasks;
 
     [Route("api/[Controller]")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme) ]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme) ]
     public class StatusController : Controller
     {
         private readonly IStatusRepository statusRepository;
@@ -20,11 +20,13 @@
         [HttpGet]
         public IActionResult GetStatus()
         {
-            return Ok(this.statusRepository.GetStatus());
+            //return Ok(this.statusRepository.GetStatus());
+            //return Ok(this.statusRepository.GetStatusById(1));
+            return Ok(this.statusRepository.GetStatusByName("Prestado"));
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostStatus([FromBody] MAV.Common.Models.Status status)
+        public async Task<IActionResult> PostStatus([FromBody] MAV.Common.Models.StatusRequest status)
         {
             if(!ModelState.IsValid)
             {
@@ -38,7 +40,7 @@
             return Ok(newStatus);
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutStatus([FromRoute] int id, [FromBody] MAV.Common.Models.Status status)
+        public async Task<IActionResult> PutStatus([FromRoute] int id, [FromBody] MAV.Common.Models.StatusRequest status)
         {
             if(!ModelState.IsValid)
             {
