@@ -47,61 +47,61 @@
             {
                 new Menu
                 {
-                    Icon = "",
+                    Icon = "admin",
                     PageName = "AdministratorsPage",
                     Title = "Administrators"
                 },
                 new Menu
                 {
-                    Icon = "",
+                    Icon = "applicant",
                     PageName = "ApplicantPage",
                     Title = "Applicants"
                 },
                 new Menu
                 {
-                    Icon = "",
+                    Icon = "applicantType",
                     PageName = "ApplicantTypesPage",
                     Title = "Applicant Types"
                 },
                 new Menu
                 {
-                    Icon = "",
+                    Icon = "internt",
                     PageName = "InternsPage",
                     Title = "Interns"
                 },
                 new Menu
                 {
-                    Icon = "",
+                    Icon = "loans",
                     PageName = "LoansPage",
                     Title = "Loans"
                 },
                 new Menu
                 {
-                    Icon = "",
+                    Icon = "loansDetails",
                     PageName = "LoanDetailsPage",
                     Title = "Loan Details"
                 },
                 new Menu
                 {
-                    Icon = "",
+                    Icon = "material",
                     PageName = "MaterialsPage",
                     Title = "Materials"
                 },
                 new Menu
                 {
-                    Icon = "",
+                    Icon = "materialType",
                     PageName = "MaterialTypesPage",
                     Title = "Material Types"
                 },
                 new Menu
                 {
-                    Icon = "",
+                    Icon = "owner",
                     PageName = "OwnersPage",
                     Title = "Owners"
                 },
                 new Menu
                 {
-                    Icon = "",
+                    Icon = "status",
                     PageName = "StatusesPage",
                     Title = "Status"
                 },
