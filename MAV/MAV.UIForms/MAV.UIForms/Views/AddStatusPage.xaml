@@ -13,16 +13,10 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Label Text="Name" Grid.Column="0" Grid.Row="0" VerticalOptions="Center"></Label>
-                    <Entry Grid.Column="1" Grid.Row="0" Keyboard="Text" Placeholder="Introduce the Name" Text="{Binding Name}">
-                        
+                    <Entry Grid.Column="1" Grid.Row="0" Keyboard="Text" Placeholder="Introduce el estado" Text="{Binding Name}">
                     </Entry>
-                    <Label Text="Price" Grid.Column="0" Grid.Row="1" VerticalOptions="Center"></Label>
-                    <Entry Grid.Column="1" Grid.Row="1" Keyboard="Numeric" Placeholder="Introduce the Price" Text="{Binding Price}">
-                        
-                    </Entry>
-                    
                 </Grid>
-                <ActivityIndicator IsRunning="{Binding IsRunning}">
+                <ActivityIndicator IsRunning="{Binding IsRunning}" VerticalOptions="CenterAndExpand">
                 </ActivityIndicator>
                 <Button Text="Save" 
                         Command="{Binding SaveCommand}"
