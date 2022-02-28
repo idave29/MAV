@@ -20,9 +20,9 @@
         [HttpGet]
         public IActionResult GetStatus()
         {
-            //return Ok(this.statusRepository.GetStatus());
+            return Ok(this.statusRepository.GetStatus());
             //return Ok(this.statusRepository.GetStatusById(1));
-            return Ok(this.statusRepository.GetStatusByName("Prestado"));
+            //return Ok(this.statusRepository.GetStatusByName("Prestado"));
         }
 
         [HttpPost]
