@@ -3,9 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MAV.UIForms.Views.LoginPage"
              BindingContext="{Binding Main, Source={StaticResource Locator}}">
-    <NavigationPage.TitleView>
-        <Label FontSize="Title" TextColor="White" Text="Welcome!" HorizontalOptions="Center"/>
-    </NavigationPage.TitleView>
     <ContentPage.Content>
         <ScrollView BindingContext="{Binding Login}">
             <StackLayout Padding="10" BackgroundColor="Azure">
