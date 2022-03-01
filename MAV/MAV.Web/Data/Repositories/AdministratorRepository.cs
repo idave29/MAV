@@ -38,7 +38,29 @@
                 .Include(t => t.User);
         }
 
-        public async Task<Administrator> GetByIdWithUserAsync(int id)
+        public IEnumerable<AdministratorRequest> GetAdministrators()
+        {
+            var a = this.dataContext.Administrators;
+
+            if (a == null)
+            {
+                return null;
+            }
+
+            var x = a.Select(ar => new AdministratorRequest
+            {
+                Id = ar.Id,
+                FirstName = ar.User.FirstName,
+                LastName = ar.User.LastName,
+                PhoneNumber = ar.User.PhoneNumber,
+                Email = ar.User.Email
+
+            }).ToList();
+
+            return x;
+        }
+
+    public async Task<Administrator> GetByIdWithUserAsync(int id)
         {
             return await this.dataContext.Administrators
                 .Include(t => t.User)

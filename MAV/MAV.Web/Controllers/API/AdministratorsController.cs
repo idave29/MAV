@@ -7,7 +7,7 @@
     using Microsoft.AspNetCore.Mvc;
     
     [Route("api/[Controller]")]
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class AdministratorsController:Controller
     {
         private readonly IAdministratorRepository administratorRepository;
@@ -24,7 +24,8 @@
             //var emailApplicant = new EmailRequest { Email = "miguel.ochoa@gmail.com" };
             //return Ok(this.administratorRepository.GetAdministratorWithUserByEmail(emailApplicant));
             //return Ok(this.administratorRepository.GetAdministratorWithUserById(1));
-            return Ok(this.administratorRepository.GetAdministratorsWithUser());
+            //return Ok(this.administratorRepository.GetAdministratorsWithUser());
+            return Ok(this.administratorRepository.GetAdministrators());
         }
 
     }

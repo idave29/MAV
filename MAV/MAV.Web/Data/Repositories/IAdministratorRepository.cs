@@ -11,8 +11,9 @@
     {
         IEnumerable<SelectListItem> GetComboAdministrators();
 
-        IQueryable GetAdministratorsWithUser();
+        IEnumerable<AdministratorRequest> GetAdministrators();
 
+        IQueryable GetAdministratorsWithUser();
         Task<Administrator> GetByIdWithUserAsync(int id);
 
         AdministratorRequest GetAdministratorWithUserById(int id);
