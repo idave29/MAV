@@ -13,6 +13,7 @@
         Task<Intern> GetByIdInternWithLoansLoansDetailsAsync(int id);
         Task<Intern> GetByIdWithUserAsync(int id);
         IQueryable GetInternsWithUser();
+        IEnumerable<InternRequest> GetInterns();
         IEnumerable<InternRequest> GetInternsWithLoansLoanDetailsWithMaterialAndOwner();
         InternRequest GetInternWithLoansLoanDetailsWithMaterialAndOwnerByEmail(EmailRequest emailIntern);
         InternRequest GetInternWithLoansByEmail(EmailRequest emailIntern);

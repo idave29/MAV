@@ -34,17 +34,22 @@
                                            TextColor="Red"></Label>
                                 </StackLayout>
                                 <StackLayout Grid.Column="1" VerticalOptions="Center">
-                                    <Label Text="{Binding User.FullName}" 
+                                    <Label Text="{Binding FirstName}" 
                                            FontSize="Small"
                                            TextColor="Blue"></Label>
                                 </StackLayout>
                                 <StackLayout Grid.Column="2" VerticalOptions="Center">
-                                    <Label Text="{Binding User.Email}" 
+                                    <Label Text="{Binding LastName}" 
                                            FontSize="Small"
                                            TextColor="Blue"></Label>
                                 </StackLayout>
                                 <StackLayout Grid.Column="3" VerticalOptions="Center">
-                                    <Label Text="{Binding User.PhoneNumber}" 
+                                    <Label Text="{Binding Email}" 
+                                           FontSize="Small"
+                                           TextColor="Blue"></Label>
+                                </StackLayout>
+                                <StackLayout Grid.Column="4" VerticalOptions="Center">
+                                    <Label Text="{Binding PhoneNumber}" 
                                            FontSize="Small"
                                            TextColor="Blue"></Label>
                                 </StackLayout>

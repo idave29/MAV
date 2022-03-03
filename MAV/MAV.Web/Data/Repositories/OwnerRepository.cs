@@ -16,7 +16,7 @@
             this.dataContext = dataContext;
         }
 
-        public async Task<MAV.Web.Data.Entities.Owner> GetByIdOwnerWithMaterialsAsync(int id)
+        public async Task<Owner> GetByIdOwnerWithMaterialsAsync(int id)
         {
             return await this.dataContext.Owners
                 .Include(t => t.User)
@@ -43,6 +43,28 @@
         {
             return this.dataContext.Owners
                 .Include(a => a.User);
+        }
+
+        public IEnumerable<OwnerRequest> GetOwners()
+        {
+            var o = this.dataContext.Owners
+                .Include(a => a.User);
+
+            if (o == null)
+            {
+                return null;
+            }
+
+            var x = o.Select(or => new OwnerRequest
+            {
+                Id = or.Id,
+                FirstName = or.User.FirstName,
+                LastName = or.User.LastName,
+                Email = or.User.Email,
+                PhoneNumber = or.User.PhoneNumber
+            }).ToList();
+
+            return x;
         }
 
         public IEnumerable<OwnerRequest> GetOwnersWithMaterials()

@@ -8,7 +8,7 @@
     using System.Threading.Tasks;
 
     [Route("api/[Controller]")]
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ApplicantsController:Controller
     {
         private readonly IApplicantRepository applicantRepository;
@@ -21,7 +21,8 @@
         [HttpGet]
         public IActionResult GetApplicants()
         {
-            return Ok(this.applicantRepository.GetApplicantsWithUser());
+            return Ok(this.applicantRepository.GetApplicants());
+            //return Ok(this.applicantRepository.GetApplicantsWithUser());
             //var emailApplicant = new EmailRequest { Email = "raquel.sanchez@gmail.com" };
             //return Ok(this.applicantRepository.GetApplicantWithInternLoanLoanDetailsMaterialAndOwnerByEmail(emailApplicant));
             //return Ok(this.applicantRepository.GetApplicantsWithInternLoanLoanDetailsMaterialAndOwnerByNameApplicant("Natalia"));

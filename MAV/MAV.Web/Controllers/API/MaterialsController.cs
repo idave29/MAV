@@ -6,7 +6,7 @@
     using Microsoft.AspNetCore.Mvc;
     
     [Route("api/[Controller]")]
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 
     public class MaterialsController : Controller
     {
@@ -22,8 +22,8 @@
         {
             //return Ok(this.materialRepository.GetMaterials());
             //return Ok(this.materialRepository.GetMaterialWithLoansById(1));
-            return Ok(this.materialRepository.GetMaterialWithLoans());
-            //return Ok(this.materialRepository.GetAllMaterialsWithTypeWithStatusAndOwner());
+            //return Ok(this.materialRepository.GetMaterialWithLoans());
+            return Ok(this.materialRepository.GetAllMaterialsWithTypeWithStatusAndOwner());
             //return Ok(this.materialRepository.GetMaterialWithTypeWithStatusAndOwnerById(1));
             //return Ok(this.materialRepository.GetMaterialWithTypeAndStatusBySerialNum("6817654"));
             //return Ok(this.materialRepository.GetMaterialBySerialNum("897654"));

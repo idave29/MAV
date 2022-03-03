@@ -17,6 +17,7 @@
         IEnumerable<ApplicantRequest> GetApplicantsWithInternLoanLoanDetailsMaterialAndOwnerByApplicantType(string type);
         IEnumerable<ApplicantRequest> GetApplicantsWithInternLoanLoanDetailsMaterialAndOwner();
         ApplicantRequest GetByIdApplicantWithUser(int id);
+        IEnumerable<ApplicantRequest> GetApplicants();
 
     }
 }

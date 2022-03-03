@@ -11,6 +11,7 @@
         IEnumerable<SelectListItem> GetComboOwners();
         Task<Owner> GetByIdOwnerWithMaterialsAsync(int id);
         IQueryable GetOwnersWithUser();
+        IEnumerable<OwnerRequest> GetOwners();
         IEnumerable<OwnerRequest> GetOwnersWithMaterials();
         OwnerRequest GetOwnerWithMaterialsByEmail(EmailRequest emailOwner);
         IEnumerable<OwnerRequest> GetOwnersWithMaterialsByName(string name);

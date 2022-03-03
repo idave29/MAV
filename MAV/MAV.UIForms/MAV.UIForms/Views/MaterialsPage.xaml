@@ -63,6 +63,16 @@
                                            FontSize="Small"
                                            TextColor="Blue"></Label>
                                 </StackLayout>
+                                <StackLayout Grid.Column="7" VerticalOptions="Center">
+                                    <Label Text="{Binding MaterialType}" 
+                                           FontSize="Small"
+                                           TextColor="Blue"></Label>
+                                </StackLayout>
+                                <StackLayout Grid.Column="8" VerticalOptions="Center">
+                                    <Label Text="{Binding Owner}" 
+                                           FontSize="Small"
+                                           TextColor="Blue"></Label>
+                                </StackLayout>
                             </Grid>
                         </ViewCell>
                     </DataTemplate>

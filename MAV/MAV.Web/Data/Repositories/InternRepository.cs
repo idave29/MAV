@@ -62,6 +62,30 @@
                 .Include(i => i.User);
         }
 
+        public IEnumerable<InternRequest> GetInterns()
+        {
+            var i = this.dataContext.Interns
+                .Include(i => i.User);
+
+            if (i == null)
+            {
+                return null;
+            }
+
+            var x = i.Select(a => new InternRequest
+            {
+                Id = a.Id,
+                FirstName = a.User.FirstName,
+                LastName = a.User.LastName,
+                Email = a.User.Email,
+                PhoneNumber = a.User.PhoneNumber
+            }).ToList();
+
+            return x;
+
+        }
+
+
         public IEnumerable<InternRequest> GetInternsWithLoansLoanDetailsWithMaterialAndOwner()
         {
             var i = this.dataContext.Interns

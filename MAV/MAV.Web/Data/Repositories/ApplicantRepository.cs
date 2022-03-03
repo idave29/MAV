@@ -333,5 +333,28 @@
 
             return x;
         }
+
+        public IEnumerable<ApplicantRequest> GetApplicants()
+        {
+            var a = this.dataContext.Applicants
+                    .Include(a => a.User)
+                    .Include(at => at.ApplicantType);
+
+            if (a == null)
+            {
+                return null;
+            }
+            var x = a.Select(ar => new ApplicantRequest
+            {
+                Id = ar.Id,
+                FirstName = ar.User.FirstName,
+                LastName = ar.User.LastName,
+                Email = ar.User.Email,
+                PhoneNumber = ar.User.PhoneNumber,
+                ApplicantType = ar.ApplicantType.Name
+            }).ToList();
+
+            return x;
+        }
     }
 }
