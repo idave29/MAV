@@ -38,17 +38,26 @@
                                            FontSize="Small"
                                            TextColor="Blue"></Label>
                                     </StackLayout>
-                                    <StackLayout Grid.Column="2" VerticalOptions="Center">
-                                        <Label Text="{Binding Intern}" 
-                                           FontSize="Small"
-                                           TextColor="Blue"></Label>
-                                    </StackLayout>
-                                <StackLayout Grid.Column="3" VerticalOptions="Center">
-                                    <Label Text="{Binding LoanDetails}" 
+                                <StackLayout Grid.Column="2" VerticalOptions="Center">
+                                    <Label Text="{Binding Intern}" 
                                            FontSize="Small"
                                            TextColor="Blue"></Label>
                                 </StackLayout>
-                                </Grid>
+                                <StackLayout BindableLayout.ItemsSource="{Binding LoanDetails}" Grid.Column="3">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Grid.Row="3">
+                                                <Label Text="{Binding Id}"  
+                                                       VerticalOptions="Center" 
+                                                       HorizontalOptions="Center"
+                                                       FontSize="Small"
+                                                       TextColor="Blue"></Label>
+                                            </Grid>
+                                            
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </StackLayout>
+                            </Grid>
                             </ViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>
