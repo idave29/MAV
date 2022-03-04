@@ -26,12 +26,26 @@
 
         public ObservableCollection<MenuItemViewModel> Menus { get; set; }
         public AddStatusViewModel AddStatus { get; set; }
+        public AddMaterialViewModel AddMaterial { get; set; }
+        public AddInternViewModel AddIntern { get; set; }
         public ICommand AddStatusCommand { get { return new RelayCommand(GoStatusCommand); } }
+        public ICommand AddMaterialCommand { get { return new RelayCommand(GoMaterialCommand); } }
+        public ICommand AddInternCommand { get { return new RelayCommand(GoInternCommand); } }
 
         private async void GoStatusCommand()
         {
             this.AddStatus = new AddStatusViewModel();
             await App.Navigator.PushAsync(new AddStatusPage());
+        }
+        private async void GoMaterialCommand()
+        {
+            this.AddMaterial = new AddMaterialViewModel();
+            await App.Navigator.PushAsync(new AddMaterialPage());
+        }
+        private async void GoInternCommand()
+        {
+            this.AddIntern = new AddInternViewModel();
+            await App.Navigator.PushAsync(new AddInternPage());
         }
 
         public MainViewModel()
