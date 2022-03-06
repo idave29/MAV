@@ -28,9 +28,14 @@
         public AddStatusViewModel AddStatus { get; set; }
         public AddMaterialViewModel AddMaterial { get; set; }
         public AddInternViewModel AddIntern { get; set; }
+        public AddOwnerViewModel AddOwner { get; set; }
+        public AddMaterialTypeViewModel AddMaterialType { get; set; }
+
         public ICommand AddStatusCommand { get { return new RelayCommand(GoStatusCommand); } }
         public ICommand AddMaterialCommand { get { return new RelayCommand(GoMaterialCommand); } }
         public ICommand AddInternCommand { get { return new RelayCommand(GoInternCommand); } }
+        public ICommand AddOwnerCommand { get { return new RelayCommand(GoOwnerCommand); } }
+        public ICommand AddMaterialTypeCommand { get { return new RelayCommand(GoMaterialTypeCommand); } }
 
         private async void GoStatusCommand()
         {
@@ -46,6 +51,16 @@
         {
             this.AddIntern = new AddInternViewModel();
             await App.Navigator.PushAsync(new AddInternPage());
+        }
+        private async void GoOwnerCommand()
+        {
+            this.AddOwner = new AddOwnerViewModel();
+            await App.Navigator.PushAsync(new AddOwnerPage());
+        }
+        private async void GoMaterialTypeCommand()
+        {
+            this.AddMaterialType = new AddMaterialTypeViewModel();
+            await App.Navigator.PushAsync(new AddMaterialTypePage());
         }
 
         public MainViewModel()
