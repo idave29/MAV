@@ -1,5 +1,7 @@
 ﻿namespace MAV.Web.Controllers.API
 {
+    using MAV.Common.Models;
+    using MAV.Web.Data.Entities;
     using MAV.Web.Data.Repositories;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Authorization;
@@ -7,7 +9,7 @@
     using System.Threading.Tasks;
 
     [Route("api/[Controller]")]
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme) ]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme) ]
     public class ApplicantTypesController : Controller
     {
         private readonly IApplicantTypeRepository applicantTypeRepository;
@@ -31,15 +33,16 @@
             {
                 return BadRequest(ModelState);
             }
-            var entityApplicantType = new MAV.Web.Data.Entities.ApplicantType
+            var entityApplicantType = new ApplicantType
             {
                 Name = applicantType.Name
             };
             var newApplicantType = await this.applicantTypeRepository.CreateAsync(entityApplicantType);
             return Ok(newApplicantType);
         }
+
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutApplicantType([FromRoute] int id, [FromBody] MAV.Common.Models.ApplicantTypeRequest applicantType)
+        public async Task<IActionResult> PutApplicantType([FromRoute] int id, [FromBody] ApplicantTypeRequest applicantType)
         {
             if (!ModelState.IsValid)
             {

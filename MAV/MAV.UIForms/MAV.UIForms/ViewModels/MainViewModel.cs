@@ -3,6 +3,7 @@
     using GalaSoft.MvvmLight.Command;
     using MAV.Common.Models;
     using MAV.UIForms.Views;
+    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
@@ -30,13 +31,16 @@
         public AddInternViewModel AddIntern { get; set; }
         public AddOwnerViewModel AddOwner { get; set; }
         public AddMaterialTypeViewModel AddMaterialType { get; set; }
+        public AddAdministratorViewModel AddAdministrator { get; set; }
+        public AddApplicantTypeViewModel AddApplicantType { get; set; }
 
         public ICommand AddStatusCommand { get { return new RelayCommand(GoStatusCommand); } }
         public ICommand AddMaterialCommand { get { return new RelayCommand(GoMaterialCommand); } }
         public ICommand AddInternCommand { get { return new RelayCommand(GoInternCommand); } }
         public ICommand AddOwnerCommand { get { return new RelayCommand(GoOwnerCommand); } }
         public ICommand AddMaterialTypeCommand { get { return new RelayCommand(GoMaterialTypeCommand); } }
-
+        public ICommand AddAdministratorCommand { get { return new RelayCommand(GoAdministratorCommand); } }
+        public ICommand AddApplicantTypeCommand { get { return new RelayCommand(GoApplicantTypeCommand); } }
         private async void GoStatusCommand()
         {
             this.AddStatus = new AddStatusViewModel();
@@ -62,7 +66,17 @@
             this.AddMaterialType = new AddMaterialTypeViewModel();
             await App.Navigator.PushAsync(new AddMaterialTypePage());
         }
+        private async void GoAdministratorCommand()
+        {
+            this.AddAdministrator = new AddAdministratorViewModel();
+            await App.Navigator.PushAsync(new AddAdministratorPage());
+        }
 
+        private async void GoApplicantTypeCommand()
+        {
+            this.AddApplicantType = new AddApplicantTypeViewModel();
+            await App.Navigator.PushAsync(new AddApplicantTypePage());
+        }
         public MainViewModel()
         {
             instance = this;
