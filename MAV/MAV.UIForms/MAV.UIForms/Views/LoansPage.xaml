@@ -5,9 +5,9 @@
              BindingContext="{Binding Main, Source={StaticResource Locator}}"
              Title="Loan">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Home" Command="{Binding HelloCommand}"/>
+        
         <ToolbarItem IconImageSource="ic_action_add_circle" Command="{Binding AddCommand}"/>
-        <ToolbarItem Text="Delete" Command="{Binding DeleteCommand}"/>
+        <!--<ToolbarItem Text="Delete" Command="{Binding DeleteCommand}"/>-->
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
             <StackLayout

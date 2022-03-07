@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MAV.UIForms.Views.pruebaPage"
+             BindingContext="{Binding Main, Source={StaticResource Locator}}">
+    <ContentPage.Content>
+        <StackLayout
+            BindingContext="{Binding Prueba}">
+            <Label Text="Bindable Picker Demo" FontAttributes="Bold" HorizontalOptions="Center" />
+            <Picker Title="Select a country" ItemsSource="{Binding MaterialList}" SelectedItem="{Binding SelectedColorName, Mode=TwoWay}" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -61,10 +61,17 @@
                 case "SetupPage":
                     await App.Navigator.PushAsync(new SetupPage());
                     break;
+                case "pruebaPage":
+                    MainViewModel.GetInstance().Prueba = new PruebaViewModel();
+                    await App.Navigator.PushAsync(new pruebaPage());
+
+                    break;
+
                 default:
                     MainViewModel.GetInstance().Login = new LoginViewModel();
                     Application.Current.MainPage = new NavigationPage(new LoginPage()); 
                     break; 
+
             }
         }
     }

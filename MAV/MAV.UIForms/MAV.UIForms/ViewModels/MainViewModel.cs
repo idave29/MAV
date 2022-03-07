@@ -11,6 +11,10 @@
 
     public class MainViewModel
     {
+
+
+        public PruebaViewModel Prueba { get; set; }
+
         private static MainViewModel instance;
         public TokenResponse Token { get; set; }
         public LoginViewModel Login { get; set; }
@@ -34,6 +38,8 @@
         public AddAdministratorViewModel AddAdministrator { get; set; }
         public AddApplicantTypeViewModel AddApplicantType { get; set; }
         public AddLoanDetailViewModel AddLoanDetail { get; set; }
+        public AddApplicantViewModel AddApplicant { get; set; }
+
 
         public ICommand AddStatusCommand { get { return new RelayCommand(GoStatusCommand); } }
         public ICommand AddMaterialCommand { get { return new RelayCommand(GoMaterialCommand); } }
@@ -43,6 +49,7 @@
         public ICommand AddAdministratorCommand { get { return new RelayCommand(GoAdministratorCommand); } }
         public ICommand AddApplicantTypeCommand { get { return new RelayCommand(GoApplicantTypeCommand); } }
         public ICommand AddLoanDetailCommand { get { return new RelayCommand(GoLoanDetailCommand); } }
+        public ICommand AddApplicantCommand { get { return new RelayCommand(GoApplicantCommand); } }
         private async void GoStatusCommand()
         {
             this.AddStatus = new AddStatusViewModel();
@@ -84,6 +91,11 @@
         {
             this.AddLoanDetail = new AddLoanDetailViewModel();
             await App.Navigator.PushAsync(new AddLoanDetailPage());
+        }
+        private async void GoApplicantCommand()
+        {
+            this.AddApplicant = new AddApplicantViewModel();
+            await App.Navigator.PushAsync(new AddApplicantPage());
         }
         public MainViewModel()
         {
@@ -173,7 +185,13 @@
                     Icon = "exit",
                     PageName = "LoginPage",
                     Title = "Logout"
-                }
+                },
+                new Menu
+                {
+                    Icon = "Prueba",
+                    PageName = "pruebaPage",
+                    Title = "prueba"
+                },
             };
             this.Menus = new ObservableCollection<MenuItemViewModel>(menus.Select(m => new
             MenuItemViewModel
