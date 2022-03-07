@@ -1,0 +1,86 @@
+﻿using GalaSoft.MvvmLight.Command;
+using MAV.Common.Models;
+using MAV.Common.Services;
+using System;
+using System.Windows.Input;
+using Xamarin.Forms;
+
+namespace MAV.UIForms.ViewModels
+{
+    public class AddLoanDetailViewModel : BaseViewModel
+    {
+        private readonly ApiService apiService;
+        public string Observations { get; set; }
+        public DateTime DateTimeOut { get; set; }
+        public DateTime DateTimeIn { get; set; }
+        public MaterialRequest Material { get; set; }
+
+        private bool isRunning;
+        public bool IsRunning
+        {
+            get { return isRunning; }
+            set { this.SetValue(ref this.isRunning, value); }
+        }
+
+        private bool isEnabled;
+        public bool IsEnabled
+        {
+            get { return isEnabled; }
+            set { this.SetValue(ref this.isEnabled, value); }
+        }
+
+        public ICommand SaveCommand { get { return new RelayCommand(Save); } }
+
+        private async void Save()
+        {
+            if (string.IsNullOrEmpty(Observations))
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un estado", "Aceptar");
+                return;
+            }
+            if (string.IsNullOrEmpty(Convert.ToString(DateTimeOut)))
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir una fecha y hora de entrega", "Aceptar");
+                return;
+            }
+            if (string.IsNullOrEmpty(Convert.ToString(DateTimeIn)))
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir una fecha y hora de devolución", "Aceptar");
+                return;
+            }
+            if (string.IsNullOrEmpty(Convert.ToString(Material)))
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un material", "Aceptar");
+                return;
+            }
+
+            isEnabled = false;
+            isRunning = true;
+            var loanDetail = new LoanDetailsRequest { Observations = Observations, DateTimeIn = DateTimeIn, DateTimeOut = DateTimeOut, Material = Material };
+            var url = Application.Current.Resources["URLApi"].ToString();
+            var response = await this.apiService.PostAsync(url,
+                "/api",
+                "/LoanDetail",
+                loanDetail,
+                "bearer",
+                MainViewModel.GetInstance().Token.Token);
+
+            if (!response.IsSuccess)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
+                return;
+            }
+            var newLoanDetail = (LoanDetailsRequest)response.Result;
+            MainViewModel.GetInstance().LoanDetails.LoanDetails.Add(newLoanDetail);
+            isEnabled = true;
+            isRunning = false;
+            await App.Navigator.PopAsync();
+        }
+
+        public AddLoanDetailViewModel()
+        {
+            this.apiService = new ApiService();
+            isEnabled = true;
+        }
+    }
+}

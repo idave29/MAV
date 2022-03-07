@@ -33,6 +33,7 @@
         public AddMaterialTypeViewModel AddMaterialType { get; set; }
         public AddAdministratorViewModel AddAdministrator { get; set; }
         public AddApplicantTypeViewModel AddApplicantType { get; set; }
+        public AddLoanDetailViewModel AddLoanDetail { get; set; }
 
         public ICommand AddStatusCommand { get { return new RelayCommand(GoStatusCommand); } }
         public ICommand AddMaterialCommand { get { return new RelayCommand(GoMaterialCommand); } }
@@ -41,6 +42,7 @@
         public ICommand AddMaterialTypeCommand { get { return new RelayCommand(GoMaterialTypeCommand); } }
         public ICommand AddAdministratorCommand { get { return new RelayCommand(GoAdministratorCommand); } }
         public ICommand AddApplicantTypeCommand { get { return new RelayCommand(GoApplicantTypeCommand); } }
+        public ICommand AddLoanDetailCommand { get { return new RelayCommand(GoLoanDetailCommand); } }
         private async void GoStatusCommand()
         {
             this.AddStatus = new AddStatusViewModel();
@@ -76,6 +78,12 @@
         {
             this.AddApplicantType = new AddApplicantTypeViewModel();
             await App.Navigator.PushAsync(new AddApplicantTypePage());
+        }
+
+        private async void GoLoanDetailCommand()
+        {
+            this.AddLoanDetail = new AddLoanDetailViewModel();
+            await App.Navigator.PushAsync(new AddLoanDetailPage());
         }
         public MainViewModel()
         {
