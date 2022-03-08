@@ -31,7 +31,7 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostStatus([FromBody] AdministratorRequest administrator)
+        public async Task<IActionResult> PostAdministrator([FromBody] AdministratorRequest administrator)
         {
             if (!ModelState.IsValid)
             {
@@ -39,13 +39,13 @@
             }
             var entityAdministrators = new Administrator
             {
-                User = new Data.Entities.User()
+                User = new Data.Entities.User
                 {
                     FirstName = administrator.FirstName,
                     LastName = administrator.LastName,
                     Email = administrator.Email,
                     PhoneNumber = administrator.PhoneNumber,
-                    PasswordHash = administrator.LastName
+                    PasswordHash = administrator.LastName                    
                 }
             };
             var newAdministrator = await this.administratorRepository.CreateAsync(entityAdministrators);
@@ -53,7 +53,7 @@
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMaterialType([FromRoute] int id, [FromBody] AdministratorRequest administrator)
+        public async Task<IActionResult> PutAdministrator([FromRoute] int id, [FromBody] AdministratorRequest administrator)
         {
             if (!ModelState.IsValid)
             {
@@ -79,7 +79,7 @@
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMaterialType([FromRoute] int id)
+        public async Task<IActionResult> DeleteAdministrator([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {

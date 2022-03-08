@@ -18,7 +18,6 @@ namespace MAV.UIForms.ViewModels
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
 
-
         private bool isRunning;
         public bool IsRunning
         {
@@ -60,7 +59,7 @@ namespace MAV.UIForms.ViewModels
 
             isEnabled = false;
             isRunning = true;
-            var administrator = new AdministratorRequest { FirstName = FirstName, LastName = LastName, Email = Email, PhoneNumber = PhoneNumber };
+            var administrator = new AdministratorRequest { FirstName = FirstName, LastName = LastName, Email = Email, PhoneNumber = PhoneNumber, Password = "123456", Role = "Administrator" };
             var url = Application.Current.Resources["URLApi"].ToString();
             var response = await this.apiService.PostAsync(url,
                 "/api",

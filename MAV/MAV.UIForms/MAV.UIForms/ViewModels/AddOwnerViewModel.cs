@@ -58,15 +58,10 @@
                 await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un numero de telefono", "Aceptar");
                 return;
             }
-            if (Materials == null)
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un loan", "Aceptar");
-                return;
-            }
 
             isEnabled = false;
             isRunning = true;
-            var owner = new OwnerRequest { FirstName = FirstName, LastName = LastName, Email = Email, PhoneNumber = PhoneNumber, Materials = Materials };
+            var owner = new OwnerRequest { FirstName = FirstName, LastName = LastName, Email = Email, PhoneNumber = PhoneNumber };
             var url = Application.Current.Resources["URLApi"].ToString();
             var response = await this.apiService.PostAsync(url,
                 "/api",

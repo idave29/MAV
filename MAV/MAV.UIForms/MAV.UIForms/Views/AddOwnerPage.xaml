@@ -25,9 +25,6 @@
 
                     <Label Text="Phone Number" Grid.Column="0" Grid.Row="3" VerticalOptions="Center"></Label>
                     <Entry Grid.Column="1" Grid.Row="3" Keyboard="Text" Placeholder="Introduce número telefónico" Text="{Binding PhoneNumber}"></Entry>
-
-                    <Label Text="Material" Grid.Column="0" Grid.Row="4" VerticalOptions="Center"></Label>
-                    <Entry Grid.Column="1" Grid.Row="4" Keyboard="Text" Placeholder="Introduce materials (SIGUE PENDIENTE)" Text="{Binding Materials}"></Entry>
                 </Grid>
                 <ActivityIndicator IsRunning="{Binding IsRunning}" VerticalOptions="CenterAndExpand">
                 </ActivityIndicator>
