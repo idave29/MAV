@@ -24,19 +24,19 @@
                     <Entry Grid.Column="1" Grid.Row="2" Keyboard="Text" Placeholder="Introduce la marca" Text="{Binding Brand}"></Entry>
 
                     <Label Text="MaterialModel" Grid.Column="0" Grid.Row="3" VerticalOptions="Center"></Label>
-                    <Entry Grid.Column="1" Grid.Row="3" BindingContext="Status" Keyboard="Text" Placeholder="Introduce el modelo" Text="{Binding MaterialModel}"></Entry>
+                    <Entry Grid.Column="1" Grid.Row="3" Keyboard="Text" Placeholder="Introduce el modelo" Text="{Binding MaterialModel}"></Entry>
 
                     <Label Text="SerialNum" Grid.Column="0" Grid.Row="4" VerticalOptions="Center"></Label>
                     <Entry Grid.Column="1" Grid.Row="4" Keyboard="Text" Placeholder="Introduce el numero de serie" Text="{Binding SerialNum}"></Entry>
 
                     <Label Text="Status" Grid.Column="0" Grid.Row="5" VerticalOptions="Center"></Label>
-                    <Entry   Grid.Column="1"  Grid.Row="5" Keyboard="Text" Placeholder="Introduce el estado" Text="{Binding Status}"></Entry>
+                    <Picker Grid.Column="1" Grid.Row="5" Title="Selecciona un estado" ItemsSource="{Binding StatusList}" SelectedItem="{Binding Status, Mode=TwoWay}"/>
 
                     <Label Text="MaterialType" Grid.Column="0" Grid.Row="6" VerticalOptions="Center"></Label>
-                    <Entry Grid.Column="1"  Grid.Row="6" Keyboard="Text" Placeholder="Introduce el tipo de material" Text="{Binding MaterialType}"></Entry>
+                    <Picker Grid.Column="1" Grid.Row="6" Title="Selecciona un tipo de material" ItemsSource="{Binding MaterialTypeList}" SelectedItem="{Binding MaterialType, Mode=TwoWay}"/>
 
                     <Label Text="Owner" Grid.Column="0" Grid.Row="7" VerticalOptions="Center"></Label>
-                    <Entry Grid.Column="1" Grid.Row="7" Keyboard="Text" Placeholder="Introduce el dueño" Text="{Binding Owner}"></Entry>
+                    <Picker Grid.Column="1" Grid.Row="7" Title="Selecciona un dueño" ItemsSource="{Binding OwnerList}" SelectedItem="{Binding Owner, Mode=TwoWay}"/>
                 </Grid>
                 <ActivityIndicator IsRunning="{Binding IsRunning}" VerticalOptions="CenterAndExpand">
                 </ActivityIndicator>

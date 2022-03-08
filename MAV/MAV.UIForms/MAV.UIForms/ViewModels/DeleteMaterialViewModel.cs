@@ -2,14 +2,12 @@
 using MAV.Common.Models;
 using MAV.Common.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace MAV.UIForms.ViewModels
 {
-    public class AddMaterialViewModel : BaseViewModel
+    public class DeleteMaterialViewModel : BaseViewModel
     {
         private readonly ApiService apiService;
         public string Name { get; set; }
@@ -35,83 +33,6 @@ namespace MAV.UIForms.ViewModels
             set { this.SetValue(ref this.isRunning, value); }
         }
 
-        private IList<string> statusList;
-        private IList<string> materialTypeList;
-        private IList<string> ownerList;
-        public IList<string> StatusList
-        {
-            get { return this.statusList; }
-            set { this.SetValue(ref this.statusList, value); }
-        }
-
-        public IList<string> MaterialTypeList
-        {
-            get { return this.materialTypeList; }
-            set { this.SetValue(ref this.materialTypeList, value); }
-        }
-
-        public IList<string> OwnerList
-        {
-            get { return this.ownerList; }
-            set { this.SetValue(ref this.ownerList, value); }
-        }
-        private async void LoadStatuses()
-        {
-            var url = Application.Current.Resources["URLApi"].ToString();
-            var response = await this.apiService.GetListAsync<StatusRequest>(
-                url,
-                "/api",
-                "/Status",
-                "bearer",
-                MainViewModel.GetInstance().Token.Token);
-
-            if (!response.IsSuccess)
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
-                return;
-            }
-            StatusList = ((List<StatusRequest>)response.Result).Select(m => m.Name).ToList();
-
-        }
-
-        private async void LoadMaterialTypes()
-        {
-            var url = Application.Current.Resources["URLApi"].ToString();
-            var response = await this.apiService.GetListAsync<MaterialTypeRequest>(
-                url,
-                "/api",
-                "/MaterialTypes",
-                "bearer",
-                MainViewModel.GetInstance().Token.Token);
-
-            if (!response.IsSuccess)
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
-                return;
-            }
-            MaterialTypeList = ((List<MaterialTypeRequest>)response.Result).Select(m => m.Name).ToList();
-
-        }
-
-        private async void LoadOwners()
-        {
-            var url = Application.Current.Resources["URLApi"].ToString();
-            var response = await this.apiService.GetListAsync<OwnerRequest>(
-                url,
-                "/api",
-                "/Owners",
-                "bearer",
-                MainViewModel.GetInstance().Token.Token);
-
-            if (!response.IsSuccess)
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
-                return;
-            }
-            OwnerList = ((List<OwnerRequest>)response.Result).Select(m => $"{m.LastName} {m.FirstName}").ToList();
-
-        }
-
         private bool isEnabled;
         public bool IsEnabled
         {
@@ -119,9 +40,9 @@ namespace MAV.UIForms.ViewModels
             set { this.SetValue(ref this.isEnabled, value); }
         }
 
-        public ICommand SaveCommand { get { return new RelayCommand(Save); } }
+        public ICommand DeleteCommand { get { return new RelayCommand(Delete); } }
 
-        private async void Save()
+        private async void Delete()
         {
             if (string.IsNullOrEmpty(Name))
             {
@@ -150,17 +71,17 @@ namespace MAV.UIForms.ViewModels
             }
             if (string.IsNullOrEmpty(Status))
             {
-                await Application.Current.MainPage.DisplayAlert("Error", "Debes seleccionar un status", "Aceptar");
+                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un status", "Aceptar");
                 return;
             }
             if (string.IsNullOrEmpty(MaterialType))
             {
-                await Application.Current.MainPage.DisplayAlert("Error", "Debes seleccionar un tipo de material", "Aceptar");
+                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un tipo de material", "Aceptar");
                 return;
             }
             if (string.IsNullOrEmpty(Owner))
             {
-                await Application.Current.MainPage.DisplayAlert("Error", "Debes seleccionar un dueño", "Aceptar");
+                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un dueño", "Aceptar");
                 return;
             }
 
@@ -187,13 +108,10 @@ namespace MAV.UIForms.ViewModels
             await App.Navigator.PopAsync();
         }
 
-        public AddMaterialViewModel()
+        public DeleteMaterialViewModel()
         {
             this.apiService = new ApiService();
             isEnabled = true;
-            this.LoadMaterialTypes();
-            this.LoadOwners();
-            this.LoadStatuses();
         }
     }
 }

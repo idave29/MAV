@@ -1,19 +1,22 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30907.101
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{3E05B7C8-818C-4960-BD13-807C287F69E8}"
+	ProjectSection(SolutionItems) = preProject
+		MAV.Web\Properties\serviceDependencies.MediosAudiovisualesWeb - Web Deploy.json = MAV.Web\Properties\serviceDependencies.MediosAudiovisualesWeb - Web Deploy.json
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frontend", "Frontend", "{DF591347-6EE4-4698-9DB9-E57D0ADF422D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MAV.Common", "MAV.Common\MAV.Common.csproj", "{C843888F-1134-47C5-AEB0-7FC59C493A11}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MAV.Common", "MAV.Common\MAV.Common.csproj", "{C843888F-1134-47C5-AEB0-7FC59C493A11}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MAV.Web", "MAV.Web\MAV.Web.csproj", "{23031ACC-2997-4A70-97D8-D880A79A1F64}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MAV.Web", "MAV.Web\MAV.Web.csproj", "{23031ACC-2997-4A70-97D8-D880A79A1F64}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MAV.UIForms.Android", "MAV.UIForms\MAV.UIForms.Android\MAV.UIForms.Android.csproj", "{EE95C377-424A-4E48-9821-B17E2BF464BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MAV.UIForms", "MAV.UIForms\MAV.UIForms\MAV.UIForms.csproj", "{9C73A8FF-808E-4A8A-AE50-E00F95B683AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MAV.UIForms", "MAV.UIForms\MAV.UIForms\MAV.UIForms.csproj", "{9C73A8FF-808E-4A8A-AE50-E00F95B683AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

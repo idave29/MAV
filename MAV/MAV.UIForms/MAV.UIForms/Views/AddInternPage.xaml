@@ -27,7 +27,7 @@
                     <Entry Grid.Column="1" Grid.Row="3" Keyboard="Text" Placeholder="Introduce el niumero" Text="{Binding PhoneNumber}"></Entry>
 
                     <Label Text="Loans" Grid.Column="0" Grid.Row="4" VerticalOptions="Center"></Label>
-                    <Entry Grid.Column="1" Grid.Row="4" Keyboard="Text" Placeholder="Introduce loans" Text="{Binding Loans}"></Entry>
+                    <Picker Grid.Column="1" Grid.Row="4" Title="Selecciona un prestamo" ItemsSource="{Binding LoanList}" SelectedItem="{Binding Loans, Mode=TwoWay}"/>
                 </Grid>
                 <ActivityIndicator IsRunning="{Binding IsRunning}" VerticalOptions="CenterAndExpand">
                 </ActivityIndicator>

@@ -5,6 +5,7 @@ using System;
 using System.Windows.Input;
 using Xamarin.Forms;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MAV.UIForms.ViewModels
 {
@@ -35,6 +36,30 @@ namespace MAV.UIForms.ViewModels
             set { this.SetValue(ref this.isEnabled, value); }
         }
 
+        private IList<string> loanList;
+        public IList<string> LoanList
+        {
+            get { return this.loanList; }
+            set { this.SetValue(ref this.loanList, value); }
+        }
+        private async void LoadLoans()
+        {
+            var url = Application.Current.Resources["URLApi"].ToString();
+            var response = await this.apiService.GetListAsync<LoanRequest>(
+                url,
+                "/api",
+                "/Loans",
+                "bearer",
+                MainViewModel.GetInstance().Token.Token);
+
+            if (!response.IsSuccess)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
+                return;
+            }
+            LoanList = ((List<LoanRequest>)response.Result).Select(m => m.Id.ToString()).ToList();
+
+        }
         public ICommand SaveCommand { get { return new RelayCommand(Save); } }
 
         private async void Save()
@@ -91,6 +116,7 @@ namespace MAV.UIForms.ViewModels
         {
             this.apiService = new ApiService();
             isEnabled = true;
+            this.LoadLoans();
         }
     }
 }
