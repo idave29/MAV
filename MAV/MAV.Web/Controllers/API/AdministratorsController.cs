@@ -3,9 +3,12 @@
     using MAV.Common.Models;
     using MAV.Web.Data.Entities;
     using MAV.Web.Data.Repositories;
+    using MAV.Web.Helpers;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using System;
     using System.Threading.Tasks;
 
     [Route("api/[Controller]")]
@@ -13,10 +16,11 @@
     public class AdministratorsController:Controller
     {
         private readonly IAdministratorRepository administratorRepository;
-
-        public AdministratorsController(IAdministratorRepository administratorRepository)
+        private readonly IUserHelper userHelper; 
+        public AdministratorsController(IAdministratorRepository administratorRepository, IUserHelper userHelper)
         {
             this.administratorRepository = administratorRepository;
+            this.userHelper = userHelper;   
         }
 
         [HttpGet]
@@ -37,6 +41,27 @@
             {
                 return BadRequest(ModelState);
             }
+            //var entityAdministrators = new Administrator
+            //{
+            //    User = new Data.Entities.User
+            //    {
+            //        FirstName = administrator.FirstName,
+            //        LastName = administrator.LastName,
+            //        Email = administrator.Email,
+            //        PhoneNumber = administrator.PhoneNumber,
+            //        PasswordHash = administrator.Password                    
+            //    }
+            //};
+            //var newAdministrator = await this.administratorRepository.CreateAsync(entityAdministrators);
+            //return Ok(newAdministrator);
+
+
+
+            //var user = await this.userHelper.GetUserByEmailAsync(administrator.Email);
+            //if(user != null)
+            //{
+            //    return BadRequest(ModelState);
+            //}
             var entityAdministrators = new Administrator
             {
                 User = new Data.Entities.User
@@ -45,9 +70,18 @@
                     LastName = administrator.LastName,
                     Email = administrator.Email,
                     PhoneNumber = administrator.PhoneNumber,
-                    PasswordHash = administrator.LastName                    
+                    UserName = administrator.Email
                 }
             };
+
+            //var result = await this.userHelper.AddUserAsync(user, administrator.Password);
+            //if (result != IdentityResult.Success)
+            //{
+            //    throw new InvalidOperationException("No se puede crear el usuario en la base de datos");
+            //}
+            //await userHelper.AddUserToRoleAsync(user, administrator.Role);
+
+
             var newAdministrator = await this.administratorRepository.CreateAsync(entityAdministrators);
             return Ok(newAdministrator);
         }
