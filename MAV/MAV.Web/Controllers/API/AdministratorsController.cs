@@ -57,33 +57,43 @@
 
 
 
-            //var user = await this.userHelper.GetUserByEmailAsync(administrator.Email);
-            //if(user != null)
-            //{
-            //    return BadRequest(ModelState);
-            //}
-            var entityAdministrators = new Administrator
+            var user = await this.userHelper.GetUserByEmailAsync(administrator.Email);
+            if (user != null)
             {
-                User = new Data.Entities.User
-                {
-                    FirstName = administrator.FirstName,
-                    LastName = administrator.LastName,
-                    Email = administrator.Email,
-                    PhoneNumber = administrator.PhoneNumber,
-                    UserName = administrator.Email
-                }
+                return BadRequest(ModelState);
+            }
+            //var entityAdministrators = new Administrator
+            //{
+            //    User = new Data.Entities.User
+            //    {
+            //        FirstName = administrator.FirstName,
+            //        LastName = administrator.LastName,
+            //        Email = administrator.Email,
+            //        PhoneNumber = administrator.PhoneNumber,
+            //        UserName = administrator.Email
+            //    }
+            //};
+
+            user = new Data.Entities.User
+            {
+                FirstName = administrator.FirstName,
+                LastName = administrator.LastName,
+                Email = administrator.Email,
+                UserName = administrator.Email,
+                PhoneNumber = administrator.PhoneNumber
             };
 
-            //var result = await this.userHelper.AddUserAsync(user, administrator.Password);
-            //if (result != IdentityResult.Success)
-            //{
-            //    throw new InvalidOperationException("No se puede crear el usuario en la base de datos");
-            //}
-            //await userHelper.AddUserToRoleAsync(user, administrator.Role);
+            var result = await this.userHelper.AddUserAsync(user, administrator.Password);
+            if (result != IdentityResult.Success)
+            {
+                throw new InvalidOperationException("No se puede crear el usuario en la base de datos");
+            }
+            await userHelper.AddUserToRoleAsync(user, administrator.Role);
 
 
-            var newAdministrator = await this.administratorRepository.CreateAsync(entityAdministrators);
-            return Ok(newAdministrator);
+            //var newAdministrator = await this.administratorRepository.CreateAsync(entityAdministrators);
+            //return Ok(newAdministrator);
+            return Ok(user); 
         }
 
         [HttpPut("{id}")]
