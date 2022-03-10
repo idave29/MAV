@@ -2,6 +2,8 @@
 using MAV.Common.Models;
 using MAV.Common.Services;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -16,6 +18,7 @@ namespace MAV.UIForms.ViewModels
         public MaterialRequest Material { get; set; }
 
         private bool isRunning;
+        private IList<string> materialList;
         public bool IsRunning
         {
             get { return isRunning; }
@@ -29,7 +32,32 @@ namespace MAV.UIForms.ViewModels
             set { this.SetValue(ref this.isEnabled, value); }
         }
 
+        public IList<string> MaterialList
+        {
+            get { return this.materialList; }
+            set { this.SetValue(ref this.materialList, value); }
+        }
+
         public ICommand SaveCommand { get { return new RelayCommand(Save); } }
+
+        private async void LoadMaterials()
+        {
+            var url = Application.Current.Resources["URLApi"].ToString();
+            var response = await this.apiService.GetListAsync<MaterialRequest>(
+                url,
+                "/api",
+                "/Materials",
+                "bearer",
+                MainViewModel.GetInstance().Token.Token);
+
+            if (!response.IsSuccess)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
+                return;
+            }
+            MaterialList = ((List<MaterialRequest>)response.Result).Select(m => $"{m.Name}").ToList();
+
+        }
 
         private async void Save()
         {
