@@ -109,6 +109,7 @@ namespace MAV.UIForms.ViewModels
         {
             this.apiService = new ApiService();
             isEnabled = true;
+            this.LoadMaterials();
         }
     }
 }
