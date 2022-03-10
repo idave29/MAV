@@ -26,11 +26,16 @@
                                     <ColumnDefinition Width="auto"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <StackLayout Grid.Column="0" VerticalOptions="Center">
-                                    <Label Text="{Binding Id}" FontAttributes="Bold" FontSize="Small" TextColor="Red"/>
+                                <StackLayout Grid.Column="0" VerticalOptions="Center" Margin="0,0,10,0">
+                                    <Label Text="{Binding Id}" 
+                                           FontSize="Large" 
+                                           FontAttributes="Bold" 
+                                           TextColor="Red"></Label>
                                 </StackLayout>
                                 <StackLayout Grid.Column="1" VerticalOptions="Center">
-                                    <Label Text="{Binding Name}" FontSize="Small" TextColor="Blue"/> 
+                                    <Label Text="{Binding Name}" 
+                                           FontSize="Medium"
+                                           TextColor="Black"></Label>
                                 </StackLayout>
                             </Grid>
                         </ViewCell>

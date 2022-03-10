@@ -25,32 +25,29 @@
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <StackLayout Grid.Column="0" VerticalOptions="Center">
+                                <StackLayout Grid.Column="0" VerticalOptions="Center" Margin="0,0,10,0">
                                     <Label Text="{Binding Id}" 
-                                           FontSize="Small" 
+                                           FontSize="Large" 
                                            FontAttributes="Bold" 
                                            TextColor="Red"></Label>
                                 </StackLayout>
-
                                 <StackLayout Grid.Column="1" VerticalOptions="Center">
+                                    <Label FontSize="Subtitle">Date time in: </Label>
                                     <Label Text="{Binding DateTimeIn}" 
                                            FontSize="Small"
-                                           TextColor="Blue"></Label>
-                                </StackLayout>
-                                <StackLayout Grid.Column="2" VerticalOptions="Center">
+                                           TextColor="Black"></Label>
+                                    <Label FontSize="Subtitle">Date time out:</Label>
                                     <Label Text="{Binding DateTimeOut}" 
                                            FontSize="Small"
-                                           TextColor="Blue"></Label>
-                                </StackLayout>
-                                <StackLayout Grid.Column="3" VerticalOptions="Center">
+                                           TextColor="Black"></Label>
+                                    <Label FontSize="Subtitle">Observations:</Label>
                                     <Label Text="{Binding Observations}" 
                                            FontSize="Small"
-                                           TextColor="Blue"></Label>
-                                </StackLayout>
-                                <StackLayout Grid.Column="4" VerticalOptions="Center">
+                                           TextColor="Black"></Label>
+                                    <Label FontSize="Subtitle">Material:</Label>
                                     <Label Text="{Binding Material.Name}" 
                                            FontSize="Small"
-                                           TextColor="Blue"></Label>
+                                           TextColor="Black"></Label>
                                 </StackLayout>
                             </Grid>
                         </ViewCell>

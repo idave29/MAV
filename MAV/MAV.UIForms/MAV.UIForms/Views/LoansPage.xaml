@@ -25,38 +25,38 @@
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <StackLayout Grid.Column="0" VerticalOptions="Center">
-                                        <Label Text="{Binding Id}" 
-                                           FontSize="Small" 
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackLayout Grid.Column="0" VerticalOptions="Center" Margin="0,0,10,0">
+                                    <Label Text="{Binding Id}" 
+                                           FontSize="Large" 
                                            FontAttributes="Bold" 
                                            TextColor="Red"></Label>
-                                    </StackLayout>
-                                    <StackLayout Grid.Column="1" VerticalOptions="Center">
-                                        <Label Text="{Binding Applicant}" 
-                                           FontSize="Small"
-                                           TextColor="Blue"></Label>
-                                    </StackLayout>
-                                <StackLayout Grid.Column="2" VerticalOptions="Center">
-                                    <Label Text="{Binding Intern}" 
-                                           FontSize="Small"
-                                           TextColor="Blue"></Label>
                                 </StackLayout>
-                                <StackLayout BindableLayout.ItemsSource="{Binding LoanDetails}" Grid.Column="3">
+                                <StackLayout Grid.Column="1" VerticalOptions="Center">
+                                    <Label Text="{Binding Applicant}" 
+                                           FontSize="Medium"
+                                           TextColor="Black"></Label>
+                                    <Label Text="{Binding Intern, StringFormat= 'Intern: {0}'}" 
+                                           FontSize="Small"
+                                           TextColor="Gray"></Label>
+                                </StackLayout>
+                                <StackLayout BindableLayout.ItemsSource="{Binding LoanDetails}" Grid.Column="1" VerticalOptions="Center">
                                     <BindableLayout.ItemTemplate>
                                         <DataTemplate>
                                             <Grid Grid.Row="3">
-                                                <Label Text="{Binding Id}"  
-                                                       VerticalOptions="Center" 
-                                                       HorizontalOptions="Center"
+                                                <Label Text="{Binding Id, StringFormat='Loan: {0}'}"  
+                                                       VerticalOptions="End" 
+                                                       HorizontalOptions="End"
                                                        FontSize="Small"
-                                                       TextColor="Blue"></Label>
+                                                       TextColor="Gray"></Label>
                                             </Grid>
-                                            
+
                                         </DataTemplate>
                                     </BindableLayout.ItemTemplate>
                                 </StackLayout>
+
                             </Grid>
                             </ViewCell>
                         </DataTemplate>

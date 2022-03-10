@@ -26,31 +26,36 @@
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <StackLayout Grid.Column="0" VerticalOptions="Center">
+                                <StackLayout Grid.Column="0" VerticalOptions="Center" Margin="0,0,10,0">
                                     <Label Text="{Binding Id}" 
-                                           FontSize="Small" 
+                                           FontSize="Large" 
                                            FontAttributes="Bold" 
                                            TextColor="Red"></Label>
                                 </StackLayout>
                                 <StackLayout Grid.Column="1" VerticalOptions="Center">
-                                    <Label Text="{Binding FirstName}" 
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackLayout Grid.Column="0">
+                                            <Label Text="{Binding FirstName}" 
+                                           FontSize="Medium"
+                                           TextColor="Black"></Label>
+                                        </StackLayout>
+                                        <StackLayout Grid.Column="1">
+                                            <Label Text="{Binding LastName}" 
+                                           FontSize="Medium"
+                                           TextColor="Black"></Label>
+                                        </StackLayout>
+                                    </Grid>
+                                    <Label Text="{Binding Email, StringFormat='Email: {0}'}" 
                                            FontSize="Small"
-                                           TextColor="Blue"></Label>
-                                </StackLayout>
-                                <StackLayout Grid.Column="2" VerticalOptions="Center">
-                                    <Label Text="{Binding LastName}" 
+                                           TextColor="Gray"></Label>
+                                    <Label Text="{Binding PhoneNumber,StringFormat='Phone Number: {0}'}" 
                                            FontSize="Small"
-                                           TextColor="Blue"></Label>
-                                </StackLayout>
-                                <StackLayout Grid.Column="3" VerticalOptions="Center">
-                                    <Label Text="{Binding Email}" 
-                                           FontSize="Small"
-                                           TextColor="Blue"></Label>
-                                </StackLayout>
-                                <StackLayout Grid.Column="4" VerticalOptions="Center">
-                                    <Label Text="{Binding PhoneNumber}" 
-                                           FontSize="Small"
-                                           TextColor="Blue"></Label>
+                                           TextColor="Gray"></Label>
+                                    <Label/>
                                 </StackLayout>
                             </Grid>
                         </ViewCell>
