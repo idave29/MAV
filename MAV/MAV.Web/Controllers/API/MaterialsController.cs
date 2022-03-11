@@ -54,7 +54,6 @@
             {
                 return BadRequest("status not found");
             }
-            status.Materials = null;
             var materialType = this.materialTypeRepository.GetMaterialTypesByName(material.MaterialType);
             if (materialType == null)
             {

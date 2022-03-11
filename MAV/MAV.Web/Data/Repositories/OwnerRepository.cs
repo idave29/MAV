@@ -20,7 +20,7 @@
         {
             return await this.dataContext.Owners
                 .Include(t => t.User)
-                .Include(t => t.Materials)
+                //.Include(t => t.Materials)
                 .FirstOrDefaultAsync(t => t.Id == id);
         }
 
@@ -70,8 +70,8 @@
         public IEnumerable<OwnerRequest> GetOwnersWithMaterials()
         {
             var o = this.dataContext.Owners
-                .Include(a => a.User)
-                .Include(m => m.Materials);
+                .Include(a => a.User);
+                //.Include(m => m.Materials);
 
             if (o == null)
             {
@@ -85,19 +85,19 @@
                 LastName = or.User.LastName,
                 Email = or.User.Email,
                 PhoneNumber = or.User.PhoneNumber,
-                Materials = or.Materials.Select(m => new MaterialRequest
-                {
-                    Id = m.Id,
-                    Brand = m.Brand,
-                    Label = m.Label,
-                    MaterialModel = m.MaterialModel,
-                    MaterialType = m.MaterialType.Name,
-                    Name = m.Name,
-                    SerialNum = m.SerialNum,
-                    Status = m.Status.Name,
-                    Owner = m.Owner.User.FullName
+                //Materials = or.Materials.Select(m => new MaterialRequest
+                //{
+                //    Id = m.Id,
+                //    Brand = m.Brand,
+                //    Label = m.Label,
+                //    MaterialModel = m.MaterialModel,
+                //    MaterialType = m.MaterialType.Name,
+                //    Name = m.Name,
+                //    SerialNum = m.SerialNum,
+                //    Status = m.Status.Name,
+                //    Owner = m.Owner.User.FullName
 
-                }).ToList()
+                //}).ToList()
             }).ToList();
 
             return x;
@@ -107,10 +107,10 @@
         {
             var o = this.dataContext.Owners
                     .Include(u => u.User)
-                    .Include(m => m.Materials)
-                    .ThenInclude(mt => mt.MaterialType)
-                    .Include(m => m.Materials)
-                    .ThenInclude(s => s.Status)
+                    //.Include(m => m.Materials)
+                    //.ThenInclude(mt => mt.MaterialType)
+                    //.Include(m => m.Materials)
+                    //.ThenInclude(s => s.Status)
                     .FirstOrDefault(o => o.User.Email.ToLower() == emailOwner.Email);
 
             if (o == null)
@@ -125,18 +125,18 @@
                 LastName = o.User.LastName,
                 Email = o.User.Email,
                 PhoneNumber = o.User.PhoneNumber,
-                Materials = o.Materials.Select(m => new MaterialRequest
-                {
-                    Id = m.Id,
-                    Brand = m.Brand,
-                    Label = m.Label,
-                    MaterialModel = m.MaterialModel,
-                    MaterialType = m.MaterialType.Name,
-                    Name = m.Name,
-                    SerialNum = m.SerialNum,
-                    Status = m.Status.Name,
-                    Owner = m.Owner.User.FullName
-                }).ToList()
+                //Materials = o.Materials.Select(m => new MaterialRequest
+                //{
+                //    Id = m.Id,
+                //    Brand = m.Brand,
+                //    Label = m.Label,
+                //    MaterialModel = m.MaterialModel,
+                //    MaterialType = m.MaterialType.Name,
+                //    Name = m.Name,
+                //    SerialNum = m.SerialNum,
+                //    Status = m.Status.Name,
+                //    Owner = m.Owner.User.FullName
+                //}).ToList()
             };
 
             return x;
@@ -146,10 +146,10 @@
         {
             var o = this.dataContext.Owners
                     .Include(u => u.User)
-                    .Include(m => m.Materials)
-                    .ThenInclude(mt => mt.MaterialType)
-                    .Include(m => m.Materials)
-                    .ThenInclude(s => s.Status)
+                    //.Include(m => m.Materials)
+                    //.ThenInclude(mt => mt.MaterialType)
+                    //.Include(m => m.Materials)
+                    //.ThenInclude(s => s.Status)
                     .Where(n => n.User.FirstName == name);
 
             if (o == null)
@@ -164,18 +164,18 @@
                 LastName = or.User.LastName,
                 Email = or.User.Email,
                 PhoneNumber = or.User.PhoneNumber,
-                Materials = or.Materials.Select(m => new MaterialRequest
-                {
-                    Id = m.Id,
-                    Brand = m.Brand,
-                    Label = m.Label,
-                    MaterialModel = m.MaterialModel,
-                    MaterialType = m.MaterialType.Name,
-                    Name = m.Name,
-                    SerialNum = m.SerialNum,
-                    Status = m.Status.Name,
-                    Owner = m.Owner.User.FirstName
-                }).ToList()
+                //Materials = or.Materials.Select(m => new MaterialRequest
+                //{
+                //    Id = m.Id,
+                //    Brand = m.Brand,
+                //    Label = m.Label,
+                //    MaterialModel = m.MaterialModel,
+                //    MaterialType = m.MaterialType.Name,
+                //    Name = m.Name,
+                //    SerialNum = m.SerialNum,
+                //    Status = m.Status.Name,
+                //    Owner = m.Owner.User.FirstName
+                //}).ToList()
             }).ToList();
 
             return x;
@@ -185,10 +185,10 @@
         {
             var o = this.dataContext.Owners
                     .Include(u => u.User)
-                    .Include(m => m.Materials)
-                    .ThenInclude(mt => mt.MaterialType)
-                    .Include(m => m.Materials)
-                    .ThenInclude(s => s.Status)
+                    //.Include(m => m.Materials)
+                    //.ThenInclude(mt => mt.MaterialType)
+                    //.Include(m => m.Materials)
+                    //.ThenInclude(s => s.Status)
                     .FirstOrDefault(o => o.Id == id);
 
             if (o == null)
@@ -203,18 +203,18 @@
                 LastName = o.User.LastName,
                 Email = o.User.Email,
                 PhoneNumber = o.User.PhoneNumber,
-                Materials = o.Materials.Select(m => new MaterialRequest
-                {
-                    Id = m.Id,
-                    Brand = m.Brand,
-                    Label = m.Label,
-                    MaterialModel = m.MaterialModel,
-                    MaterialType = m.MaterialType.Name,
-                    Name = m.Name,
-                    SerialNum = m.SerialNum,
-                    Status = m.Status.Name,
-                    Owner = m.Owner.User.FirstName
-                }).ToList()
+                //Materials = o.Materials.Select(m => new MaterialRequest
+                //{
+                //    Id = m.Id,
+                //    Brand = m.Brand,
+                //    Label = m.Label,
+                //    MaterialModel = m.MaterialModel,
+                //    MaterialType = m.MaterialType.Name,
+                //    Name = m.Name,
+                //    SerialNum = m.SerialNum,
+                //    Status = m.Status.Name,
+                //    Owner = m.Owner.User.FirstName
+                //}).ToList()
             };
 
             return x;

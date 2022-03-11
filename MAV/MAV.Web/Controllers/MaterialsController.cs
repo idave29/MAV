@@ -16,15 +16,17 @@ namespace MAV.Web.Controllers
         private readonly DataContext _context;
 
         private readonly IMaterialRepository materialRepository;
+        private readonly IStatusRepository statusRepository;
 
-        public MaterialsController(IMaterialRepository materialRepository)
+        public MaterialsController(IMaterialRepository materialRepository, IStatusRepository statusRepository)
         {
+            this.statusRepository = statusRepository;
             this.materialRepository = materialRepository;
         }
-
         // GET: Materials
         public IActionResult Index()
         {
+           
             return View(this.materialRepository.GetMaterialsWithTypeWithStatusAndOwner());
         }
 
@@ -49,6 +51,14 @@ namespace MAV.Web.Controllers
         // GET: Materials/Create
         public IActionResult Create()
         {
+
+            IEnumerable<SelectListItem> list = this.statusRepository.GetComboStatuses();
+            if (list == null)
+            {
+                return NotFound();
+            }
+            ViewBag.List = list;
+
             return View();
         }
 

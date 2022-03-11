@@ -10,6 +10,6 @@
         [MaxLength(30, ErrorMessage = "{0} must have maximun {1} characters")]
         [Display(Name = "Name")]
         public string Name { set; get; }
-        public ICollection<Material> Materials { set; get; }
+        //public ICollection<Material> Materials { set; get; }
     }
 }

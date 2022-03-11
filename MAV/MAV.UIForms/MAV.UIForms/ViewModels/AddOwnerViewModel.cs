@@ -18,7 +18,7 @@
 
         public string PhoneNumber { get; set; }
 
-        public ICollection<MaterialRequest> Materials { get; set; }
+        //public ICollection<MaterialRequest> Materials { get; set; }
 
         private bool isRunning;
         public bool IsRunning

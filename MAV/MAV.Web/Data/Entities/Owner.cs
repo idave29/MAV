@@ -5,6 +5,6 @@
     {
         public int Id { get; set; }
         public User User { get; set; }
-        public ICollection<Material> Materials { set; get; }
+        //public ICollection<Material> Materials { set; get; }
     }
 }

@@ -12,6 +12,6 @@
 
         public string Name { get; set; }
 
-        public ICollection<Material> Materials { set; get; }
+        //public ICollection<Material> Materials { set; get; }
     }
 }
