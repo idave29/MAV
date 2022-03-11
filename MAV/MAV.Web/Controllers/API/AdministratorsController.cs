@@ -41,59 +41,42 @@
             {
                 return BadRequest(ModelState);
             }
-            //var entityAdministrators = new Administrator
-            //{
-            //    User = new Data.Entities.User
-            //    {
-            //        FirstName = administrator.FirstName,
-            //        LastName = administrator.LastName,
-            //        Email = administrator.Email,
-            //        PhoneNumber = administrator.PhoneNumber,
-            //        PasswordHash = administrator.Password                    
-            //    }
-            //};
-            //var newAdministrator = await this.administratorRepository.CreateAsync(entityAdministrators);
-            //return Ok(newAdministrator);
-
-
 
             var user = await this.userHelper.GetUserByEmailAsync(administrator.Email);
-            if (user != null)
+            if (user == null)
             {
-                return BadRequest(ModelState);
-            }
-            //var entityAdministrators = new Administrator
-            //{
-            //    User = new Data.Entities.User
-            //    {
-            //        FirstName = administrator.FirstName,
-            //        LastName = administrator.LastName,
-            //        Email = administrator.Email,
-            //        PhoneNumber = administrator.PhoneNumber,
-            //        UserName = administrator.Email
-            //    }
-            //};
+                user = new Data.Entities.User
+                {
+                    FirstName = administrator.FirstName,
+                    LastName = administrator.LastName,
+                    Email = administrator.Email,
+                    UserName = administrator.Email,
+                    PhoneNumber = administrator.PhoneNumber
+                };
 
-            user = new Data.Entities.User
+                var result = await this.userHelper.AddUserAsync(user, administrator.Password);
+
+                if (result != IdentityResult.Success)
+                {
+                    return BadRequest("No se puede crear el usuario en la base de datos");
+                }
+                await this.userHelper.AddUserToRoleAsync(user, "Admininstrator");
+            }
+
+            var emailAdmin = new EmailRequest { Email = administrator.Email };
+            var oldAdministrator = this.administratorRepository.GetAdministratorWithUserByEmail(emailAdmin);
+            if (oldAdministrator != null)
             {
-                FirstName = administrator.FirstName,
-                LastName = administrator.LastName,
-                Email = administrator.Email,
-                UserName = administrator.Email,
-                PhoneNumber = administrator.PhoneNumber
+                return BadRequest("Ya existe el usuario");
+            }
+
+            var entityAdministrators = new Administrator
+            {
+                User = user
             };
 
-            var result = await this.userHelper.AddUserAsync(user, administrator.Password);
-            if (result != IdentityResult.Success)
-            {
-                throw new InvalidOperationException("No se puede crear el usuario en la base de datos");
-            }
-            await userHelper.AddUserToRoleAsync(user, administrator.Role);
-
-
-            //var newAdministrator = await this.administratorRepository.CreateAsync(entityAdministrators);
-            //return Ok(newAdministrator);
-            return Ok(user); 
+            var newAdministrator = await this.administratorRepository.CreateAsync(entityAdministrators);
+            return Ok(newAdministrator);
         }
 
         [HttpPut("{id}")]
