@@ -20,8 +20,6 @@ namespace MAV.UIForms.ViewModels
 
         public string PhoneNumber { get; set; }
 
-        public ICollection<LoanRequest> Loans { get; set; }
-
         private bool isRunning;
         public bool IsRunning
         {
@@ -84,15 +82,10 @@ namespace MAV.UIForms.ViewModels
                 await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un numero de telefono", "Aceptar");
                 return;
             }
-            if (Loans == null)
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un loan", "Aceptar");
-                return;
-            }
 
             isEnabled = false;
             isRunning = true;
-            var intern = new InternRequest { FirstName = FirstName, LastName = LastName, Email = Email, PhoneNumber = PhoneNumber, Loans = Loans };
+            var intern = new InternRequest { FirstName = FirstName, LastName = LastName, Email = Email, PhoneNumber = PhoneNumber};
             var url = Application.Current.Resources["URLApi"].ToString();
             var response = await this.apiService.PostAsync(url,
                 "/api",
@@ -107,7 +100,7 @@ namespace MAV.UIForms.ViewModels
                 return;
             }
             var newIntern = (InternRequest)response.Result;
-            MainViewModel.GetInstance().Interns.Interns.Add(newIntern);
+            MainViewModel.GetInstance().Interns.AddInternToList(newIntern);
             isEnabled = true;
             isRunning = false;
             await App.Navigator.PopAsync();

@@ -5,15 +5,18 @@
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Linq;
     using Xamarin.Forms;
+
     public class InternsViewModel: BaseViewModel
     {
         private ApiService apiService;
-        private ObservableCollection<InternRequest> interns;
-        public ObservableCollection<InternRequest> Interns
+        private List<InternRequest> myIntern;
+        private ObservableCollection<InternItemViewModel> intern;
+        public ObservableCollection<InternItemViewModel> Interns
         {
-            get { return this.interns; }
-            set { this.SetValue(ref this.interns, value); }
+            get { return this.intern; }
+            set { this.SetValue(ref this.intern, value); }
         }
 
         private bool isRefreshing;
@@ -45,9 +48,47 @@
                 return;
             }
             var myIntern = (List<InternRequest>)response.Result;
-            this.Interns = new ObservableCollection<InternRequest>(myIntern);
+            RefreshInternList();
+        }
+        private void RefreshInternList()
+        {
+            this.Interns = new ObservableCollection<InternItemViewModel>(myIntern.Select(m => new InternItemViewModel
+            {
+                Email = m.Email,
+                FirstName = m.FirstName,
+                Id = m.Id,
+                LastName = m.LastName,
+                Password = m.Password,
+                PhoneNumber = m.PhoneNumber,
+            }).OrderBy(m => m.FirstName).ToList());
         }
 
+        public void AddInternToList(InternRequest intern)
+        {
+            this.myIntern.Add(intern);
+            RefreshInternList();
+        }
+
+        public void UpdateInternInList(InternRequest intern)
+        {
+            var previousIntern = myIntern.Where(mt => mt.Id == intern.Id).FirstOrDefault();
+            if (previousIntern != null)
+            {
+                this.myIntern.Remove(previousIntern);
+            }
+            this.myIntern.Add(intern);
+            RefreshInternList();
+        }
+
+        public void DeleteInternInList(int internId)
+        {
+            var previousIntern = myIntern.Where(mt => mt.Id == internId).FirstOrDefault();
+            if (previousIntern != null)
+            {
+                this.myIntern.Remove(previousIntern);
+            }
+            RefreshInternList();
+        }
     }
 
 }

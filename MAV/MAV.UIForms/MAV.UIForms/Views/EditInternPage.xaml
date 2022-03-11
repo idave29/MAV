@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MAV.UIForms.Views.AddInternPage"
+             x:Class="MAV.UIForms.Views.EditInternPage"
              BindingContext="{Binding Main, Source={StaticResource Locator}}"
-             Title="Intern">
+             Title="Edit Intern">
     <ContentPage.Content>
-        <ScrollView BindingContext="{Binding AddIntern}">
+        <ScrollView BindingContext="{Binding EditIntern}">
             <StackLayout>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -31,7 +31,15 @@
                         Command="{Binding SaveCommand}"
                         IsEnabled="{Binding IsEnabled}"
                         Background="#67CB19" 
-                        TextColor="White" HorizontalOptions="Fill" CornerRadius="20" ></Button>
+                        TextColor="White" HorizontalOptions="Fill" CornerRadius="20" >
+                </Button>
+                <Button Text="Delete" 
+                        Command="{Binding DeleteCommand}"
+                        IsEnabled="{Binding IsEnabled}"
+                        Background="red" 
+                        TextColor="White" HorizontalOptions="Fill" CornerRadius="20" >
+                </Button>
+
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

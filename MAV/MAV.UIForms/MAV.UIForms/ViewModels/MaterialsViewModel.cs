@@ -75,10 +75,10 @@
 
         public void UpdateMaterialInList(MaterialRequest material)
         {
-            var previousMaterialType = myMaterials.Where(mt => mt.Id == material.Id).FirstOrDefault();
-            if (previousMaterialType != null)
+            var previousMaterial = myMaterials.Where(mt => mt.Id == material.Id).FirstOrDefault();
+            if (previousMaterial != null)
             {
-                this.myMaterials.Remove(previousMaterialType);
+                this.myMaterials.Remove(previousMaterial);
             }
             this.myMaterials.Add(material);
             RefreshMaterialList();
