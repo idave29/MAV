@@ -2,6 +2,8 @@
 using MAV.Common.Models;
 using MAV.Common.Services;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -91,6 +93,85 @@ namespace MAV.UIForms.ViewModels
             this.Material = material;
             this.apiService = new ApiService();
             this.IsEnabled = true;
+            this.LoadMaterialTypes();
+            this.LoadOwners();
+            this.LoadStatuses();
+        }
+        private IList<string> statusList;
+        private IList<string> materialTypeList;
+        private IList<string> ownerList;
+        public IList<string> StatusList
+        {
+            get { return this.statusList; }
+            set { this.SetValue(ref this.statusList, value); }
+        }
+
+        public IList<string> MaterialTypeList
+        {
+            get { return this.materialTypeList; }
+            set { this.SetValue(ref this.materialTypeList, value); }
+        }
+
+        public IList<string> OwnerList
+        {
+            get { return this.ownerList; }
+            set { this.SetValue(ref this.ownerList, value); }
+        }
+        private async void LoadStatuses()
+        {
+            var url = Application.Current.Resources["URLApi"].ToString();
+            var response = await this.apiService.GetListAsync<StatusRequest>(
+                url,
+                "/api",
+                "/Status",
+                "bearer",
+                MainViewModel.GetInstance().Token.Token);
+
+            if (!response.IsSuccess)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
+                return;
+            }
+            StatusList = ((List<StatusRequest>)response.Result).Select(m => m.Name).ToList();
+
+        }
+
+        private async void LoadMaterialTypes()
+        {
+            var url = Application.Current.Resources["URLApi"].ToString();
+            var response = await this.apiService.GetListAsync<MaterialTypeRequest>(
+                url,
+                "/api",
+                "/MaterialTypes",
+                "bearer",
+                MainViewModel.GetInstance().Token.Token);
+
+            if (!response.IsSuccess)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
+                return;
+            }
+            MaterialTypeList = ((List<MaterialTypeRequest>)response.Result).Select(m => m.Name).ToList();
+
+        }
+
+        private async void LoadOwners()
+        {
+            var url = Application.Current.Resources["URLApi"].ToString();
+            var response = await this.apiService.GetListAsync<OwnerRequest>(
+                url,
+                "/api",
+                "/Owners",
+                "bearer",
+                MainViewModel.GetInstance().Token.Token);
+
+            if (!response.IsSuccess)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
+                return;
+            }
+            OwnerList = ((List<OwnerRequest>)response.Result).Select(m => $"{m.LastName} {m.FirstName}").ToList();
+
         }
     }
 }

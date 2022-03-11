@@ -8,7 +8,8 @@
         <ToolbarItem IconImageSource="ic_action_add_circle" Command="{Binding AddMaterialCommand}"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout
+        <StackLayout>
+            <StackLayout
             BindingContext="{Binding Materials}"
             Padding="10">
             <ListView 
@@ -21,10 +22,14 @@
                     <DataTemplate>
                         <ViewCell>
                             <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
+                                    <Grid.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding SelectMaterialCommand}"/>
+                                    </Grid.GestureRecognizers>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
                                 <StackLayout Grid.Column="0" VerticalOptions="Center" Margin="0,0,10,0">
                                     <Label Text="{Binding Id}" 
                                            FontSize="Large" 
@@ -57,11 +62,13 @@
                                            FontSize="Small"
                                            TextColor="Gray"></Label>
                                 </StackLayout>
-                            </Grid>
+                                    <Image Grid.Column="2" Source="info.png"/>
+                                </Grid>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MAV.UIForms.Views.EditMaterialPage"
              BindingContext="{Binding Main, Source={StaticResource Locator}}"
-             Title="Edit Material Type">
+             Title="Edit Material">
     <ContentPage.Content>
         <ScrollView BindingContext="{Binding EditMaterial}">
             <StackLayout>
@@ -16,6 +16,27 @@
                     <Label Text="Name" Grid.Column="0" Grid.Row="0" VerticalOptions="Center"></Label>
                     <Entry Grid.Column="1" Grid.Row="0" Keyboard="Text" Placeholder="Introduce el material" Text="{Binding Material.Name}">
                     </Entry>
+
+                    <Label Text="Label" Grid.Column="0" Grid.Row="1" VerticalOptions="Center"></Label>
+                    <Entry Grid.Column="1" Grid.Row="1" Keyboard="Text" Placeholder="Introduce la etiqueta" Text="{Binding Material.Label}"></Entry>
+
+                    <Label Text="Brand" Grid.Column="0" Grid.Row="2" VerticalOptions="Center"></Label>
+                    <Entry Grid.Column="1" Grid.Row="2" Keyboard="Text" Placeholder="Introduce la marca" Text="{Binding Material.Brand}"></Entry>
+
+                    <Label Text="MaterialModel" Grid.Column="0" Grid.Row="3" VerticalOptions="Center"></Label>
+                    <Entry Grid.Column="1" Grid.Row="3" Keyboard="Text" Placeholder="Introduce el modelo" Text="{Binding Material.MaterialModel}"></Entry>
+
+                    <Label Text="SerialNum" Grid.Column="0" Grid.Row="4" VerticalOptions="Center"></Label>
+                    <Entry Grid.Column="1" Grid.Row="4" Keyboard="Text" Placeholder="Introduce el numero de serie" Text="{Binding Material.SerialNum}"></Entry>
+
+                    <Label Text="Status" Grid.Column="0" Grid.Row="5" VerticalOptions="Center"></Label>
+                    <Picker Grid.Column="1" Grid.Row="5" Title="Selecciona un estado" ItemsSource="{Binding StatusList}" SelectedItem="{Binding Material.Status, Mode=TwoWay}"/>
+
+                    <Label Text="MaterialType" Grid.Column="0" Grid.Row="6" VerticalOptions="Center"></Label>
+                    <Picker Grid.Column="1" Grid.Row="6" Title="Selecciona un tipo de material" ItemsSource="{Binding MaterialTypeList}" SelectedItem="{Binding Material.MaterialType, Mode=TwoWay}"/>
+
+                    <Label Text="Owner" Grid.Column="0" Grid.Row="7" VerticalOptions="Center"></Label>
+                    <Picker Grid.Column="1" Grid.Row="7" Title="Selecciona un dueño" ItemsSource="{Binding OwnerList}" SelectedItem="{Binding Material.Owner, Mode=TwoWay}"/>
                 </Grid>
                 <ActivityIndicator IsRunning="{Binding IsRunning}" VerticalOptions="CenterAndExpand">
                 </ActivityIndicator>
