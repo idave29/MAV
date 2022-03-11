@@ -61,7 +61,14 @@
 
             isEnabled = false;
             isRunning = true;
-            var owner = new OwnerRequest { FirstName = FirstName, LastName = LastName, Email = Email, PhoneNumber = PhoneNumber };
+            var owner = new OwnerRequest 
+            { 
+                FirstName = FirstName, 
+                LastName = LastName, 
+                Email = Email, 
+                PhoneNumber = PhoneNumber,
+                Password = "123456"
+            };
             var url = Application.Current.Resources["URLApi"].ToString();
             var response = await this.apiService.PostAsync(url,
                 "/api",

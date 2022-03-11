@@ -43,78 +43,86 @@
             {
                 return BadRequest(ModelState);
             }
-            var entityOwner = new Owner
+
+            var user = await this.userHelper.GetUserByEmailAsync(ownerRequest.Email);
+            if (user == null)
             {
-                User = new Data.Entities.User()
+                user = new Data.Entities.User
                 {
                     FirstName = ownerRequest.FirstName,
                     LastName = ownerRequest.LastName,
                     Email = ownerRequest.Email,
-                    PhoneNumber = ownerRequest.PhoneNumber,
-                    //PasswordHash = ownerRequest.LastName
+                    UserName = ownerRequest.Email,
+                    PhoneNumber = ownerRequest.PhoneNumber
+                };
+
+                var result = await this.userHelper.AddUserAsync(user, ownerRequest.Password);
+
+                if (result != IdentityResult.Success)
+                {
+                    return BadRequest("No se puede crear el usuario en la base de datos");
                 }
+                await this.userHelper.AddUserToRoleAsync(user, "Owner");
+            }
+
+            var emailOwner = new EmailRequest { Email = ownerRequest.Email };
+            var oldOwner = this.ownerRepository.GetOwnerWithMaterialsByEmail(emailOwner);
+            if (oldOwner != null)
+            {
+                return BadRequest("Ya existe el usuario");
+            }
+
+            var entityOwner = new Owner
+            {
+                User = user
             };
-            var newAdministrator = await this.ownerRepository.CreateAsync(entityOwner);
-            return Ok(newAdministrator);
-            //if (ModelState.IsValid)
-            //{
-            //    var user = await userHelper.GetUserByEmailAsync(ownerRequest.Email);
-            //    if (user == null)
-            //    {
-            //        user = new Data.Entities.User
-            //        {
 
-            //            FirstName = ownerRequest.FirstName,
-            //            LastName = ownerRequest.LastName,
-            //            PhoneNumber = ownerRequest.PhoneNumber,
-            //            Email = ownerRequest.Email,
-            //            UserName = ownerRequest.Email
-            //        };
+            var newOwner = await this.ownerRepository.CreateAsync(entityOwner);
+            return Ok(newOwner);
 
-            //        var result = await userHelper.AddUserAsync(user, ownerRequest.Password);
-            //        var newStatus = await this.ownerRepository.CreateAsync(result);
-            //        return Ok(newStatus);
-
-            //    }
         }
-        //        [HttpPut("{id}")]
-        //        public async Task<IActionResult> PutMaterialType([FromRoute] int id, [FromBody] MAV.Common.Models.OwnerRequest materialType)
-        //        {
-        //            if (!ModelState.IsValid)
-        //            {
-        //                return BadRequest(ModelState);
-        //            }
-        //            if (id != materialType.Id)
-        //            {
-        //                return BadRequest();
-        //            }
-        //            var oldMaterialType = await this.materialTypeRepository.GetByIdAsync(id);
-        //            if (oldMaterialType == null)
-        //            {
-        //                return BadRequest("Id not found");
-        //            }
-        //            oldMaterialType.Name = materialType.Name;
-        //            var updateMaterialType = await this.materialTypeRepository.UpdateAsync(oldMaterialType);
-        //            return Ok(updateMaterialType);
-        //        }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutOwner([FromRoute] int id, [FromBody] OwnerRequest owner)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            if (id != owner.Id)
+            {
+                return BadRequest();
+            }
+            var oldOwner = await this.ownerRepository.GetByIdAsync(id);
+            if (oldOwner == null)
+            {
+                return BadRequest("Id not found");
+            }
 
-        //        [HttpDelete("{id}")]
-        //        public async Task<IActionResult> DeleteMaterialType([FromRoute] int id)
-        //        {
-        //            if (!ModelState.IsValid)
-        //            {
-        //                return BadRequest(ModelState);
-        //            }
-        //            var oldMaterialType = await this.materialTypeRepository.GetByIdAsync(id);
-        //            if (oldMaterialType == null)
-        //            {
-        //                return BadRequest("Id not found");
-        //            }
-        //            await this.materialTypeRepository.DeleteAsync(oldMaterialType);
-        //            return Ok(oldMaterialType);
-        //        }
-        //    }
+            oldOwner.User.FirstName = owner.FirstName;
+            oldOwner.User.LastName = owner.LastName;
+            oldOwner.User.Email = owner.Email;
+            oldOwner.User.PhoneNumber = owner.PhoneNumber;
 
-        //}
+            var updateOwner = await this.ownerRepository.UpdateAsync(oldOwner);
+            return Ok(updateOwner);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteOwner([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var oldOwner = await this.ownerRepository.GetByIdAsync(id);
+            if (oldOwner == null)
+            {
+                return BadRequest("Id not found");
+            }
+
+            await this.ownerRepository.DeleteAsync(oldOwner);
+            return Ok(oldOwner);
+        }
     }
 }
