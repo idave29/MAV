@@ -197,5 +197,26 @@
 
             return x;
         }
+        public InternRequest GetInternWithUserByEmail(EmailRequest email)
+        {
+            var a = this.dataContext.Interns
+               .Include(t => t.User)
+               .FirstOrDefault(u => u.User.Email.ToLower() == email.ToString());
+
+            if (a == null)
+            {
+                return null;
+            }
+            var x = new InternRequest
+            {
+                Id = a.Id,
+                Email = a.User.Email,
+                FirstName = a.User.FirstName,
+                LastName = a.User.LastName,
+                PhoneNumber = a.User.PhoneNumber
+            };
+
+            return x;
+        }
     }
 }
