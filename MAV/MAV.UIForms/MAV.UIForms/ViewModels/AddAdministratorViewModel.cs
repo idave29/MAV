@@ -60,13 +60,12 @@ namespace MAV.UIForms.ViewModels
             isEnabled = false;
             isRunning = true;
             var administrator = new AdministratorRequest 
-            { 
-                FirstName = this.FirstName, 
-                LastName = this.LastName, 
-                Email = this.Email, 
-                PhoneNumber = this.PhoneNumber, 
-                Password = "123456", 
-                Role = "Administrator"
+            {
+                FirstName = FirstName,
+                LastName = LastName,
+                Email = Email,
+                PhoneNumber = PhoneNumber,
+                Password = "123456"
             };
             var url = Application.Current.Resources["URLApi"].ToString();
             var response = await this.apiService.PostAsync(url,
