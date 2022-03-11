@@ -7,7 +7,7 @@ using Xamarin.Forms;
 
 namespace MAV.UIForms.ViewModels
 {
-    public class AddStatusViewModel:BaseViewModel
+    public class AddStatusViewModel : BaseViewModel
     {
         private readonly ApiService apiService;
         public string Name { get; set; }
@@ -30,12 +30,12 @@ namespace MAV.UIForms.ViewModels
 
         private async void Save()
         {
-            if(string.IsNullOrEmpty(Name))
+            if (string.IsNullOrEmpty(Name))
             {
                 await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un estado", "Aceptar");
                 return;
             }
-            
+
             isEnabled = false;
             isRunning = true;
             var status = new StatusRequest { Name = Name };
@@ -45,15 +45,15 @@ namespace MAV.UIForms.ViewModels
                 "/Status",
                 status,
                 "bearer",
-                MainViewModel.GetInstance().Token.Token); 
+                MainViewModel.GetInstance().Token.Token);
 
-            if(!response.IsSuccess)
+            if (!response.IsSuccess)
             {
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
             }
             var newStatus = (StatusRequest)response.Result;
-            MainViewModel.GetInstance().Statuses.Statuses.Add(newStatus);
+            MainViewModel.GetInstance().Statuses.AddStatusToList(newStatus);
             isEnabled = true;
             isRunning = false;
             await App.Navigator.PopAsync();

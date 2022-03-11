@@ -41,6 +41,8 @@
         public AddApplicantViewModel AddApplicant { get; set; }
         public EditOwnerViewModel EditOwner { get; set; }
         public EditMaterialTypeViewModel EditMaterialType { get; set; }
+        public EditStatusViewModel EditStatus { get; set; }
+
 
 
         public ICommand AddStatusCommand { get { return new RelayCommand(GoStatusCommand); } }

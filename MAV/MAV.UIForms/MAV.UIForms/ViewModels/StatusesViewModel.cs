@@ -5,13 +5,15 @@
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Linq;
     using Xamarin.Forms;
 
     public class StatusesViewModel : BaseViewModel
     {
         private ApiService apiService;
-        private ObservableCollection<StatusRequest> statuses;
-        public ObservableCollection<StatusRequest> Statuses
+        private List<StatusRequest> myStatuses;
+        private ObservableCollection<StatusItemViewModel> statuses;
+        public ObservableCollection<StatusItemViewModel> Statuses
         {
             get { return this.statuses; }
             set { this.SetValue(ref this.statuses, value); }
@@ -46,8 +48,46 @@
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
             }
-            var myStatuses = (List<StatusRequest>)response.Result;
-            this.Statuses = new ObservableCollection<StatusRequest>(myStatuses);
+            myStatuses = (List<StatusRequest>)response.Result;
+            RefreshStatusesList();
+        }
+
+        private void RefreshStatusesList()
+        {
+            this.Statuses = new ObservableCollection<StatusItemViewModel>
+                (myStatuses.Select(at => new StatusItemViewModel
+                {
+                    Id = at.Id,
+                    Name = at.Name
+                }).OrderBy(at => at.Name).ToList());
+        }
+
+        public void AddStatusToList(StatusRequest status)
+        {
+            this.myStatuses.Add(status);
+            RefreshStatusesList();
+        }
+
+        public void UpdateStatusToList(StatusRequest status)
+        {
+            var previousStatus = myStatuses.Where(at => at.Id == status.Id).FirstOrDefault();
+            if (previousStatus != null)
+            {
+                this.myStatuses.Remove(previousStatus);
+            }
+            this.myStatuses.Add(status);
+            RefreshStatusesList();
+        }
+
+        public void DeleteStatusInList(int statusId)
+        {
+            var previousStatus = myStatuses.Where(at => at.Id == statusId).FirstOrDefault();
+            if (previousStatus != null)
+            {
+                this.myStatuses.Remove(previousStatus);
+            }
+            RefreshStatusesList();
         }
     }
 }
+
