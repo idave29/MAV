@@ -5,13 +5,15 @@
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Linq;
     using Xamarin.Forms;
 
     public class MaterialsViewModel : BaseViewModel
     {
         private ApiService apiService;
-        private ObservableCollection<MaterialRequest> material;
-        public ObservableCollection<MaterialRequest> Materials
+        private List<MaterialRequest> myMaterials;
+        private ObservableCollection<MaterialItemViewModel> material;
+        public ObservableCollection<MaterialItemViewModel> Materials
         {
             get { return this.material; }
             set { this.SetValue(ref this.material, value); }
@@ -45,8 +47,51 @@
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
             }
-            var myMaterial = (List<MaterialRequest>)response.Result;
-            this.Materials = new ObservableCollection<MaterialRequest>(myMaterial);
+            myMaterials = (List<MaterialRequest>)response.Result;
+            RefreshMaterialList();
+        }
+        private void RefreshMaterialList()
+        {
+            this.Materials = new ObservableCollection<MaterialItemViewModel>(myMaterials.Select(m => new MaterialItemViewModel
+            {
+                Id = m.Id,
+                Brand = m.Brand,
+                Label = m.Label,
+                MaterialModel = m.MaterialModel,
+                MaterialType = m.MaterialType,
+                Name = m.Name,
+                Owner = m.Owner,
+                SerialNum = m.SerialNum,
+                Status = m.Status
+            }).OrderBy(m => m.Name).ToList());
+        }
+    
+
+        public void AddMaterialToList(MaterialRequest material)
+        {
+            this.myMaterials.Add(material);
+            RefreshMaterialList();
+        }
+
+        public void UpdateMaterialInList(MaterialRequest material)
+        {
+            var previousMaterialType = myMaterials.Where(mt => mt.Id == material.Id).FirstOrDefault();
+            if (previousMaterialType != null)
+            {
+                this.myMaterials.Remove(previousMaterialType);
+            }
+            this.myMaterials.Add(material);
+            RefreshMaterialList();
+        }
+
+        public void DeleteMaterialInList(int materialId)
+        {
+            var previousMaterial = myMaterials.Where(mt => mt.Id == materialId).FirstOrDefault();
+            if (previousMaterial != null)
+            {
+                this.myMaterials.Remove(previousMaterial);
+            }
+            RefreshMaterialList();
         }
     }
 }

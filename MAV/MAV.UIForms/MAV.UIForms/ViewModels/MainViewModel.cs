@@ -42,6 +42,7 @@
         public EditOwnerViewModel EditOwner { get; set; }
         public EditMaterialTypeViewModel EditMaterialType { get; set; }
         public EditStatusViewModel EditStatus { get; set; }
+        public EditMaterialViewModel EditMaterial { get; set; }
 
 
 

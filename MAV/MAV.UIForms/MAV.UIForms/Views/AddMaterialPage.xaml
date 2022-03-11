@@ -15,7 +15,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Label Text="Name" Grid.Column="0" Grid.Row="0" VerticalOptions="Center"></Label>
-                    <Entry Grid.Column="1" Grid.Row="0" Keyboard="Text" Placeholder="Introduce el estado" Text="{Binding Name}"></Entry>
+                    <Entry Grid.Column="1" Grid.Row="0" Keyboard="Text" Placeholder="Introduce el nombre" Text="{Binding Name}"></Entry>
 
                     <Label Text="Label" Grid.Column="0" Grid.Row="1" VerticalOptions="Center"></Label>
                     <Entry Grid.Column="1" Grid.Row="1" Keyboard="Text" Placeholder="Introduce la etiqueta" Text="{Binding Label}"></Entry>

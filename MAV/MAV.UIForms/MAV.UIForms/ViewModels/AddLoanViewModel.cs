@@ -52,7 +52,7 @@ namespace MAV.UIForms.ViewModels
                 return;
             }
             var newStatus = (StatusRequest)response.Result;
-            MainViewModel.GetInstance().Statuses.Statuses.Add(newStatus);
+            //MainViewModel.GetInstance().Statuses.Statuses.Add(newStatus);
             isEnabled = true;
             isRunning = false;
             await App.Navigator.PopAsync();

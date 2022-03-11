@@ -87,7 +87,10 @@
             if (si == null)
                 return null;
             else
+            {
+                si.Materials = null;
                 return si;
+            }
         }
     }
 }

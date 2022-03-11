@@ -181,7 +181,7 @@ namespace MAV.UIForms.ViewModels
                 return;
             }
             var newMaterial = (MaterialRequest)response.Result;
-            MainViewModel.GetInstance().Materials.Materials.Add(newMaterial);
+            MainViewModel.GetInstance().Materials.AddMaterialToList(newMaterial);
             isEnabled = true;
             isRunning = false;
             await App.Navigator.PopAsync();
