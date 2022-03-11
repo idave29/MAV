@@ -54,25 +54,42 @@
 
             return x;
         }
-    
-        public IEnumerable<MaterialTypeRequest> GetMaterialTypesByName(string name)
+
+        //public IEnumerable<MaterialTypeRequest> GetMaterialTypesByName(string name)
+        //{
+        //    var a = this.dataContext.MaterialTypes
+        //        .Where(mt => mt.Name == name);
+
+        //    if (a == null)
+        //    {
+        //        return null;
+        //    }
+
+        //    var x = a.Select(mt => new MaterialTypeRequest
+        //    {
+        //       Id = mt.Id,
+        //       Name = mt.Name
+
+        //    }).ToList();
+
+        //    return x;
+        //}
+        public MaterialType GetMaterialTypesByName(string name)
         {
-            var a = this.dataContext.MaterialTypes
-                .Where(mt => mt.Name == name);
-
-            if (a == null)
+            var a = this.dataContext.MaterialTypes;
+            var si = new MaterialType();
+            foreach (MaterialType s in a)
             {
-                return null;
+                if (s.Name == name)
+                {
+                    si = s;
+                    continue;
+                }
             }
-
-            var x = a.Select(mt => new MaterialTypeRequest
-            {
-               Id = mt.Id,
-               Name = mt.Name
-
-            }).ToList();
-            
-            return x;
+            if (si == null)
+                return null;
+            else
+                return si;
         }
     }
 }

@@ -12,10 +12,17 @@
     public class MaterialsController : Controller
     {
         private readonly IMaterialRepository materialRepository;
+        private readonly IStatusRepository statusRepository;
+        private readonly IMaterialTypeRepository materialTypeRepository;
+        private readonly IOwnerRepository ownerRepository;
 
-        public MaterialsController(IMaterialRepository materialRepository)
+        public MaterialsController(IMaterialRepository materialRepository, IStatusRepository statusRepository, IMaterialTypeRepository materialTypeRepository,
+            IOwnerRepository ownerRepository)
         {
             this.materialRepository = materialRepository;
+            this.statusRepository = statusRepository;
+            this.materialTypeRepository = materialTypeRepository;
+            this.ownerRepository = ownerRepository;
         }
 
         [HttpGet]
@@ -42,52 +49,34 @@
             {
                 return BadRequest(ModelState);
             }
+            var status = this.statusRepository.GetStatusByName(material.Status);
+            if (status == null)
+            {
+                return BadRequest("status not found");
+            }
+            var materialType = this.materialTypeRepository.GetMaterialTypesByName(material.MaterialType);
+            if (materialType == null)
+            {
+                return BadRequest("materialtype not found");
+            }
+            var owner = this.ownerRepository.GetOwnerByName(material.Owner);
+            if (owner == null)
+            {
+                return BadRequest("owner not found");
+            }
 
-            var statusNW = new Data.Entities.Status();
-            var materialTypeNW = new Data.Entities.MaterialType();
-            var ownerNW = new Data.Entities.Owner();
-            statusNW.Name = material.Name;
-            materialTypeNW.Name = material.Name;
-            //ownerNW.User.FirstName = material.Owner;
-
-            var entityStatus = new MAV.Web.Data.Entities.Material
+            var entityMaterial = new MAV.Web.Data.Entities.Material
             {
                 Name = material.Name,
-                Label = material.Label,
+                Owner = owner,
+                Status = status,
+                MaterialType = materialType,
                 Brand = material.Brand,
+                Label = material.Label,
                 MaterialModel = material.MaterialModel,
-                SerialNum = material.SerialNum,
-                Status = new Data.Entities.Status()
-                {
-                    Id = 0,
-                    Name = material.Status,
-                    Materials = null
-                },
-                MaterialType = new Data.Entities.MaterialType()
-                {
-                    Id = 0,
-                    Materials = null,
-                    Name = material.MaterialType
-                },
-                Owner = new Data.Entities.Owner()
-                {
-                    Id=0,
-                    Materials= null,
-                    User= new Data.Entities.User()
-                    {
-                        FirstName = material.Owner,
-                        LastName = material.Owner,
-                        Email = null,
-                        PhoneNumber = material.Owner,
-                        PasswordHash = "123456"
-                    }
-                }
-                
-                //Status = statusNW,
-                //MaterialType = materialTypeNW,
-                //Owner = ownerNW
+                SerialNum = material.SerialNum
             };
-            var newMaterial = await this.materialRepository.CreateAsync(entityStatus);
+            var newMaterial = await this.materialRepository.CreateAsync(entityMaterial);
             return Ok(newMaterial);
         }
         [HttpPut("{id}")]

@@ -219,5 +219,36 @@
 
             return x;
         }
+        public Owner GetOwnerByName(string name)
+        {
+            var a = this.dataContext.Users;
+            var si = new Entities.User();
+            foreach (MAV.Web.Data.Entities.User s in a)
+            {
+                if (s.FirstName == name)
+                {
+
+                    si = s;
+                    continue;
+                }
+            }
+            if (si == null)
+                return null;
+            else
+            {
+                var ow = this.dataContext.Owners;
+                var x = new Owner();
+                foreach (Owner owner in ow)
+                {
+                    if (owner.User == si)
+                    {
+
+                        x = owner;
+                        continue;
+                    }
+                }
+                return (x);
+            }
+        }
     }
 }

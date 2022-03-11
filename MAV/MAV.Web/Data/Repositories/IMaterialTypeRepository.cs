@@ -11,6 +11,6 @@
         IEnumerable<SelectListItem> GetComboMateriaType();
         IQueryable GetMaterialTypes();
         MaterialTypeRequest GetMaterialTypeById(int id);
-        IEnumerable<MaterialTypeRequest> GetMaterialTypesByName(string name);
+        MaterialType GetMaterialTypesByName(string name);
     }
 }

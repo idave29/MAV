@@ -11,6 +11,6 @@
         IEnumerable<SelectListItem> GetComboStatuses();
         IQueryable GetStatus();
         StatusRequest GetStatusById(int id);
-        IEnumerable<StatusRequest> GetStatusByName(string name);
+        Status GetStatusByName(string name);
     }
 }

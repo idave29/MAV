@@ -53,24 +53,41 @@
             return x;
         }
 
-        public IEnumerable<StatusRequest> GetStatusByName(string name)
+        //public IEnumerable<StatusRequest> GetStatusByName(string name)
+        //{
+        //    var a = this.dataContext.Statuses
+        //        .Where(n => n.Name == name);
+
+        //    if (a == null)
+        //    {
+        //        return null;
+        //    }
+
+        //    var x = a.Select(a => new StatusRequest
+        //    {
+        //        Id = a.Id,
+        //        Name = a.Name
+
+        //    }).ToList();
+
+        //    return x;
+        //}
+        public Status GetStatusByName(string name)
         {
-            var a = this.dataContext.Statuses
-                .Where(n => n.Name == name);
-
-            if (a == null)
+            var a = this.dataContext.Statuses;
+            var si = new Status();
+            foreach (Status s in a)
             {
-                return null;
+                if (s.Name == name)
+                {
+                    si = s;
+                    continue;
+                }
             }
-
-            var x = a.Select(a => new StatusRequest
-            {
-                Id = a.Id,
-                Name = a.Name
-
-            }).ToList();
-
-            return x;
+            if (si == null)
+                return null;
+            else
+                return si;
         }
     }
 }
