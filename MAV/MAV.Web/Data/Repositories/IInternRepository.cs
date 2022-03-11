@@ -19,6 +19,7 @@
         InternRequest GetInternWithLoansByEmail(EmailRequest emailIntern);
         IEnumerable<InternRequest> GetInternsWithLoansLoanDetailsWithMaterialAndOwnerByName(string name);
         IEnumerable<InternRequest> GetInternsWithLoansLoanDetailsWithMaterialAndOwnerById(int id);
+        InternRequest GetInternWithUserByEmail(EmailRequest email);
 
     }
 }

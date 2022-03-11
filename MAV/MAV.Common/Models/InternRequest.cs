@@ -11,10 +11,8 @@ namespace MAV.Common.Models
         public string LastName { get; set; }
 
         public string Email { get; set; }
-
         public string PhoneNumber { get; set; }
-
-        public ICollection<LoanRequest> Loans { get; set; }
+        public string Password { get; set; }
 
     }
 }

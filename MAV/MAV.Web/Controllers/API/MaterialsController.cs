@@ -95,15 +95,29 @@
             {
                 return BadRequest("Id not found");
             }
+            var owner = this.ownerRepository.GetOwnerByName(material.Owner);
+            if (owner == null)
+            {
+                return BadRequest("owner not found");
+            }
+            var status = this.statusRepository.GetStatusByName(material.Status);
+            if (status == null)
+            {
+                return BadRequest("status not found");
+            }
+            var materialType = this.materialTypeRepository.GetMaterialTypesByName(material.MaterialType);
+            if (materialType == null)
+            {
+                return BadRequest("materialtype not found");
+            }
             oldMaterial.Name = material.Name;
-           // oldMaterial.Owner = material.Owner;
+            oldMaterial.Owner = owner;
             oldMaterial.Label = material.Label;
             oldMaterial.Brand = material.Brand;
             oldMaterial.MaterialModel = material.MaterialModel;
             oldMaterial.SerialNum = material.SerialNum;
-                //oldMaterial.Status = material.Status;
-                //oldMaterial.MaterialType = material.MaterialType;
-                //oldMaterial.Owner = material.Owner;
+            oldMaterial.Status = status;
+            oldMaterial.MaterialType = materialType;
             var updateMaterial = await this.materialRepository.UpdateAsync(oldMaterial);
             return Ok(updateMaterial);
         }
