@@ -3,6 +3,7 @@ using MAV.Common.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using Xamarin.Forms;
 
@@ -11,8 +12,9 @@ namespace MAV.UIForms.ViewModels
     public class OwnersViewModel : BaseViewModel
     {
         private ApiService apiService;
-        private ObservableCollection<OwnerRequest> owners;
-        public ObservableCollection<OwnerRequest> Owners
+        private List<OwnerRequest> myOwners;
+        private ObservableCollection<OwnerItemViewModel> owners;
+        public ObservableCollection<OwnerItemViewModel> Owners
         {
             get { return this.owners; }
             set { this.SetValue(ref this.owners, value); }
@@ -45,8 +47,50 @@ namespace MAV.UIForms.ViewModels
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
             }
-            var myOwners = (List<OwnerRequest>)response.Result;
-            this.Owners = new ObservableCollection<OwnerRequest>(myOwners);
+            myOwners = (List<OwnerRequest>)response.Result;
+            RefreshOwnersList(); 
         }
+
+        private void RefreshOwnersList()
+        {
+            this.Owners = new ObservableCollection<OwnerItemViewModel>(myOwners.Select(ow => new OwnerItemViewModel
+            {
+                Id = ow.Id,
+                FirstName = ow.FirstName,
+                LastName = ow.LastName,
+                Email = ow.Email,
+                //Materials = ow.Materials,
+                //Password = ow.Password, 
+                PhoneNumber = ow.PhoneNumber
+            }).OrderBy(ow => ow.FirstName).ToList());
+        }
+
+        public void AddOwnerToList(OwnerRequest owner)
+        {
+            this.myOwners.Add(owner);
+            RefreshOwnersList(); 
+        }
+
+        public void UpdateOwnerInList(OwnerRequest owner)
+        {
+            var previousOwner = myOwners.Where(ow => ow.Id == owner.Id).FirstOrDefault();
+            if(previousOwner != null)
+            {
+                this.myOwners.Remove(previousOwner);
+            }
+            this.myOwners.Add(owner);
+            RefreshOwnersList();
+        }
+
+        public void DeleteOwnerInList(int ownerId)
+        {
+            var previousOwner = myOwners.Where(ow => ow.Id == ownerId).FirstOrDefault();
+            if (previousOwner != null)
+            {
+                this.myOwners.Remove(previousOwner);
+            }
+            RefreshOwnersList();
+        }
+
     }
 }

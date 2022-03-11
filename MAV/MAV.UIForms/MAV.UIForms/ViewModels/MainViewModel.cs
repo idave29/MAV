@@ -39,6 +39,8 @@
         public AddApplicantTypeViewModel AddApplicantType { get; set; }
         public AddLoanDetailViewModel AddLoanDetail { get; set; }
         public AddApplicantViewModel AddApplicant { get; set; }
+        public EditOwnerViewModel EditOwner { get; set; }
+        public EditMaterialTypeViewModel EditMaterialType { get; set; }
 
 
         public ICommand AddStatusCommand { get { return new RelayCommand(GoStatusCommand); } }

@@ -51,7 +51,7 @@
                 return;
             }
             var newType = (MaterialTypeRequest)response.Result;
-            MainViewModel.GetInstance().MaterialTypes.MaterialTypes.Add(newType);
+            MainViewModel.GetInstance().MaterialTypes.AddMaterialTypeToList(newType);
             isEnabled = true;
             isRunning = false;
             await App.Navigator.PopAsync();

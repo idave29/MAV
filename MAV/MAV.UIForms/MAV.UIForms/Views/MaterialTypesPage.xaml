@@ -8,39 +8,48 @@
         <ToolbarItem IconImageSource="ic_action_add_circle" Command="{Binding AddMaterialTypeCommand}"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout
+        <StackLayout>
+            <StackLayout
             BindingContext="{Binding MaterialTypes}"
             Padding="10">
-            <ListView 
+                <ListView 
                 IsPullToRefreshEnabled="True"
                 IsRefreshing="{Binding IsRefresing}"
                 HasUnevenRows="True"
                 ItemsSource="{Binding MaterialTypes}"
                 RefreshCommand="{Binding RefreshCommand}">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <StackLayout Grid.Column="0" VerticalOptions="Center" Margin="0,0,10,0">
-                                    <Label Text="{Binding Id}" 
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Grid>
+                                    <Grid.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding SelectMaterialTypeCommand}"/>
+                                    </Grid.GestureRecognizers>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackLayout Grid.Column="0" VerticalOptions="Center" Margin="0,0,10,0">
+                                        <Label Text="{Binding Id}" 
                                            FontSize="Large" 
                                            FontAttributes="Bold" 
                                            TextColor="Red"></Label>
-                                </StackLayout>
-                                <StackLayout Grid.Column="1" VerticalOptions="Center">
-                                    <Label Text="{Binding Name}" 
+                                    </StackLayout>
+                                    <StackLayout Grid.Column="1" VerticalOptions="Center">
+                                        <Label Text="{Binding Name}" 
                                            FontSize="Medium"
                                            TextColor="Black"></Label>
-                                </StackLayout>
-                            </Grid>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                                    </StackLayout>
+                                    <Image Grid.Column="2" Source="info.png">
+
+                                    </Image>
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -76,7 +76,7 @@
                 return;
             }
             var newOwner = (OwnerRequest)response.Result;
-            MainViewModel.GetInstance().Owners.Owners.Add(newOwner);
+            MainViewModel.GetInstance().Owners.AddOwnerToList(newOwner);
             isEnabled = true;
             isRunning = false;
             await App.Navigator.PopAsync();
