@@ -222,33 +222,50 @@
         public Owner GetOwnerByName(string name)
         {
             var a = this.dataContext.Users;
-            var si = new Entities.User();
-            foreach (MAV.Web.Data.Entities.User s in a)
+            var b = this.dataContext.Owners.Include(o => o.User);
+            foreach (Entities.User u  in a)
             {
-                if (s.FirstName == name)
+                if (u.FullName == name)
                 {
-
-                    si = s;
-                    continue;
-                }
-            }
-            if (si == null)
-                return null;
-            else
-            {
-                var ow = this.dataContext.Owners;
-                var x = new Owner();
-                foreach (Owner owner in ow)
-                {
-                    if (owner.User == si)
+                    foreach(Owner ow in b)
                     {
-
-                        x = owner;
-                        continue;
+                        if(ow.User == u)
+                        {
+                            return ow;
+                        }
                     }
                 }
-                return (x);
             }
+            return null;
+            //var a = this.dataContext.Users;
+            //var si = new Entities.User();
+            //foreach (MAV.Web.Data.Entities.User s in a)
+            //{
+            //    if (s.FirstName == name)
+            //    {
+
+            //        si = s;
+            //        continue;
+            //    }
+            //}
+            //if (si == null)
+            //    return null;
+            //else
+            //{
+            //    var ow = this.dataContext.Owners;
+            //    var x = new Owner();
+            //    foreach (Owner owner in ow)
+            //    {
+            //        if (owner.User == si)
+            //        {
+
+            //            x = owner;
+            //            continue;
+            //        }
+            //    }
+            //    return (x);
         }
     }
 }
+
+

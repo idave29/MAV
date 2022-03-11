@@ -76,20 +76,30 @@
         //}
         public MaterialType GetMaterialTypesByName(string name)
         {
+            //var a = this.dataContext.MaterialTypes;
+            //var si = new MaterialType();
+            //foreach (MaterialType s in a)
+            //{
+            //    if (s.Name == name)
+            //    {
+            //        si = s;
+            //        continue;
+            //    }
+            //}
+            //if (si == null)
+            //    return null;
+            //else
+            //    return si;
             var a = this.dataContext.MaterialTypes;
-            var si = new MaterialType();
+            //var si = new Status();
             foreach (MaterialType s in a)
             {
                 if (s.Name == name)
                 {
-                    si = s;
-                    continue;
+                    return s;
                 }
             }
-            if (si == null)
-                return null;
-            else
-                return si;
+            return null;
         }
     }
 }

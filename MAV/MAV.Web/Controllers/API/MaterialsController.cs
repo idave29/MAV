@@ -28,10 +28,10 @@
         [HttpGet]
         public IActionResult GetMaterials()
         {
-            return Ok(this.materialRepository.GetMaterials());
+           // return Ok(this.materialRepository.GetMaterials());
             //return Ok(this.materialRepository.GetMaterialWithLoansById(1));
             //return Ok(this.materialRepository.GetMaterialWithLoans());
-            //return Ok(this.materialRepository.GetAllMaterialsWithTypeWithStatusAndOwner());
+            return Ok(this.materialRepository.GetAllMaterialsWithTypeWithStatusAndOwner());
             //return Ok(this.materialRepository.GetMaterialWithTypeWithStatusAndOwnerById(1));
             //return Ok(this.materialRepository.GetMaterialWithTypeAndStatusBySerialNum("6817654"));
             //return Ok(this.materialRepository.GetMaterialBySerialNum("897654"));

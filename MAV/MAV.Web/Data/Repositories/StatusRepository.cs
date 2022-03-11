@@ -75,19 +75,15 @@
         public Status GetStatusByName(string name)
         {
             var a = this.dataContext.Statuses;
-            var si = new Status();
+            //var si = new Status();
             foreach (Status s in a)
             {
                 if (s.Name == name)
                 {
-                    si = s;
-                    continue;
+                    return s;
                 }
             }
-            if (si == null)
-                return null;
-            else
-                return si;
+            return null;
         }
     }
 }
