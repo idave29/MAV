@@ -60,7 +60,7 @@ namespace MAV.UIForms.ViewModels
                 LastName = ow.LastName,
                 Email = ow.Email,
                 //Materials = ow.Materials,
-                //Password = ow.Password, 
+                Password = ow.Password, 
                 PhoneNumber = ow.PhoneNumber
             }).OrderBy(ow => ow.FirstName).ToList());
         }

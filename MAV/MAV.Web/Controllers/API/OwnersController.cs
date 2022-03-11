@@ -92,19 +92,47 @@
             {
                 return BadRequest();
             }
-            var oldOwner = await this.ownerRepository.GetByIdAsync(id);
-            if (oldOwner == null)
+
+            var user = await this.userHelper.GetUserByEmailAsync(owner.Email);
+            if (user == null)
             {
                 return BadRequest("Id not found");
             }
+            user.FirstName = owner.FirstName;
+            user.LastName = owner.LastName;
+            user.Email = owner.Email;
+            user.PhoneNumber = owner.PhoneNumber;
+            user.PasswordHash = owner.Password;
 
-            oldOwner.User.FirstName = owner.FirstName;
-            oldOwner.User.LastName = owner.LastName;
-            oldOwner.User.Email = owner.Email;
-            oldOwner.User.PhoneNumber = owner.PhoneNumber;
+            var result = await this.userHelper.UpdateUserAsync(user);
+            //if (user != null)
+            //{
+            //    user = Data.Entities.User
+            //    {
+            //        FirstName = owner.FirstName,
+            //        LastName = owner.LastName,
+            //        Email = owner.Email,
+            //        UserName = owner.Email,
+            //        PhoneNumber = owner.PhoneNumber, 
+            //        PasswordHash = owner.Password
+            //    };
+            //    var result = await this.userHelper.UpdateUserAsync(user);
+            //}
 
-            var updateOwner = await this.ownerRepository.UpdateAsync(oldOwner);
-            return Ok(updateOwner);
+            //var emailOwner = new EmailRequest { Email = owner.Email };
+            //var oldOwner = this.ownerRepository.GetOwnerWithMaterialsByEmail(emailOwner);
+            //if (oldOwner != null)
+            //{
+            //    return BadRequest("No existe el usuario");
+            //}
+
+            var entityOwner = new Owner
+            {
+                User = user
+            };
+            //var updateOwner = await this.ownerRepository.UpdateAsync(entityOwner);
+            //await this.DeleteOwner(owner.Id);
+            return Ok(result);
         }
 
         [HttpDelete("{id}")]

@@ -20,10 +20,13 @@
                     <Entry Grid.Column="1" Grid.Row="1" Keyboard="Text" Placeholder="Introduce el apellido" Text="{Binding Owner.LastName}"></Entry>
 
                     <Label Text="Email" Grid.Column="0" Grid.Row="2" VerticalOptions="Center"></Label>
-                    <Entry Grid.Column="1" Grid.Row="2" Keyboard="Text" Placeholder="Introduce email" Text="{Binding Owner.Email}"></Entry>
+                    <Entry Grid.Column="1" Grid.Row="2" IsReadOnly="True" Keyboard="Text"  Placeholder="Introduce email" Text="{Binding Owner.Email}"></Entry>
 
                     <Label Text="Phone Number" Grid.Column="0" Grid.Row="3" VerticalOptions="Center"></Label>
                     <Entry Grid.Column="1" Grid.Row="3" Keyboard="Telephone" Placeholder="Introduce número telefónico" Text="{Binding Owner.PhoneNumber}"></Entry>
+                    
+                    <Label Text="Password" Grid.Column="0" Grid.Row="4" VerticalOptions="Center"></Label>
+                    <Entry Grid.Column="1" Grid.Row="4" Text="{Binding Owner.Password}"></Entry>
                 </Grid>
                 <ActivityIndicator IsRunning="{Binding IsRunning}" VerticalOptions="CenterAndExpand">
                 </ActivityIndicator>
