@@ -85,7 +85,7 @@ namespace MAV.UIForms.ViewModels
             var url = Application.Current.Resources["URLApi"].ToString();
             var response = await this.apiService.PutAsync(url,
                 "/api",
-                "/Materials",
+                "/Interns",
                 Intern.Id,
                 Intern,
                 "bearer",
