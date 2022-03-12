@@ -55,11 +55,11 @@
         private void RefreshStatusesList()
         {
             this.Statuses = new ObservableCollection<StatusItemViewModel>
-                (myStatuses.Select(at => new StatusItemViewModel
+                (myStatuses.Select(mt => new StatusItemViewModel
                 {
-                    Id = at.Id,
-                    Name = at.Name
-                }).OrderBy(at => at.Name).ToList());
+                    Id = mt.Id,
+                    Name = mt.Name
+                }).OrderBy(mt => mt.Name).ToList());
         }
 
         public void AddStatusToList(StatusRequest status)
@@ -70,7 +70,7 @@
 
         public void UpdateStatusToList(StatusRequest status)
         {
-            var previousStatus = myStatuses.Where(at => at.Id == status.Id).FirstOrDefault();
+            var previousStatus = myStatuses.Where(mt => mt.Id == status.Id).FirstOrDefault();
             if (previousStatus != null)
             {
                 this.myStatuses.Remove(previousStatus);
@@ -81,7 +81,7 @@
 
         public void DeleteStatusInList(int statusId)
         {
-            var previousStatus = myStatuses.Where(at => at.Id == statusId).FirstOrDefault();
+            var previousStatus = myStatuses.Where(mt => mt.Id == statusId).FirstOrDefault();
             if (previousStatus != null)
             {
                 this.myStatuses.Remove(previousStatus);

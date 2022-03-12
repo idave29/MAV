@@ -5,7 +5,7 @@
              BindingContext="{Binding Main, Source={StaticResource Locator}}"
              Title="Edit status">
     <ContentPage.Content>
-        <ScrollView BindingContext="{Binding EditStatus}" Padding="10">
+        <ScrollView BindingContext="{Binding EditStatus}" >
             <StackLayout>
                 <Grid>
                     <Grid.ColumnDefinitions>

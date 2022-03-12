@@ -8,42 +8,49 @@
         <ToolbarItem IconImageSource="ic_action_add_circle" Command="{Binding AddStatusCommand}"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout
+        <StackLayout>
+            <StackLayout
             BindingContext="{Binding Statuses}"
             Padding="10">
-            <ListView 
+                <ListView 
                 IsPullToRefreshEnabled="True"
                 IsRefreshing="{Binding IsRefresing}"
                 HasUnevenRows="True"
                 ItemsSource="{Binding Statuses}"
                 RefreshCommand="{Binding RefreshCommand}">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <StackLayout Grid.Column="0" VerticalOptions="Center" Margin="0,0,10,0">
-                                    <Label Text="{Binding Id}" 
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Grid>
+                                    <Grid.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding SelectStatusCommand}"/>
+                                    </Grid.GestureRecognizers>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackLayout Grid.Column="0" VerticalOptions="Center" Margin="0,0,10,0">
+                                        <Label Text="{Binding Id}" 
                                            FontSize="Large" 
                                            FontAttributes="Bold" 
                                            TextColor="Red"></Label>
-                                </StackLayout>
-                                <StackLayout Grid.Column="1" VerticalOptions="Center">
-                                    <Label Text="{Binding Name}" 
+                                    </StackLayout>
+                                    <StackLayout Grid.Column="1" VerticalOptions="Center">
+                                        <Label Text="{Binding Name}" 
                                            FontSize="Medium"
-                                           TextColor="Black"></Label>
-                                </StackLayout>
-                                <Image Grid.Column="2" Source="info.png">
+                                           TextColor="Black">
+                                        </Label>
+                                    </StackLayout>
+                                    <Image Grid.Column="2" Source="info.png">
 
-                                </Image>
-                            </Grid>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                                    </Image>
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

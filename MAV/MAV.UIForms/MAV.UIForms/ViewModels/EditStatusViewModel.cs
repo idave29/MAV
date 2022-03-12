@@ -31,7 +31,7 @@ namespace MAV.UIForms.ViewModels
 
         private async void Delete()
         {
-            var confirm = await Application.Current.MainPage.DisplayAlert("Error", "Seguro que quieres borrarlo?", "Si", "No");
+            var confirm = await Application.Current.MainPage.DisplayAlert("Confirmar", "¿Seguro que quieres borrarlo?", "Si", "No");
             if (!confirm)
                 return;
 
@@ -53,8 +53,8 @@ namespace MAV.UIForms.ViewModels
             }
 
             MainViewModel.GetInstance().Statuses.DeleteStatusInList(Status.Id);
-            isEnabled = true;
-            isRunning = false;
+            this.isEnabled = true;
+            this.isRunning = false;
             await App.Navigator.PopAsync();
         }
 
@@ -66,12 +66,12 @@ namespace MAV.UIForms.ViewModels
             }
             isEnabled = false;
             isRunning = true;
-
             var url = Application.Current.Resources["URLApi"].ToString();
             var response = await this.apiService.PutAsync(url,
                 "/api",
                 "/Status",
-                Status.Id, Status,
+                Status.Id, 
+                Status,
                 "bearer",
                 MainViewModel.GetInstance().Token.Token);
 
@@ -82,8 +82,8 @@ namespace MAV.UIForms.ViewModels
             }
             var modifyStatus = (StatusRequest)response.Result;
             MainViewModel.GetInstance().Statuses.UpdateStatusToList(modifyStatus);
-            isEnabled = true;
-            isRunning = false;
+            this.isEnabled = true;
+            this.isRunning = false;
             await App.Navigator.PopAsync();
         }
 
