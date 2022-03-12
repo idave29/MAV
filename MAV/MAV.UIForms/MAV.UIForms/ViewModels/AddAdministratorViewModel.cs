@@ -81,7 +81,7 @@ namespace MAV.UIForms.ViewModels
                 return;
             }
             var newAdministrator = (AdministratorRequest)response.Result;
-            MainViewModel.GetInstance().Administrators.Administrators.Add(newAdministrator);
+            MainViewModel.GetInstance().Administrators.AddAdministratorToList(newAdministrator);
             isEnabled = true;
             isRunning = false;
             await App.Navigator.PopAsync();
