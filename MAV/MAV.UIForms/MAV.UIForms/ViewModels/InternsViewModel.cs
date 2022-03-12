@@ -47,7 +47,7 @@
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
             }
-            var myIntern = (List<InternRequest>)response.Result;
+            myIntern = (List<InternRequest>)response.Result;
             RefreshInternList();
         }
         private void RefreshInternList()
