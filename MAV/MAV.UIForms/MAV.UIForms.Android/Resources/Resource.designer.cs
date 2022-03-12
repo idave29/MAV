@@ -8430,16 +8430,19 @@ namespace MAV.UIForms.Droid
 			public const int plecaumad = 2131165316;
 			
 			// aapt resource value: 0x7F070085
-			public const int setup = 2131165317;
+			public const int select = 2131165317;
 			
 			// aapt resource value: 0x7F070086
-			public const int status = 2131165318;
+			public const int setup = 2131165318;
 			
 			// aapt resource value: 0x7F070087
-			public const int tooltip_frame_dark = 2131165319;
+			public const int status = 2131165319;
 			
 			// aapt resource value: 0x7F070088
-			public const int tooltip_frame_light = 2131165320;
+			public const int tooltip_frame_dark = 2131165320;
+			
+			// aapt resource value: 0x7F070089
+			public const int tooltip_frame_light = 2131165321;
 			
 			static Drawable()
 			{

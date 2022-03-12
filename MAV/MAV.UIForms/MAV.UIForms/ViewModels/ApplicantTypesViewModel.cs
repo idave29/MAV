@@ -5,13 +5,15 @@
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Linq;
     using Xamarin.Forms;
 
     public class ApplicantTypesViewModel : BaseViewModel
     {
         private ApiService apiService;
-        private ObservableCollection<ApplicantTypeRequest> applicantTypes;
-        public ObservableCollection<ApplicantTypeRequest> ApplicantTypes
+        private List<ApplicantTypeRequest> myApplicantTypes;
+        private ObservableCollection<ApplicantTypeItemViewModel> applicantTypes;
+        public ObservableCollection<ApplicantTypeItemViewModel> ApplicantTypes
         {
             get { return this.applicantTypes; }
             set { this.SetValue(ref this.applicantTypes, value); }
@@ -44,9 +46,46 @@
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
             }
-            var myApplicantType = (List<ApplicantTypeRequest>)response.Result;
-            this.ApplicantTypes = new ObservableCollection<ApplicantTypeRequest>(myApplicantType);
+            myApplicantTypes = (List<ApplicantTypeRequest>)response.Result;
+            RefreshApplicantTypesList();
         }
 
+        private void RefreshApplicantTypesList()
+        {
+            this.ApplicantTypes = new ObservableCollection<ApplicantTypeItemViewModel>
+                (myApplicantTypes.Select(at => new ApplicantTypeItemViewModel
+                {
+                    Id = at.Id,
+                    Name = at.Name
+                }).OrderBy(at => at.Name).ToList());
+        }
+
+        public void AddApplicantTypeToList(ApplicantTypeRequest applicantType)
+        {
+            this.myApplicantTypes.Add(applicantType);
+            RefreshApplicantTypesList();
+        }
+
+        public void UpdateApplicantTypeInList(ApplicantTypeRequest applicantType)
+        {
+            var previousApplicantType = myApplicantTypes.Where(at => at.Id == applicantType.Id).FirstOrDefault();
+            if (previousApplicantType != null)
+            {
+                this.myApplicantTypes.Remove(previousApplicantType);
+            }
+            this.myApplicantTypes.Add(applicantType);
+            RefreshApplicantTypesList();
+        }
+
+        public void DeleteApplicantTypeInList(int applicantTypeId)
+        {
+            var previousApplicantType = myApplicantTypes.Where(at => at.Id == applicantTypeId).FirstOrDefault();
+            if (previousApplicantType != null)
+            {
+                this.myApplicantTypes.Remove(previousApplicantType);
+            }
+
+            RefreshApplicantTypesList();
+        }
     }
 }

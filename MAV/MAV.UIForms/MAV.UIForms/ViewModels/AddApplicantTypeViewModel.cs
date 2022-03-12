@@ -55,7 +55,7 @@ namespace MAV.UIForms.ViewModels
                 return;
             }
             var newApplicantType = (ApplicantTypeRequest)response.Result;
-            MainViewModel.GetInstance().ApplicantTypes.ApplicantTypes.Add(newApplicantType);
+            MainViewModel.GetInstance().ApplicantTypes.AddApplicantTypeToList(newApplicantType);
             isEnabled = true;
             isRunning = false;
             await App.Navigator.PopAsync();

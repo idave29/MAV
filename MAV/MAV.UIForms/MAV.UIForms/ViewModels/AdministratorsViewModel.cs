@@ -5,12 +5,14 @@
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Linq;
     using Xamarin.Forms;
     public class AdministratorsViewModel : BaseViewModel
     {
         private ApiService apiService;
-        private ObservableCollection<AdministratorRequest> administrators;
-        public ObservableCollection<AdministratorRequest> Administrators
+        private List<AdministratorRequest> myAdmins;
+        private ObservableCollection<AdministratorItemViewModel> administrators;
+        public ObservableCollection<AdministratorItemViewModel> Administrators
         {
             get { return this.administrators; }
             set { this.SetValue(ref this.administrators, value); }
@@ -44,8 +46,51 @@
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
             }
-            var myAdmin = (List<AdministratorRequest>)response.Result;
-            this.Administrators = new ObservableCollection<AdministratorRequest>(myAdmin);
+            myAdmins = (List<AdministratorRequest>)response.Result;
+            RefreshAdministratorsList();
+        }
+
+        private void RefreshAdministratorsList()
+        {
+            this.Administrators = new ObservableCollection<AdministratorItemViewModel>
+                (myAdmins.Select(at => new AdministratorItemViewModel
+                {
+                    Id = at.Id,
+                    FirstName = at.FirstName,
+                    LastName = at.LastName,
+                    Email = at.Email,
+                    PhoneNumber = at.PhoneNumber,
+                    Password = at.Password
+                     
+                }).OrderBy(at => at.FirstName).ToList());
+        }
+
+        public void AddAdministratorToList(AdministratorRequest administrator)
+        {
+            this.myAdmins.Add(administrator);
+            RefreshAdministratorsList();
+        }
+
+        public void UpdateAdministratorInList(AdministratorRequest administrator)
+        {
+            var previousAdministrator = myAdmins.Where(at => at.Id == administrator.Id).FirstOrDefault();
+            if (previousAdministrator != null)
+            {
+                this.myAdmins.Remove(previousAdministrator);
+            }
+            this.myAdmins.Add(administrator);
+            RefreshAdministratorsList();
+        }
+
+        public void DeleteAdministratorInList(int administratorId)
+        {
+            var previousAdministrator = myAdmins.Where(at => at.Id == administratorId).FirstOrDefault();
+            if (previousAdministrator != null)
+            {
+                this.myAdmins.Remove(previousAdministrator);
+            }
+
+            RefreshAdministratorsList();
         }
     }
 }

@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MAV.UIForms.Views.EditAdministratorPage"
+             BindingContext="{Binding Main, Source={StaticResource Locator}}"
+             Title="Edit Administrator">
+    <ContentPage.Content>
+        <ScrollView BindingContext="{Binding EditAdministrator}" Padding="10">
+            <StackLayout>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Text="First Name" Grid.Column="0" Grid.Row="0" VerticalOptions="Center"></Label>
+                    <Entry Grid.Column="1" Grid.Row="0" Keyboard="Text" Placeholder="Introduce el Nombre" Text="{Binding Administrator.FirstName}">
+                    </Entry>
+                    <Label Text="Last Name" Grid.Column="0" Grid.Row="1" VerticalOptions="Center"></Label>
+                    <Entry Grid.Column="1" Grid.Row="1" Keyboard="Text" Placeholder="Introduce el Apellido" Text="{Binding Administrator.LastName}">
+                    </Entry>
+                    <Label Text="Email" Grid.Column="0" Grid.Row="2" VerticalOptions="Center"></Label>
+                    <Entry Grid.Column="1" Grid.Row="2" Keyboard="Email" IsReadOnly="True" Placeholder="Introduce el Correo" Text="{Binding Administrator.Email}">
+                    </Entry>
+                    <Label Text="Telephone" Grid.Column="0" Grid.Row="3" VerticalOptions="Center"></Label>
+                    <Entry Grid.Column="1" Grid.Row="3" Keyboard="Telephone" Placeholder="Introduce el Telefono" Text="{Binding Administrator.PhoneNumber}">
+                    </Entry>
+                    <Label Text="Password" Grid.Column="0" Grid.Row="4" VerticalOptions="Center"></Label>
+                    <Entry Grid.Column="1" Grid.Row="4" Keyboard="Text"  Placeholder="Introduce una contraseña" Text="{Binding Administrator.Password}"></Entry>
+                </Grid>
+                <ActivityIndicator IsRunning="{Binding IsRunning}" VerticalOptions="CenterAndExpand">
+                </ActivityIndicator>
+                <Button Text="Save" 
+                        Command="{Binding SaveCommand}"
+                        IsEnabled="{Binding IsEnabled}"
+                        Background="#67CB19" 
+                        TextColor="White" HorizontalOptions="Fill" CornerRadius="20" >
+                </Button>
+                <Button Text="Delete" 
+                        Command="{Binding DeleteCommand}"
+                        IsEnabled="{Binding IsEnabled}"
+                        Background="red" 
+                        TextColor="White" HorizontalOptions="Fill" CornerRadius="20" >
+                </Button>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
