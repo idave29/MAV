@@ -13,16 +13,16 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Label Text="FirstName" Grid.Column="0" Grid.Row="0" VerticalOptions="Center"></Label>
-                    <Entry Grid.Column="1" Grid.Row="0" Keyboard="Text" Placeholder="Introduce el nombre" Text="{Binding FirstName}"></Entry>
+                    <Entry Grid.Column="1" Grid.Row="0" Keyboard="Text" Placeholder="Introduce el nombre" Text="{Binding Intern.FirstName}"></Entry>
 
                     <Label Text="LastName" Grid.Column="0" Grid.Row="1" VerticalOptions="Center"></Label>
-                    <Entry Grid.Column="1" Grid.Row="1" Keyboard="Text" Placeholder="Introduce el apellido" Text="{Binding LastName}"></Entry>
+                    <Entry Grid.Column="1" Grid.Row="1" Keyboard="Text" Placeholder="Introduce el apellido" Text="{Binding Intern.LastName}"></Entry>
 
                     <Label Text="Email" Grid.Column="0" Grid.Row="2" VerticalOptions="Center"></Label>
-                    <Entry Grid.Column="1" Grid.Row="2" Keyboard="Text" Placeholder="Introduce el email" Text="{Binding Email}"></Entry>
+                    <Entry Grid.Column="1" Grid.Row="2" Keyboard="Text" Placeholder="Introduce el email" Text="{Binding Intern.Email}"></Entry>
 
                     <Label Text="PhoneNumber" Grid.Column="0" Grid.Row="3" VerticalOptions="Center"></Label>
-                    <Entry Grid.Column="1" Grid.Row="3" Keyboard="Text" Placeholder="Introduce el niumero" Text="{Binding PhoneNumber}"></Entry>
+                    <Entry Grid.Column="1" Grid.Row="3" Keyboard="Text" Placeholder="Introduce el niumero" Text="{Binding Intern.PhoneNumber}"></Entry>
 
                 </Grid>
                 <ActivityIndicator IsRunning="{Binding IsRunning}" VerticalOptions="CenterAndExpand">

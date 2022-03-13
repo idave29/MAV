@@ -60,9 +60,24 @@ namespace MAV.UIForms.ViewModels
 
         private async void Save()
         {
-            if (string.IsNullOrEmpty(Intern.Email))
+            if (string.IsNullOrEmpty(this.Intern.FirstName))
             {
-                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un nombre", "Aceptar");
+                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir el nombre", "Aceptar");
+                return;
+            }
+            if (string.IsNullOrEmpty(this.Intern.LastName))
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir los apellidos", "Aceptar");
+                return;
+            }
+            if (string.IsNullOrEmpty(this.Intern.Email))
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un correo", "Aceptar");
+                return;
+            }
+            if (string.IsNullOrEmpty(this.Intern.PhoneNumber))
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un telefono", "Aceptar");
                 return;
             }
             isEnabled = false;
@@ -70,7 +85,7 @@ namespace MAV.UIForms.ViewModels
             var url = Application.Current.Resources["URLApi"].ToString();
             var response = await this.apiService.PutAsync(url,
                 "/api",
-                "/Materials",
+                "/Interns",
                 Intern.Id,
                 Intern,
                 "bearer",
