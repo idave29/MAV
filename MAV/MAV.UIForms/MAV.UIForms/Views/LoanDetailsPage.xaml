@@ -21,9 +21,13 @@
                     <DataTemplate>
                         <ViewCell>
                             <Grid>
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding SelectLoanDetailCommand}"/>
+                                </Grid.GestureRecognizers>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <StackLayout Grid.Column="0" VerticalOptions="Center" Margin="0,0,10,0">
                                     <Label Text="{Binding Id}" 
@@ -49,6 +53,9 @@
                                            FontSize="Small"
                                            TextColor="Black"></Label>
                                 </StackLayout>
+                                <Image Grid.Column="2" Source="info.png">
+
+                                </Image>
                             </Grid>
                         </ViewCell>
                     </DataTemplate>

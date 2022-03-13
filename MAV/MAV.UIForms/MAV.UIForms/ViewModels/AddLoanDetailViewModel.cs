@@ -99,7 +99,7 @@ namespace MAV.UIForms.ViewModels
                 return;
             }
             var newLoanDetail = (LoanDetailsRequest)response.Result;
-            MainViewModel.GetInstance().LoanDetails.LoanDetails.Add(newLoanDetail);
+            MainViewModel.GetInstance().LoanDetails.AddLoanDetailToList(newLoanDetail);
             isEnabled = true;
             isRunning = false;
             await App.Navigator.PopAsync();

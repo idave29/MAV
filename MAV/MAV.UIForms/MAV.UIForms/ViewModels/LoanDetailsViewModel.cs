@@ -5,15 +5,17 @@
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Linq;
     using Xamarin.Forms;
     public class LoanDetailsViewModel : BaseViewModel
     {
         private ApiService apiService;
-        private ObservableCollection<LoanDetailsRequest> loanDetail;
-        public ObservableCollection<LoanDetailsRequest> LoanDetails
+        private List<LoanDetailsRequest> myLoanDetails;
+        private ObservableCollection<LoanDetailItemViewModel> loanDetails;
+        public ObservableCollection<LoanDetailItemViewModel> LoanDetails
         {
-            get { return this.loanDetail; }
-            set { this.SetValue(ref this.loanDetail, value); }
+            get { return this.loanDetails; }
+            set { this.SetValue(ref this.loanDetails, value); }
         }
 
         private bool isRefreshing;
@@ -44,8 +46,47 @@
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
             }
-            var myLoanDetail = (List<LoanDetailsRequest>)response.Result;
-            this.LoanDetails = new ObservableCollection<LoanDetailsRequest>(myLoanDetail);
+            myLoanDetails = (List<LoanDetailsRequest>)response.Result;
+            RefreshStatusesList();
+        }
+
+        private void RefreshStatusesList()
+        {
+            this.LoanDetails = new ObservableCollection<LoanDetailItemViewModel>
+                (myLoanDetails.Select(mt => new LoanDetailItemViewModel
+                {
+                    Observations = mt.Observations,
+                    DateTimeOut = mt.DateTimeOut,
+                    DateTimeIn = mt.DateTimeIn,
+                    Material = mt.Material
+                }).OrderBy(mt => mt.DateTimeOut).ToList());
+        }
+
+        public void AddLoanDetailToList(LoanDetailsRequest loanDetail)
+        {
+            this.myLoanDetails.Add(loanDetail);
+            RefreshStatusesList();
+        }
+
+        public void UpdateLoanDetailToList(LoanDetailsRequest loanDetail)
+        {
+            var previousLoanDetail = myLoanDetails.Where(mt => mt.Id == loanDetail.Id).FirstOrDefault();
+            if (previousLoanDetail != null)
+            {
+                this.myLoanDetails.Remove(previousLoanDetail);
+            }
+            this.myLoanDetails.Add(loanDetail);
+            RefreshStatusesList();
+        }
+
+        public void DeleteLoanDetailInList(int loanDetailId)
+        {
+            var previousLoanDetail = myLoanDetails.Where(mt => mt.Id == loanDetailId).FirstOrDefault();
+            if (previousLoanDetail != null)
+            {
+                this.myLoanDetails.Remove(previousLoanDetail);
+            }
+            RefreshStatusesList();
         }
     }
 }

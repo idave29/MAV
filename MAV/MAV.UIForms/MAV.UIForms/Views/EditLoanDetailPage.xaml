@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MAV.UIForms.Views.EditLoanDetailPage"
+             BindingContext="{Binding Main, Source={StaticResource Locator}}"
+             Title="Edit loan detail">
+    <ContentPage.Content>
+        <ScrollView BindingContext="{Binding EditLoanDetail}" >
+            <StackLayout>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Text="Observations" Grid.Column="0" Grid.Row="1" VerticalOptions="Center"></Label>
+                    <Entry Grid.Column="1" Grid.Row="1" Keyboard="Text" Placeholder="Introduce las observaciones" Text="{Binding Observations}">
+                    </Entry>
+
+                    <Label Text="Date time out" Grid.Column="0" Grid.Row="2" VerticalOptions="Center"></Label>
+                    <Entry Grid.Column="1" Grid.Row="2" Keyboard="Text" Placeholder="Introduce la fecha y hora de salida" Text="{Binding DateTimeOut}">
+                    </Entry>
+
+                    <Label Text="Date time in" Grid.Column="0" Grid.Row="3" VerticalOptions="Center"></Label>
+                    <Entry Grid.Column="1" Grid.Row="3" Keyboard="Text" Placeholder="Introduce la fecha y hora de devolución" Text="{Binding DateTimeIn}">
+                    </Entry>
+
+                    <Label Text="Material" Grid.Column="0" Grid.Row="4" VerticalOptions="Center"></Label>
+                    <Picker Grid.Column="1" Grid.Row="4" Title="Selecciona un material" ItemsSource="{Binding MaterialTypeList}" SelectedItem="{Binding MaterialTypeList, Mode=TwoWay}"/>
+                </Grid>
+                <ActivityIndicator IsRunning="{Binding IsRunning}" VerticalOptions="CenterAndExpand">
+                </ActivityIndicator>
+                <Button Text="Save" 
+                        Command="{Binding SaveCommand}"
+                        IsEnabled="{Binding IsEnabled}"
+                        Background="#67CB19" 
+                        TextColor="White" HorizontalOptions="Fill" CornerRadius="20" >
+                </Button>
+                <Button Text="Delete" 
+                        Command="{Binding DeleteCommand}"
+                        IsEnabled="{Binding IsEnabled}"
+                        Background="red" 
+                        TextColor="White" HorizontalOptions="Fill" CornerRadius="20" >
+                </Button>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
