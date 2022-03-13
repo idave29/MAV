@@ -7,8 +7,7 @@
     using System.Collections.ObjectModel;
     using System.Linq;
     using Xamarin.Forms;
-
-    public class InternsViewModel: BaseViewModel
+    public class InternsViewModel : BaseViewModel
     {
         private ApiService apiService;
         private List<InternRequest> myIntern;
@@ -52,15 +51,16 @@
         }
         private void RefreshInternList()
         {
-            this.Interns = new ObservableCollection<InternItemViewModel>(myIntern.Select(m => new InternItemViewModel
+            this.Interns = new ObservableCollection<InternItemViewModel>
+                (myIntern.Select(inte => new InternItemViewModel
             {
-                Email = m.Email,
-                FirstName = m.FirstName,
-                Id = m.Id,
-                LastName = m.LastName,
-                Password = m.Password,
-                PhoneNumber = m.PhoneNumber,
-            }).OrderBy(m => m.FirstName).ToList());
+                    Id = inte.Id,
+                    FirstName = inte.FirstName,
+                    LastName = inte.LastName,
+                    Email = inte.Email,
+                    PhoneNumber = inte.PhoneNumber,
+                    //Password = inte.Password
+                }).OrderBy(inte => inte.FirstName).ToList());
         }
 
         public void AddInternToList(InternRequest intern)

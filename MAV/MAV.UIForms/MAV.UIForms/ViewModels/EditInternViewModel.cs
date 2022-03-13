@@ -32,7 +32,7 @@ namespace MAV.UIForms.ViewModels
 
         private async void Delete()
         {
-            var confirm = await Application.Current.MainPage.DisplayAlert("Confirmar", "¿Seguro que quieres borrarlo", "Si", "No");
+            var confirm = await Application.Current.MainPage.DisplayAlert("Confirmar", "¿Seguro que quieres borrarlo?", "Si", "No");
             if (!confirm)
                 return;
 
@@ -96,8 +96,8 @@ namespace MAV.UIForms.ViewModels
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
             }
-            var modifyMaterial = (MaterialRequest)response.Result;
-            MainViewModel.GetInstance().Materials.UpdateMaterialInList(modifyMaterial);
+            var modifyMaterial = (InternRequest)response.Result;
+            MainViewModel.GetInstance().Interns.UpdateInternInList(modifyMaterial);
             this.isEnabled = true;
             this.isRunning = false;
             await App.Navigator.PopAsync();
