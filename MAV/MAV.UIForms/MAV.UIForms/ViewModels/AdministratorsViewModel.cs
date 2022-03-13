@@ -18,16 +18,17 @@
             set { this.SetValue(ref this.administrators, value); }
         }
 
+        public AdministratorsViewModel()
+        {
+            this.apiService = new ApiService();
+            this.LoadAdministrators();
+        }
+
         private bool isRefreshing;
         public bool IsRefreshing
         {
             get { return this.isRefreshing; }
             set { this.SetValue(ref this.isRefreshing, value); }
-        }
-        public AdministratorsViewModel()
-        {
-            this.apiService = new ApiService();
-            this.LoadAdministrators();
         }
 
         private async void LoadAdministrators()
@@ -53,16 +54,16 @@
         private void RefreshAdministratorsList()
         {
             this.Administrators = new ObservableCollection<AdministratorItemViewModel>
-                (myAdmins.Select(at => new AdministratorItemViewModel
+                (myAdmins.Select(ad => new AdministratorItemViewModel
                 {
-                    Id = at.Id,
-                    FirstName = at.FirstName,
-                    LastName = at.LastName,
-                    Email = at.Email,
-                    PhoneNumber = at.PhoneNumber,
-                    Password = at.Password
+                    Id = ad.Id,
+                    FirstName = ad.FirstName,
+                    LastName = ad.LastName,
+                    Email = ad.Email,
+                    PhoneNumber = ad.PhoneNumber,
+                    //Password = ad.Password
                      
-                }).OrderBy(at => at.FirstName).ToList());
+                }).OrderBy(ad => ad.FirstName).ToList());
         }
 
         public void AddAdministratorToList(AdministratorRequest administrator)
@@ -73,7 +74,7 @@
 
         public void UpdateAdministratorInList(AdministratorRequest administrator)
         {
-            var previousAdministrator = myAdmins.Where(at => at.Id == administrator.Id).FirstOrDefault();
+            var previousAdministrator = myAdmins.Where(ad => ad.Id == administrator.Id).FirstOrDefault();
             if (previousAdministrator != null)
             {
                 this.myAdmins.Remove(previousAdministrator);
@@ -84,7 +85,7 @@
 
         public void DeleteAdministratorInList(int administratorId)
         {
-            var previousAdministrator = myAdmins.Where(at => at.Id == administratorId).FirstOrDefault();
+            var previousAdministrator = myAdmins.Where(ad => ad.Id == administratorId).FirstOrDefault();
             if (previousAdministrator != null)
             {
                 this.myAdmins.Remove(previousAdministrator);

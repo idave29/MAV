@@ -90,19 +90,31 @@
             {
                 return BadRequest();
             }
-            var oldAdministrator = await this.administratorRepository.GetByIdAsync(id);
-            if (oldAdministrator == null)
+            var user = await this.userHelper.GetUserByEmailAsync(administrator.Email);
+            if (user == null)
             {
                 return BadRequest("Id not found");
             }
 
-            oldAdministrator.User.FirstName = administrator.FirstName;
-            oldAdministrator.User.LastName = administrator.LastName;
-            oldAdministrator.User.Email = administrator.Email;
-            oldAdministrator.User.PhoneNumber = administrator.PhoneNumber;
+            user.FirstName = administrator.FirstName;
+            user.LastName = administrator.LastName;
+            user.Email = administrator.Email;
+            user.PhoneNumber = administrator.PhoneNumber;
+            
+            if (administrator.OldPassword != administrator.Password)
+            {
+                var pass = await this.userHelper.ChangePasswordAsync(user, administrator.OldPassword, administrator.Password);
+                if (!pass.Succeeded)
+                {
+                    return BadRequest("No coincide la contraseña anterior, intente de nuevo");
+                }
+            }
+            //else
+            //    return BadRequest("Es la misma contraseña que la anterior");
 
-            var updateMaterialType = await this.administratorRepository.UpdateAsync(oldAdministrator);
-            return Ok(updateMaterialType);
+            var result = await this.userHelper.UpdateUserAsync(user);
+            
+            return Ok(result);
         }
 
         [HttpDelete("{id}")]
@@ -112,15 +124,16 @@
             {
                 return BadRequest(ModelState);
             }
-
             var oldAdministrator = await this.administratorRepository.GetByIdAsync(id);
+            
             if (oldAdministrator == null)
             {
                 return BadRequest("Id not found");
             }
-
+            ;
             await this.administratorRepository.DeleteAsync(oldAdministrator);
             return Ok(oldAdministrator);
+
         }
     }
 }

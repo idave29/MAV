@@ -22,5 +22,7 @@
         Task DeleteAsync(T entity);
 
         Task<bool> ExistAsync(int id);
+
+        string Desencriptar(string passh);
     }
 }

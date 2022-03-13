@@ -50,8 +50,7 @@ namespace MAV.UIForms.ViewModels
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
             }
-
-            MainViewModel.GetInstance().ApplicantTypes.DeleteApplicantTypeInList(Administrator.Id);
+            MainViewModel.GetInstance().Administrators.DeleteAdministratorInList(Administrator.Id);
             this.isEnabled = true;
             this.isRunning = false;
             await App.Navigator.PopAsync();

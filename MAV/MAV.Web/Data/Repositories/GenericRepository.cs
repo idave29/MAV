@@ -2,8 +2,11 @@
 {
     using MAV.Web.Data.Entities;
     using Microsoft.EntityFrameworkCore;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Security.Cryptography;
+    using System.Text;
     using System.Threading.Tasks;
 
     public class GenericRepository<T> : IGenericRepository<T> where T : class, IEntity
@@ -61,5 +64,32 @@
         {
             return await _dataContext.SaveChangesAsync() > 0;
         }
+
+        public string Desencriptar(string passh)
+        {
+            string pass = string.Empty;
+            Byte[] desenc = Convert.FromBase64String(passh);
+
+            pass = System.Text.Encoding.Unicode.GetString(desenc);
+            return pass;
+        }
+
+        //public async Task<T> Desencriptar(string passh)
+        //{
+        //    string pass = string.Empty;
+        //    byte[] desenc = Convert.FromBase64String(passh);
+
+        //    MD5 md5 = MD5.Create();
+        //    TripleDES tripledes = TripleDES.Create();
+
+        //    tripledes.Key = md5.ComputeHash(UTF8Encoding.UTF8.GetBytes(pass));
+        //    tripledes.Mode = CipherMode.ECB;
+
+        //    ICryptoTransform transform = tripledes.CreateDecryptor();
+        //    byte[] result = transform.TransformFinalBlock(desenc, 0, desenc.Length);
+
+        //    var result1 = Encoding.Unicode.GetString(result);
+        //    return result1;
+        //}
     }
 }

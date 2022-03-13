@@ -53,8 +53,8 @@
                 FirstName = ar.User.FirstName,
                 LastName = ar.User.LastName,
                 PhoneNumber = ar.User.PhoneNumber,
-                Email = ar.User.Email
-
+                Email = ar.User.Email,
+                //Password = ar.User.PasswordHash
             }).ToList();
 
             return x;
