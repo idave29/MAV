@@ -59,7 +59,7 @@
                                            TextColor="Gray"></Label>
                                     <Label/>
                                 </StackLayout>
-                                <Image Grid.Column="2" Source="select" ></Image>
+                                <Image Grid.Column="2" Source="info.png"/>
                             </Grid>
                         </ViewCell>
                     </DataTemplate>
