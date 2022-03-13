@@ -34,7 +34,12 @@ namespace MAV.UIForms.ViewModels
             get { return isRunning; }
             set { this.SetValue(ref this.isRunning, value); }
         }
-
+        private bool isEnabled;
+        public bool IsEnabled
+        {
+            get { return isEnabled; }
+            set { this.SetValue(ref this.isEnabled, value); }
+        }
         private IList<string> statusList;
         private IList<string> materialTypeList;
         private IList<string> ownerList;
@@ -111,14 +116,6 @@ namespace MAV.UIForms.ViewModels
             OwnerList = ((List<OwnerRequest>)response.Result).Select(m => $"{m.LastName} {m.FirstName}").ToList();
 
         }
-
-        private bool isEnabled;
-        public bool IsEnabled
-        {
-            get { return isEnabled; }
-            set { this.SetValue(ref this.isEnabled, value); }
-        }
-
         public ICommand SaveCommand { get { return new RelayCommand(Save); } }
 
         private async void Save()
@@ -166,7 +163,17 @@ namespace MAV.UIForms.ViewModels
 
             isEnabled = false;
             isRunning = true;
-            var material = new MaterialRequest { Name = Name, Label = Label, Brand = Brand, MaterialModel = MaterialModel, SerialNum = SerialNum, Status = Status, MaterialType = MaterialType, Owner = Owner };
+            var material = new MaterialRequest 
+            { 
+                Name = Name,
+                Label = Label,
+                Brand = Brand, 
+                MaterialModel = MaterialModel, 
+                SerialNum = SerialNum, 
+                Status = Status, 
+                MaterialType = MaterialType, 
+                Owner = Owner
+            };
             var url = Application.Current.Resources["URLApi"].ToString();
             var response = await this.apiService.PostAsync(url,
                 "/api",

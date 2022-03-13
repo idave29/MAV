@@ -38,8 +38,7 @@ namespace MAV.Web.Controllers
                 return NotFound();
             }
 
-            var material = await _context.Materials
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var material = await this.materialRepository.GetByIdAsync(id.Value);
             if (material == null)
             {
                 return NotFound();
@@ -51,23 +50,26 @@ namespace MAV.Web.Controllers
         // GET: Materials/Create
         public IActionResult Create()
         {
-
-            IEnumerable<SelectListItem> list = this.statusRepository.GetComboStatuses();
-            if (list == null)
-            {
-                return NotFound();
-            }
-            ViewBag.List = list;
-
             return View();
         }
 
         // POST: Materials/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("Id,Name,Label,Brand,MaterialModel,SerialNum")] Material material)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        await this.materialRepository.CreateAsync(material);
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(material);
+        //}
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Label,Brand,MaterialModel,SerialNum")] Material material)
+        public async Task<IActionResult> Create( Material material)
         {
             if (ModelState.IsValid)
             {
@@ -96,9 +98,39 @@ namespace MAV.Web.Controllers
         // POST: Materials/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Label,Brand,MaterialModel,SerialNum")] Material material)
+        //{
+        //    if (id != material.Id)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            await this.materialRepository.UpdateAsync(material);
+        //        }
+        //        catch (DbUpdateConcurrencyException)
+        //        {
+        //            if (!await this.materialRepository.ExistAsync(material.Id))
+        //            {
+        //                return NotFound();
+        //            }
+        //            else
+        //            {
+        //                throw;
+        //            }
+        //        }
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(material);
+        //}
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Label,Brand,MaterialModel,SerialNum")] Material material)
+        public async Task<IActionResult> Edit(int id, Material material)
         {
             if (id != material.Id)
             {
@@ -109,12 +141,11 @@ namespace MAV.Web.Controllers
             {
                 try
                 {
-                    _context.Update(material);
-                    await _context.SaveChangesAsync();
+                    await this.materialRepository.UpdateAsync(material);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MaterialExists(material.Id))
+                    if (!await this.materialRepository.ExistAsync(material.Id))
                     {
                         return NotFound();
                     }
@@ -136,13 +167,12 @@ namespace MAV.Web.Controllers
                 return NotFound();
             }
 
-            var material = await _context.Materials
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var material = await this.materialRepository.GetByIdAsync(id.Value);
             if (material == null)
             {
                 return NotFound();
             }
-
+            await this.materialRepository.DeleteAsync(material);
             return View(material);
         }
 
