@@ -27,6 +27,7 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <StackLayout Grid.Column="0" VerticalOptions="Center" Margin="0,0,10,0">
                                     <Label Text="{Binding Id}" 
