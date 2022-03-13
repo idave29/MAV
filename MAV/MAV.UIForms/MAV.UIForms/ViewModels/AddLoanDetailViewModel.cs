@@ -18,7 +18,7 @@ namespace MAV.UIForms.ViewModels
         public MaterialRequest Material { get; set; }
 
         private bool isRunning;
-        private IList<string> materialList;
+        private IList<string> materialTypeList;
         public bool IsRunning
         {
             get { return isRunning; }
@@ -32,21 +32,21 @@ namespace MAV.UIForms.ViewModels
             set { this.SetValue(ref this.isEnabled, value); }
         }
 
-        public IList<string> MaterialList
+        public IList<string> MaterialTypeList
         {
-            get { return this.materialList; }
-            set { this.SetValue(ref this.materialList, value); }
+            get { return this.materialTypeList; }
+            set { this.SetValue(ref this.materialTypeList, value); }
         }
 
         public ICommand SaveCommand { get { return new RelayCommand(Save); } }
 
-        private async void LoadMaterials()
+        private async void LoadMaterialTypes()
         {
             var url = Application.Current.Resources["URLApi"].ToString();
-            var response = await this.apiService.GetListAsync<MaterialRequest>(
+            var response = await this.apiService.GetListAsync<MaterialTypeRequest>(
                 url,
                 "/api",
-                "/Materials",
+                "/MaterialTypes",
                 "bearer",
                 MainViewModel.GetInstance().Token.Token);
 
@@ -55,7 +55,7 @@ namespace MAV.UIForms.ViewModels
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
             }
-            MaterialList = ((List<MaterialRequest>)response.Result).Select(m => $"{m.Name}").ToList();
+            MaterialTypeList = ((List<MaterialTypeRequest>)response.Result).Select(m => m.Name).ToList();
 
         }
 
@@ -109,7 +109,7 @@ namespace MAV.UIForms.ViewModels
         {
             this.apiService = new ApiService();
             isEnabled = true;
-            this.LoadMaterials();
+            this.LoadMaterialTypes();
         }
     }
 }
