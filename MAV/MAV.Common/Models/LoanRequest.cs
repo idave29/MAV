@@ -8,6 +8,7 @@
         public string Intern { get; set; }
         public string Applicant { get; set; }
 
+
         //public ICollection<LoanDetailsRequest> LoanDetails { get; set; }
     }
 }

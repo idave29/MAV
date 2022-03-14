@@ -58,7 +58,7 @@ namespace MAV.UIForms.ViewModels
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
             }
-            InternList = ((List<InternRequest>)response.Result).Select(l => l.FirstName + " " + l.LastName).ToList();
+            InternList = ((List<InternRequest>)response.Result).Select(l => l.FullName).ToList();
 
         }
 
@@ -77,7 +77,7 @@ namespace MAV.UIForms.ViewModels
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
             }
-            ApplicantList = ((List<ApplicantRequest>)response.Result).Select(l => l.FirstName + " " +l.LastName).ToList();
+            ApplicantList = ((List<ApplicantRequest>)response.Result).Select(l => l.FullName).ToList();
 
         }
 

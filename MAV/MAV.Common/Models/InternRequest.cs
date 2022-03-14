@@ -12,5 +12,7 @@
         public string PhoneNumber { get; set; }
         public string Password { get; set; }
         public string OldPassword { get; set; }
+        public string FullName => $"{LastName} {FirstName}";
+
     }
 }
