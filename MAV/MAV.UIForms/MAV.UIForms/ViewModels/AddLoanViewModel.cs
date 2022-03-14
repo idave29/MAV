@@ -1,6 +1,8 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using MAV.Common.Models;
 using MAV.Common.Services;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -9,7 +11,8 @@ namespace MAV.UIForms.ViewModels
     public class AddLoanViewModel: BaseViewModel
     {
         private readonly ApiService apiService;
-        public string Name { get; set; }
+        public string Intern { get; set; }
+        public string Applicant { get; set; }
 
         private bool isRunning;
         public bool IsRunning
@@ -25,24 +28,28 @@ namespace MAV.UIForms.ViewModels
             set { this.SetValue(ref this.isEnabled, value); }
         }
 
-        public ICommand SaveCommand { get { return new RelayCommand(Save); } }
+        private IList<string> internList;
 
-        private async void Save()
+        public IList<string> InternList
         {
-            if (string.IsNullOrEmpty(Name))
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un estado", "Aceptar");
-                return;
-            }
+            get { return this.internList; }
+            set { this.SetValue(ref this.internList, value); }
+        }
+        private IList<string> applicantList;
 
-            isEnabled = false;
-            isRunning = true;
-            var status = new StatusRequest { Name = Name };
+        public IList<string> ApplicantList
+        {
+            get { return this.applicantList; }
+            set { this.SetValue(ref this.applicantList, value); }
+        }
+
+        private async void LoadInterns()
+        {
             var url = Application.Current.Resources["URLApi"].ToString();
-            var response = await this.apiService.PostAsync(url,
+            var response = await this.apiService.GetListAsync<InternRequest>(
+                url,
                 "/api",
-                "/Status",
-                status,
+                "/Interns",
                 "bearer",
                 MainViewModel.GetInstance().Token.Token);
 
@@ -51,8 +58,64 @@ namespace MAV.UIForms.ViewModels
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
             }
-            var newStatus = (StatusRequest)response.Result;
-            //MainViewModel.GetInstance().Statuses.Statuses.Add(newStatus);
+            InternList = ((List<InternRequest>)response.Result).Select(l => l.FirstName + " " + l.LastName).ToList();
+
+        }
+
+        private async void LoadApplicant()
+        {
+            var url = Application.Current.Resources["URLApi"].ToString();
+            var response = await this.apiService.GetListAsync<ApplicantRequest>(
+                url,
+                "/api",
+                "/Applicants",
+                "bearer",
+                MainViewModel.GetInstance().Token.Token);
+
+            if (!response.IsSuccess)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
+                return;
+            }
+            ApplicantList = ((List<ApplicantRequest>)response.Result).Select(l => l.FirstName + " " +l.LastName).ToList();
+
+        }
+
+        public ICommand SaveCommand { get { return new RelayCommand(Save); } }
+
+        private async void Save()
+        {
+            if (string.IsNullOrEmpty(Intern))
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un Intern", "Aceptar");
+                return;
+            }
+            if (string.IsNullOrEmpty(Applicant))
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un apellido", "Aceptar");
+                return;
+            }
+
+            isEnabled = false;
+            isRunning = true;
+
+            var Loan = new LoanRequest { Intern = Intern, Applicant=Applicant };
+            var url = Application.Current.Resources["URLApi"].ToString();
+            var response = await this.apiService.PutAsync(url,
+                "/api",
+                "/Loans",
+                Loan.Id,
+                Loan,
+                "bearer",
+                MainViewModel.GetInstance().Token.Token);
+
+            if (!response.IsSuccess)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
+                return;
+            }
+            var newLoan = (LoanRequest)response.Result;
+            MainViewModel.GetInstance().Loans.AddLoanToList(newLoan);
             isEnabled = true;
             isRunning = false;
             await App.Navigator.PopAsync();
@@ -62,6 +125,8 @@ namespace MAV.UIForms.ViewModels
         {
             this.apiService = new ApiService();
             isEnabled = true;
+            this.LoadInterns();
+            this.LoadApplicant();
         }
     }
 }

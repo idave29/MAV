@@ -358,25 +358,7 @@
                 Id = m.Id,
                 Intern = m.Intern.User.FullName,
                 Applicant = m.Applicant.User.FullName,
-                LoanDetails = m.LoanDetails.Select(ld => new LoanDetailsRequest
-                {
-                    Id = ld.Id,
-                    DateTimeIn = ld.DateTimeIn,
-                    DateTimeOut = ld.DateTimeOut,
-                    Observations = ld.Observations,
-                    Material = new MaterialRequest
-                    {
-                        Id = ld.Material.Id,
-                        Brand = ld.Material.Brand,
-                        Label = ld.Material.Label,
-                        MaterialModel = ld.Material.MaterialModel,
-                        MaterialType = ld.Material.MaterialType.Name,
-                        Name = ld.Material.Name,
-                        SerialNum = ld.Material.SerialNum,
-                        Status = ld.Material.Status.Name,
-                        Owner = ld.Material.Owner.User.FullName
-                    }
-                }).Where(m => m.Material.Id == id).ToList()
+                
             }).ToList();
         
             return x;
@@ -407,25 +389,7 @@
                 Id = m.Id,
                 Intern = m.Intern.User.FullName,
                 Applicant = m.Applicant.User.FullName,
-                LoanDetails = m.LoanDetails.Select(ld => new LoanDetailsRequest
-                {
-                    Id = ld.Id,
-                    DateTimeIn = ld.DateTimeIn,
-                    DateTimeOut = ld.DateTimeOut,
-                    Observations = ld.Observations,
-                    Material = new MaterialRequest
-                    {
-                        Id = ld.Material.Id,
-                        Brand = ld.Material.Brand,
-                        Label = ld.Material.Label,
-                        MaterialModel = ld.Material.MaterialModel,
-                        MaterialType = ld.Material.MaterialType.Name,
-                        Name = ld.Material.Name,
-                        SerialNum = ld.Material.SerialNum,
-                        Status = ld.Material.Status.Name,
-                        Owner = ld.Material.Owner.User.FullName
-                    }
-                }).ToList()
+                
             }).ToList();
 
             return x;

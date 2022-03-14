@@ -50,211 +50,193 @@
                 Id = l.Id,
                 Intern = l.Intern.User.FullName,
                 Applicant = l.Applicant.User.FullName,
-                LoanDetails = l.LoanDetails.Select(ld => new LoanDetailsRequest
-                {
-                    Id = ld.Id,
-                    DateTimeIn = ld.DateTimeIn,
-                    DateTimeOut = ld.DateTimeOut,
-                    Observations = ld.Observations,
-                    Material = new MaterialRequest
-                    {
-                        Id = ld.Material.Id,
-                        Brand = ld.Material.Brand,
-                        Label = ld.Material.Label,
-                        MaterialModel = ld.Material.MaterialModel,
-                        MaterialType = ld.Material.MaterialType.Name,
-                        Name = ld.Material.Name,
-                        SerialNum = ld.Material.SerialNum,
-                        Status = ld.Material.Status.Name,
-                        Owner = ld.Material.Owner.User.FullName
-                    }
-                }).ToList()
+                
             }).ToList();
 
             return x;
         }
 
-        public IEnumerable<LoanRequest> GetLoansWithInternsAndLoanDetails()
-        {
-            var l = this.dataContext.Loans
-                    .Include(l => l.LoanDetails)
-                    .Include(l => l.Intern.User);
+        //public IEnumerable<LoanRequest> GetLoansWithInternsAndLoanDetails()
+        //{
+        //    var l = this.dataContext.Loans
+        //            .Include(l => l.LoanDetails)
+        //            .Include(l => l.Intern.User);
 
-            if (l == null)
-            {
-                return null;
-            }
+        //    if (l == null)
+        //    {
+        //        return null;
+        //    }
 
-            var x = l.Select(l => new LoanRequest
-            {
-                Id = l.Id,
-                Intern = l.Intern.User.FullName,
-                LoanDetails = l.LoanDetails.Select(ld => new LoanDetailsRequest
-                {
-                    DateTimeIn = ld.DateTimeIn,
-                    DateTimeOut = ld.DateTimeOut,
-                    Observations = ld.Observations
-                }).ToList()
-            }).ToList();
+        //    var x = l.Select(l => new LoanRequest
+        //    {
+        //        Id = l.Id,
+        //        Intern = l.Intern.User.FullName,
+        //        LoanDetails = l.LoanDetails.Select(ld => new LoanDetailsRequest
+        //        {
+        //            DateTimeIn = ld.DateTimeIn,
+        //            DateTimeOut = ld.DateTimeOut,
+        //            Observations = ld.Observations
+        //        }).ToList()
+        //    }).ToList();
 
-            return x;
-        }
+        //    return x;
+        //}
 
 
-        public IEnumerable<LoanRequest> GetLoansWithLoanDetailsAndMaterial()
-        {
-            var l = this.dataContext.Loans
-                    .Include(l => l.LoanDetails)
-                    .ThenInclude(ld => ld.Material)
-                    .ThenInclude(m => m.Status)
-                    .Include(l => l.LoanDetails)
-                    .ThenInclude(ld => ld.Material)
-                    .ThenInclude(m => m.MaterialType)
-                    .Include(l => l.LoanDetails)
-                    .ThenInclude(ld => ld.Material)
-                    .ThenInclude(m => m.Owner.User);
+        //public IEnumerable<LoanRequest> GetLoansWithLoanDetailsAndMaterial()
+        //{
+        //    var l = this.dataContext.Loans
+        //            .Include(l => l.LoanDetails)
+        //            .ThenInclude(ld => ld.Material)
+        //            .ThenInclude(m => m.Status)
+        //            .Include(l => l.LoanDetails)
+        //            .ThenInclude(ld => ld.Material)
+        //            .ThenInclude(m => m.MaterialType)
+        //            .Include(l => l.LoanDetails)
+        //            .ThenInclude(ld => ld.Material)
+        //            .ThenInclude(m => m.Owner.User);
 
-            if (l == null)
-            {
-                return null;
-            }
+        //    if (l == null)
+        //    {
+        //        return null;
+        //    }
 
-            var x = l.Select(l => new LoanRequest
-            {
-                Id = l.Id,
-                LoanDetails = l.LoanDetails.Select(ld => new LoanDetailsRequest
-                {
-                    DateTimeIn = ld.DateTimeIn,
-                    DateTimeOut = ld.DateTimeOut,
-                    Observations = ld.Observations,
-                    Material = new MaterialRequest
-                    {
-                        Id = ld.Material.Id,
-                        Brand = ld.Material.Brand,
-                        Label = ld.Material.Label,
-                        MaterialModel = ld.Material.MaterialModel,
-                        MaterialType = ld.Material.MaterialType.Name,
-                        Name = ld.Material.Name,
-                        SerialNum = ld.Material.SerialNum,
-                        Status = ld.Material.Status.Name,
-                        Owner = ld.Material.Owner.User.FullName
-                    }
-                }).ToList()
-            }).ToList();
+        //    var x = l.Select(l => new LoanRequest
+        //    {
+        //        Id = l.Id,
+        //        LoanDetails = l.LoanDetails.Select(ld => new LoanDetailsRequest
+        //        {
+        //            DateTimeIn = ld.DateTimeIn,
+        //            DateTimeOut = ld.DateTimeOut,
+        //            Observations = ld.Observations,
+        //            Material = new MaterialRequest
+        //            {
+        //                Id = ld.Material.Id,
+        //                Brand = ld.Material.Brand,
+        //                Label = ld.Material.Label,
+        //                MaterialModel = ld.Material.MaterialModel,
+        //                MaterialType = ld.Material.MaterialType.Name,
+        //                Name = ld.Material.Name,
+        //                SerialNum = ld.Material.SerialNum,
+        //                Status = ld.Material.Status.Name,
+        //                Owner = ld.Material.Owner.User.FullName
+        //            }
+        //        }).ToList()
+        //    }).ToList();
 
-            return x;
-        }
+        //    return x;
+        //}
 
-        public LoanRequest GetLoanWithLoanDetailsById(int id)
-        {
-            var l = this.dataContext.Loans
-                    .Include(l => l.LoanDetails)
-                    .FirstOrDefault(t => t.Id == id);
+        //public LoanRequest GetLoanWithLoanDetailsById(int id)
+        //{
+        //    var l = this.dataContext.Loans
+        //            .Include(l => l.LoanDetails)
+        //            .FirstOrDefault(t => t.Id == id);
 
-            if (l == null)
-            {
-                return null;
-            }
+        //    if (l == null)
+        //    {
+        //        return null;
+        //    }
 
-            var x = new LoanRequest
-            {
-                Id = l.Id,
-                LoanDetails = l.LoanDetails.Select(ld => new LoanDetailsRequest
-                {
-                    DateTimeIn = ld.DateTimeIn,
-                    DateTimeOut = ld.DateTimeOut,
-                    Observations = ld.Observations
-                }).ToList()
-            };
+        //    var x = new LoanRequest
+        //    {
+        //        Id = l.Id,
+        //        LoanDetails = l.LoanDetails.Select(ld => new LoanDetailsRequest
+        //        {
+        //            DateTimeIn = ld.DateTimeIn,
+        //            DateTimeOut = ld.DateTimeOut,
+        //            Observations = ld.Observations
+        //        }).ToList()
+        //    };
 
-            return x;
-        }
+        //    return x;
+        //}
 
-        public LoanRequest GetLoanWithLoanDetailsAndMaterialById(int id)
-        {
-            var l = this.dataContext.Loans
-                    .Include(l => l.LoanDetails)
-                    .ThenInclude(ld => ld.Material)
-                    .ThenInclude(m => m.Status)
-                    .Include(l => l.LoanDetails)
-                    .ThenInclude(ld => ld.Material)
-                    .ThenInclude(m => m.MaterialType)
-                    .Include(l => l.LoanDetails)
-                    .ThenInclude(ld => ld.Material)
-                    .ThenInclude(m => m.Owner.User)
-                    .FirstOrDefault(t => t.Id == id);
+        //public LoanRequest GetLoanWithLoanDetailsAndMaterialById(int id)
+        //{
+        //    var l = this.dataContext.Loans
+        //            .Include(l => l.LoanDetails)
+        //            .ThenInclude(ld => ld.Material)
+        //            .ThenInclude(m => m.Status)
+        //            .Include(l => l.LoanDetails)
+        //            .ThenInclude(ld => ld.Material)
+        //            .ThenInclude(m => m.MaterialType)
+        //            .Include(l => l.LoanDetails)
+        //            .ThenInclude(ld => ld.Material)
+        //            .ThenInclude(m => m.Owner.User)
+        //            .FirstOrDefault(t => t.Id == id);
 
-            if (l == null)
-            {
-                return null;
-            }
+        //    if (l == null)
+        //    {
+        //        return null;
+        //    }
 
-            var x = new LoanRequest
-            {
-                Id = l.Id,
-                LoanDetails = l.LoanDetails.Select(ld => new LoanDetailsRequest
-                {
-                    DateTimeIn = ld.DateTimeIn,
-                    DateTimeOut = ld.DateTimeOut,
-                    Observations = ld.Observations,
-                    Material = new MaterialRequest
-                    {
-                        Id = ld.Material.Id,
-                        Brand = ld.Material.Brand,
-                        Label = ld.Material.Label,
-                        MaterialModel = ld.Material.MaterialModel,
-                        MaterialType = ld.Material.MaterialType.Name,
-                        Name = ld.Material.Name,
-                        SerialNum = ld.Material.SerialNum,
-                        Status = ld.Material.Status.Name,
-                        Owner = ld.Material.Owner.User.FullName
-                    }
-                }).ToList()
-            };
+        //    var x = new LoanRequest
+        //    {
+        //        Id = l.Id,
+        //        LoanDetails = l.LoanDetails.Select(ld => new LoanDetailsRequest
+        //        {
+        //            DateTimeIn = ld.DateTimeIn,
+        //            DateTimeOut = ld.DateTimeOut,
+        //            Observations = ld.Observations,
+        //            Material = new MaterialRequest
+        //            {
+        //                Id = ld.Material.Id,
+        //                Brand = ld.Material.Brand,
+        //                Label = ld.Material.Label,
+        //                MaterialModel = ld.Material.MaterialModel,
+        //                MaterialType = ld.Material.MaterialType.Name,
+        //                Name = ld.Material.Name,
+        //                SerialNum = ld.Material.SerialNum,
+        //                Status = ld.Material.Status.Name,
+        //                Owner = ld.Material.Owner.User.FullName
+        //            }
+        //        }).ToList()
+        //    };
 
-            return x;
-        }
+        //    return x;
+        //}
 
-        public IEnumerable<LoanRequest> GetLoansWithLoanDetailsWithMaterialAndOwnerByNameMaterial(string nameMaterial)
-        {
-            var l = this.dataContext.Loans
-                    .Include(l => l.LoanDetails)
-                    .ThenInclude(ld => ld.Material)
-                    .ThenInclude(m => m.Status)
-                    .Include(l => l.LoanDetails)
-                    .ThenInclude(ld => ld.Material)
-                    .ThenInclude(m => m.MaterialType);
+        //public IEnumerable<LoanRequest> GetLoansWithLoanDetailsWithMaterialAndOwnerByNameMaterial(string nameMaterial)
+        //{
+        //    var l = this.dataContext.Loans
+        //            .Include(l => l.LoanDetails)
+        //            .ThenInclude(ld => ld.Material)
+        //            .ThenInclude(m => m.Status)
+        //            .Include(l => l.LoanDetails)
+        //            .ThenInclude(ld => ld.Material)
+        //            .ThenInclude(m => m.MaterialType);
 
-            if (l == null)
-            {
-                return null;
-            }
+        //    if (l == null)
+        //    {
+        //        return null;
+        //    }
 
-            var x = l.Select(l => new LoanRequest
-            {
-                Id = l.Id,
-                LoanDetails = l.LoanDetails.Select(ld => new LoanDetailsRequest
-                {
-                    DateTimeIn = ld.DateTimeIn,
-                    DateTimeOut = ld.DateTimeOut,
-                    Observations = ld.Observations,
-                    Material = new MaterialRequest
-                    {
-                        Id = ld.Material.Id,
-                        Brand = ld.Material.Brand,
-                        Label = ld.Material.Label,
-                        MaterialModel = ld.Material.MaterialModel,
-                        MaterialType = ld.Material.MaterialType.Name,
-                        Name = ld.Material.Name,
-                        SerialNum = ld.Material.SerialNum,
-                        Status = ld.Material.Status.Name,
-                        Owner = ld.Material.Owner.User.FullName
-                    }
-                }).Where(m => m.Material.Name == nameMaterial).ToList()
-            }).ToList();
+        //    var x = l.Select(l => new LoanRequest
+        //    {
+        //        Id = l.Id,
+        //        LoanDetails = l.LoanDetails.Select(ld => new LoanDetailsRequest
+        //        {
+        //            DateTimeIn = ld.DateTimeIn,
+        //            DateTimeOut = ld.DateTimeOut,
+        //            Observations = ld.Observations,
+        //            Material = new MaterialRequest
+        //            {
+        //                Id = ld.Material.Id,
+        //                Brand = ld.Material.Brand,
+        //                Label = ld.Material.Label,
+        //                MaterialModel = ld.Material.MaterialModel,
+        //                MaterialType = ld.Material.MaterialType.Name,
+        //                Name = ld.Material.Name,
+        //                SerialNum = ld.Material.SerialNum,
+        //                Status = ld.Material.Status.Name,
+        //                Owner = ld.Material.Owner.User.FullName
+        //            }
+        //        }).Where(m => m.Material.Name == nameMaterial).ToList()
+        //    }).ToList();
 
-            return x;
-        }
+        //    return x;
+        //}
 
     }
 }

@@ -9,13 +9,13 @@
     public interface IApplicantRepository : IGenericRepository<Applicant>
     {
         IEnumerable<SelectListItem> GetComboApplicants();
-        Task<Applicant> GetByIdApplicantWithLoansAsync(int id);
-        Task<Applicant> GetByIdApplicantWithLoansLoanDetailsAsync(int id);
+        //Task<Applicant> GetByIdApplicantWithLoansAsync(int id);
+        //Task<Applicant> GetByIdApplicantWithLoansLoanDetailsAsync(int id);
         IQueryable GetApplicantsWithUser();
-        ApplicantRequest GetApplicantWithInternLoanLoanDetailsMaterialAndOwnerByEmail(EmailRequest emailApplicant);
-        IEnumerable<ApplicantRequest> GetApplicantsWithInternLoanLoanDetailsMaterialAndOwnerByNameApplicant(string name);
-        IEnumerable<ApplicantRequest> GetApplicantsWithInternLoanLoanDetailsMaterialAndOwnerByApplicantType(string type);
-        IEnumerable<ApplicantRequest> GetApplicantsWithInternLoanLoanDetailsMaterialAndOwner();
+        //ApplicantRequest GetApplicantWithInternLoanLoanDetailsMaterialAndOwnerByEmail(EmailRequest emailApplicant);
+        //IEnumerable<ApplicantRequest> GetApplicantsWithInternLoanLoanDetailsMaterialAndOwnerByNameApplicant(string name);
+        //IEnumerable<ApplicantRequest> GetApplicantsWithInternLoanLoanDetailsMaterialAndOwnerByApplicantType(string type);
+        //IEnumerable<ApplicantRequest> GetApplicantsWithInternLoanLoanDetailsMaterialAndOwner();
         ApplicantRequest GetByIdApplicantWithUser(int id);
         IEnumerable<ApplicantRequest> GetApplicants();
 

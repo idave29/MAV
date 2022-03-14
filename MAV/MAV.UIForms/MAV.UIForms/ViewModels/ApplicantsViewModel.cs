@@ -1,14 +1,10 @@
-﻿using System.Collections.Generic;
-
-namespace MAV.UIForms.ViewModels
+﻿namespace MAV.UIForms.ViewModels
 {
     using MAV.Common.Models;
     using MAV.Common.Services;
-    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
-    using System.Text;
     using Xamarin.Forms;
 
     public class ApplicantsViewModel : BaseViewModel
@@ -62,6 +58,7 @@ namespace MAV.UIForms.ViewModels
                 FirstName = a.FirstName,
                 LastName = a.LastName,
                 Email = a.Email,
+                PhoneNumber = a.PhoneNumber,
                 ApplicantType = a.ApplicantType,
 
             }).OrderBy(a => a.FirstName).ToList());

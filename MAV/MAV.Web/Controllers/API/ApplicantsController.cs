@@ -91,5 +91,62 @@
             var newApplicant = await this.applicantRepository.CreateAsync(entityApplicant);
             return Ok(newApplicant);
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutApplicant([FromRoute] int id, [FromBody] ApplicantRequest applicant)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            if (id != applicant.Id)
+            {
+                return BadRequest();
+            }
+            var user = await this.userHelper.GetUserByEmailAsync(applicant.Email);
+            if (user == null)
+            {
+                return BadRequest("Id not found");
+            }
+
+            user.FirstName = applicant.FirstName;
+            user.LastName = applicant.LastName;
+            user.Email = applicant.Email;
+            user.PhoneNumber = applicant.PhoneNumber;
+
+            if (applicant.OldPassword != applicant.Password)
+            {
+                var pass = await this.userHelper.ChangePasswordAsync(user, applicant.OldPassword, applicant.Password);
+                if (!pass.Succeeded)
+                {
+                    return BadRequest("No coincide la contraseña anterior, intente de nuevo");
+                }
+            }
+            //else
+            //    return BadRequest("Es la misma contraseña que la anterior");
+
+            var result = await this.userHelper.UpdateUserAsync(user);
+
+            return Ok(result);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteApplicant([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var oldApplicant = await this.applicantRepository.GetByIdAsync(id);
+
+            if (oldApplicant == null)
+            {
+                return BadRequest("Id not found");
+            }
+            ;
+            await this.applicantRepository.DeleteAsync(oldApplicant);
+            return Ok(oldApplicant);
+
+        }
     }
 }

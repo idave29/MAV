@@ -7,10 +7,10 @@
     using System.Linq;
     using System.Windows.Input;
     using Xamarin.Forms;
-    public class EditApplicantViewModel : BaseViewModel
+    public class EditLoanViewModel : BaseViewModel
     {
         private readonly ApiService apiService;
-        public ApplicantRequest Applicant { get; set; }
+        public LoanRequest Loan { get; set; }
 
         private bool isRunning;
         public bool IsRunning
@@ -41,8 +41,8 @@
             var response = await
                 this.apiService.DeleteAsync(url,
                 "/api",
-                "/Applicants",
-                Applicant.Id,
+                "/Loans",
+                Loan.Id,
                 "bearer",
                 MainViewModel.GetInstance().Token.Token);
 
@@ -51,7 +51,7 @@
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
             }
-            MainViewModel.GetInstance().Applicants.DeleteApplicantInList(Applicant.Id);
+            MainViewModel.GetInstance().Loans.DeleteLoanInList(Loan.Id);
             this.isEnabled = true;
             this.isRunning = false;
             await App.Navigator.PopAsync();
@@ -59,29 +59,14 @@
 
         private async void Save()
         {
-            if (string.IsNullOrEmpty(Applicant.FirstName))
+            if (string.IsNullOrEmpty(Loan.Intern))
             {
-                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un nombre", "Aceptar");
+                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un Intern", "Aceptar");
                 return;
             }
-            if (string.IsNullOrEmpty(Applicant.LastName))
+            if (string.IsNullOrEmpty(Loan.Applicant))
             {
                 await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un apellido", "Aceptar");
-                return;
-            }
-            if (string.IsNullOrEmpty(Applicant.Email))
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un email", "Aceptar");
-                return;
-            }
-            if (string.IsNullOrEmpty(Applicant.PhoneNumber))
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un numero de telefono", "Aceptar");
-                return;
-            }
-            if (string.IsNullOrEmpty(Applicant.ApplicantType))
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un Applicant Type", "Aceptar");
                 return;
             }
 
@@ -90,9 +75,9 @@
             var url = Application.Current.Resources["URLApi"].ToString();
             var response = await this.apiService.PutAsync(url,
                 "/api",
-                "/Applicants",
-                Applicant.Id,
-                Applicant,
+                "/Loans",
+                Loan.Id,
+                Loan,
                 "bearer",
                 MainViewModel.GetInstance().Token.Token);
 
@@ -101,34 +86,35 @@
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
             }
-            var modifyApplicant = (ApplicantRequest)response.Result;
-            MainViewModel.GetInstance().Applicants.UpdateApplicantInList(modifyApplicant);
+            var modifyLoan = (LoanRequest)response.Result;
+            MainViewModel.GetInstance().Loans.UpdateLoanInList(modifyLoan);
             this.isEnabled = true;
             this.isRunning = false;
             await App.Navigator.PopAsync();
         }
-        public EditApplicantViewModel(ApplicantRequest applicant)
+        public EditLoanViewModel(LoanRequest loan)
         {
-            this.Applicant = applicant;
+            this.Loan = loan;
             this.apiService = new ApiService();
             this.IsEnabled = true;
-            this.LoadApplicantTypes();
+            this.LoadInterns();
+            this.LoadApplicant();
         }
-        private IList<string> applicantTypeList;
+        private IList<string> internList;
 
-        public IList<string> ApplicantTypeList
+        public IList<string> InternList
         {
-            get { return this.applicantTypeList; }
-            set { this.SetValue(ref this.applicantTypeList, value); }
+            get { return this.internList; }
+            set { this.SetValue(ref this.internList, value); }
         }
 
-        private async void LoadApplicantTypes()
+        private async void LoadInterns()
         {
             var url = Application.Current.Resources["URLApi"].ToString();
-            var response = await this.apiService.GetListAsync<ApplicantTypeRequest>(
+            var response = await this.apiService.GetListAsync<InternRequest>(
                 url,
                 "/api",
-                "/ApplicantTypes",
+                "/Interns",
                 "bearer",
                 MainViewModel.GetInstance().Token.Token);
 
@@ -137,11 +123,35 @@
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
             }
-            ApplicantTypeList = ((List<ApplicantTypeRequest>)response.Result).Select(a => a.Name).ToList();
+            InternList = ((List<InternRequest>)response.Result).Select(l => l.FirstName +" "+ l.LastName).ToList();
 
         }
 
+        private IList<string> applicantList;
 
+        public IList<string> ApplicantList
+        {
+            get { return this.applicantList; }
+            set { this.SetValue(ref this.applicantList, value); }
+        }
+
+        private async void LoadApplicant()
+        {
+            var url = Application.Current.Resources["URLApi"].ToString();
+            var response = await this.apiService.GetListAsync<ApplicantRequest>(
+                url,
+                "/api",
+                "/Applicants",
+                "bearer",
+                MainViewModel.GetInstance().Token.Token);
+
+            if (!response.IsSuccess)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
+                return;
+            }
+            ApplicantList = ((List<ApplicantRequest>)response.Result).Select(l => l.FirstName + " " +l.LastName).ToList();
+
+        }
     }
-
 }

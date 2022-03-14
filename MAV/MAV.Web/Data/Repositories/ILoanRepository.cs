@@ -10,11 +10,11 @@
     {
         IQueryable GetLoanWithAplicantsAndInterns();
         IEnumerable<LoanRequest> GetLoans();
-        IEnumerable<LoanRequest> GetLoansWithInternsAndLoanDetails();
-        IEnumerable<LoanRequest> GetLoansWithLoanDetailsAndMaterial();
-        LoanRequest GetLoanWithLoanDetailsById(int id);
-        LoanRequest GetLoanWithLoanDetailsAndMaterialById(int id);
-        IEnumerable<LoanRequest> GetLoansWithLoanDetailsWithMaterialAndOwnerByNameMaterial(string nameMaterial);
+        //IEnumerable<LoanRequest> GetLoansWithInternsAndLoanDetails();
+        //IEnumerable<LoanRequest> GetLoansWithLoanDetailsAndMaterial();
+        //LoanRequest GetLoanWithLoanDetailsById(int id);
+        //LoanRequest GetLoanWithLoanDetailsAndMaterialById(int id);
+        //IEnumerable<LoanRequest> GetLoansWithLoanDetailsWithMaterialAndOwnerByNameMaterial(string nameMaterial);
 
         // LoanRequest GetLoansWithLoanDetails();
 

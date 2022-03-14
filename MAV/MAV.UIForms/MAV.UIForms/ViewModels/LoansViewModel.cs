@@ -2,18 +2,19 @@
 {
     using MAV.Common.Models;
     using MAV.Common.Services;
-    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Linq;
     using Xamarin.Forms;
     public class LoansViewModel : BaseViewModel
     {
         private ApiService apiService;
-        private ObservableCollection<LoanRequest> loan;
-        public ObservableCollection<LoanRequest> Loans
+        private List<LoanRequest> myLoans;
+        private ObservableCollection<LoanItemViewModel> loans;
+        public ObservableCollection<LoanItemViewModel> Loans
         {
-            get { return this.loan; }
-            set { this.SetValue(ref this.loan, value); }
+            get { return this.loans; }
+            set { this.SetValue(ref this.loans, value); }
         }
         public LoansViewModel()
         {
@@ -43,8 +44,43 @@
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
             }
-            var myLoan = (List<LoanRequest>)response.Result;
-            this.Loans = new ObservableCollection<LoanRequest>(myLoan);
+            myLoans = (List<LoanRequest>)response.Result;
+            RefreshLoanList();
+        }
+        public void RefreshLoanList()
+        {
+            this.Loans = new ObservableCollection<LoanItemViewModel>(myLoans.Select(l => new LoanItemViewModel
+            {
+                Id = l.Id,
+                Applicant = l.Applicant,
+                Intern = l.Intern,
+
+            }).OrderBy(l => l.Id).ToList());
+        }
+        public void AddLoanToList(LoanRequest loan)
+        {
+            this.myLoans.Add(loan);
+            RefreshLoanList();
+        }
+
+        public void UpdateLoanInList(LoanRequest loan)
+        {
+            var previousLoan = myLoans.Where(a => a.Id == loan.Id).FirstOrDefault();
+            if (previousLoan != null)
+            {
+                this.myLoans.Remove(previousLoan);
+            }
+            this.myLoans.Add(loan);
+            RefreshLoanList();
+        }
+        public void DeleteLoanInList(int loanId)
+        {
+            var previousLoan = myLoans.Where(mt => mt.Id == loanId).FirstOrDefault();
+            if (previousLoan != null)
+            {
+                this.myLoans.Remove(previousLoan);
+            }
+            RefreshLoanList();
         }
     }
 }

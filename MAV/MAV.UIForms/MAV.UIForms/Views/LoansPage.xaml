@@ -5,9 +5,8 @@
              BindingContext="{Binding Main, Source={StaticResource Locator}}"
              Title="Loan">
     <ContentPage.ToolbarItems>
-        
-        <ToolbarItem IconImageSource="ic_action_add_circle" Command="{Binding AddCommand}"/>
-        <!--<ToolbarItem Text="Delete" Command="{Binding DeleteCommand}"/>-->
+
+        <ToolbarItem IconImageSource="ic_action_add_circle" Command="{Binding AddLoanCommand}"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
             <StackLayout
@@ -23,9 +22,12 @@
                         <DataTemplate>
                             <ViewCell>
                                 <Grid>
-                                    <Grid.ColumnDefinitions>
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding SelectLoanCommand}"/>
+                                </Grid.GestureRecognizers>
+                                <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <StackLayout Grid.Column="0" VerticalOptions="Center" Margin="0,0,10,0">
@@ -56,7 +58,7 @@
                                         </DataTemplate>
                                     </BindableLayout.ItemTemplate>
                                 </StackLayout>
-
+                                <Image Grid.Column="2" Source="select" ></Image>
                             </Grid>
                             </ViewCell>
                         </DataTemplate>

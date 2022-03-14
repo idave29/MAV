@@ -48,6 +48,8 @@
         public EditAdministratorViewModel EditAdministrator { get; set; }
         public EditLoanDetailViewModel EditLoanDetail { get; set; }
         public EditApplicantViewModel EditApplicant { get; set; }
+        public EditLoanViewModel EditLoan{ get; set; }
+        public AddLoanViewModel AddLoan { get; set; }
 
 
 
@@ -60,6 +62,7 @@
         public ICommand AddApplicantTypeCommand { get { return new RelayCommand(GoApplicantTypeCommand); } }
         public ICommand AddLoanDetailCommand { get { return new RelayCommand(GoLoanDetailCommand); } }
         public ICommand AddApplicantCommand { get { return new RelayCommand(GoApplicantCommand); } }
+        public ICommand AddLoanCommand { get { return new RelayCommand(GoLoanCommand); } }
         private async void GoStatusCommand()
         {
             this.AddStatus = new AddStatusViewModel();
@@ -107,6 +110,12 @@
             this.AddApplicant = new AddApplicantViewModel();
             await App.Navigator.PushAsync(new AddApplicantPage());
         }
+        private async void GoLoanCommand()
+        {
+            this.AddLoan = new AddLoanViewModel();
+            await App.Navigator.PushAsync(new AddLoanPage());
+        }
+
         public MainViewModel()
         {
             instance = this;

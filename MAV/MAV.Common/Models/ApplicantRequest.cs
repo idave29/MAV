@@ -17,6 +17,6 @@
         public string Password { get; set; }
         public string OldPassword { get; set; }
 
-        //public ICollection<LoanRequest> Loans { get; set; }
+        public ICollection<LoanRequest> Loans { get; set; }
     }
 }

@@ -30,7 +30,7 @@
                     <Entry Grid.Column="1" Grid.Row="5" Keyboard="Text"  Placeholder="Introduce una nueva contraseña" Text="{Binding Applicant.Password}"></Entry>
                     <Label Text="Password" Grid.Column="0" Grid.Row="6" VerticalOptions="Center"></Label>
                     <Entry Grid.Column="1" Grid.Row="6" Keyboard="Text"  Placeholder="Introduce la vieja contraseña" Text="{Binding Applicant.OldPassword}"></Entry>
-                    <Label Text="*Si no quiere cambiar la contraseña, deje los espacios de password en blanco" Grid.Column="1" Grid.Row="6" VerticalOptions="Center"></Label>
+                    <Label Text="*Si no quiere cambiar la contraseña, deje los espacios de password en blanco" Grid.Column="1" Grid.Row="7" VerticalOptions="Center"></Label>
                 </Grid>
                 <ActivityIndicator IsRunning="{Binding IsRunning}" VerticalOptions="CenterAndExpand">
                 </ActivityIndicator>
