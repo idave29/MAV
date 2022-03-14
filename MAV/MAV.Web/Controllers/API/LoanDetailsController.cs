@@ -12,7 +12,7 @@
     using System.Threading.Tasks;
 
     [Route("api/[Controller]")]
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class LoanDetailsController : Controller
     {
         private readonly ILoanDetailRepository loanDetailRepository;
@@ -24,7 +24,7 @@
             this.dataContext = dataContext;
         }
 
-        //[HttpGet]
+        [HttpGet]
         public IActionResult GetLoanDetails()
         {
             if (!ModelState.IsValid)

@@ -18,7 +18,7 @@ namespace MAV.UIForms.ViewModels
         public MaterialRequest Material { get; set; }
 
         private bool isRunning;
-        private IList<string> materialTypeList;
+        private IList<string> materialList;
         public bool IsRunning
         {
             get { return isRunning; }
@@ -32,21 +32,21 @@ namespace MAV.UIForms.ViewModels
             set { this.SetValue(ref this.isEnabled, value); }
         }
 
-        public IList<string> MaterialTypeList
+        public IList<string> MaterialList
         {
-            get { return this.materialTypeList; }
-            set { this.SetValue(ref this.materialTypeList, value); }
+            get { return this.materialList; }
+            set { this.SetValue(ref this.materialList, value); }
         }
 
         public ICommand SaveCommand { get { return new RelayCommand(Save); } }
 
-        private async void LoadMaterialTypes()
+        private async void LoadMaterial()
         {
             var url = Application.Current.Resources["URLApi"].ToString();
-            var response = await this.apiService.GetListAsync<MaterialTypeRequest>(
+            var response = await this.apiService.GetListAsync<MaterialRequest>(
                 url,
                 "/api",
-                "/MaterialTypes",
+                "/Materials",
                 "bearer",
                 MainViewModel.GetInstance().Token.Token);
 
@@ -55,7 +55,7 @@ namespace MAV.UIForms.ViewModels
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
             }
-            MaterialTypeList = ((List<MaterialTypeRequest>)response.Result).Select(m => m.Name).ToList();
+            MaterialList = ((List<MaterialRequest>)response.Result).Select(m => m.Name).ToList();
 
         }
 
@@ -63,12 +63,12 @@ namespace MAV.UIForms.ViewModels
         {
             if (string.IsNullOrEmpty(Observations))
             {
-                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un estado", "Aceptar");
+                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir una observación", "Aceptar");
                 return;
             }
             if (string.IsNullOrEmpty(Convert.ToString(DateTimeOut)))
             {
-                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir una fecha y hora de entrega", "Aceptar");
+                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir una fecha y hora de salida", "Aceptar");
                 return;
             }
             if (string.IsNullOrEmpty(Convert.ToString(DateTimeIn)))
@@ -88,7 +88,7 @@ namespace MAV.UIForms.ViewModels
             var url = Application.Current.Resources["URLApi"].ToString();
             var response = await this.apiService.PostAsync(url,
                 "/api",
-                "/LoanDetail",
+                "/LoanDetails",
                 loanDetail,
                 "bearer",
                 MainViewModel.GetInstance().Token.Token);
@@ -109,7 +109,7 @@ namespace MAV.UIForms.ViewModels
         {
             this.apiService = new ApiService();
             isEnabled = true;
-            this.LoadMaterialTypes();
+            this.LoadMaterial();
         }
     }
 }

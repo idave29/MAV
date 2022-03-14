@@ -2,6 +2,8 @@
 using MAV.Common.Models;
 using MAV.Common.Services;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -10,9 +12,10 @@ namespace MAV.UIForms.ViewModels
     public class EditLoanDetailViewModel : BaseViewModel
     {
         private readonly ApiService apiService;
-        public LoanDetailsRequest LoanDetail { get; set; }
+        public LoanDetailsRequest LoanDetails { get; set; }
 
         private bool isRunning;
+        private IList<string> materialList;
         public bool IsRunning
         {
             get { return isRunning; }
@@ -24,6 +27,12 @@ namespace MAV.UIForms.ViewModels
         {
             get { return isEnabled; }
             set { this.SetValue(ref this.isEnabled, value); }
+        }
+
+        public IList<string> MaterialList
+        {
+            get { return this.materialList; }
+            set { this.SetValue(ref this.materialList, value); }
         }
 
         public ICommand SaveCommand { get { return new RelayCommand(Save); } }
@@ -41,8 +50,8 @@ namespace MAV.UIForms.ViewModels
             var url = Application.Current.Resources["URLApi"].ToString();
             var response = await this.apiService.DeleteAsync(url,
                 "/api",
-                "/Status",
-                LoanDetail.Id,
+                "/LoanDetails",
+                LoanDetails.Id,
                 "bearer",
                 MainViewModel.GetInstance().Token.Token);
 
@@ -52,7 +61,7 @@ namespace MAV.UIForms.ViewModels
                 return;
             }
 
-            MainViewModel.GetInstance().Statuses.DeleteStatusInList(LoanDetail.Id);
+            MainViewModel.GetInstance().LoanDetails.DeleteLoanDetailInList(LoanDetails.Id);
             this.isEnabled = true;
             this.isRunning = false;
             await App.Navigator.PopAsync();
@@ -60,19 +69,19 @@ namespace MAV.UIForms.ViewModels
 
         private async void Save()
         {
-            if (string.IsNullOrEmpty(this.LoanDetail.Observations))
+            if (string.IsNullOrEmpty(this.LoanDetails.Observations))
             {
                 await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir una observación", "Aceptar");
             }
-            if (string.IsNullOrEmpty(Convert.ToString(this.LoanDetail.DateTimeOut)))
+            if (string.IsNullOrEmpty(Convert.ToString(this.LoanDetails.DateTimeOut)))
             {
                 await Application.Current.MainPage.DisplayAlert("Error", "Debes una fecha y hora de salida", "Aceptar");
             }
-            if (string.IsNullOrEmpty(Convert.ToString(this.LoanDetail.DateTimeIn)))
+            if (string.IsNullOrEmpty(Convert.ToString(this.LoanDetails.DateTimeIn)))
             {
                 await Application.Current.MainPage.DisplayAlert("Error", "Debes una fecha y hora de entrega", "Aceptar");
             }
-            if (string.IsNullOrEmpty(Convert.ToString(this.LoanDetail.Material)))
+            if (string.IsNullOrEmpty(Convert.ToString(this.LoanDetails.Material == null)))
             {
                 await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un material", "Aceptar");
             }
@@ -81,9 +90,9 @@ namespace MAV.UIForms.ViewModels
             var url = Application.Current.Resources["URLApi"].ToString();
             var response = await this.apiService.PutAsync(url,
                 "/api",
-                "/Status",
-                LoanDetail.Id,
-                LoanDetail,
+                "/LoanDetails",
+                LoanDetails.Id,
+                LoanDetails,
                 "bearer",
                 MainViewModel.GetInstance().Token.Token);
 
@@ -99,11 +108,31 @@ namespace MAV.UIForms.ViewModels
             await App.Navigator.PopAsync();
         }
 
+        private async void LoadMaterial()
+        {
+            var url = Application.Current.Resources["URLApi"].ToString();
+            var response = await this.apiService.GetListAsync<MaterialRequest>(
+                url,
+                "/api",
+                "/Materials",
+                "bearer",
+                MainViewModel.GetInstance().Token.Token);
+
+            if (!response.IsSuccess)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
+                return;
+            }
+            MaterialList = ((List<MaterialRequest>)response.Result).Select(m => m.Name).ToList();
+
+        }
+
         public EditLoanDetailViewModel(LoanDetailsRequest loanDetail)
         {
-            this.LoanDetail = loanDetail;
+            this.LoanDetails = loanDetail;
             this.apiService = new ApiService();
             this.IsEnabled = true;
+            this.LoadMaterial();
         }
     }
 }

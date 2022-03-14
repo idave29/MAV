@@ -92,46 +92,28 @@
             {
                 return BadRequest();
             }
-
             var user = await this.userHelper.GetUserByEmailAsync(owner.Email);
             if (user == null)
             {
                 return BadRequest("Id not found");
             }
+
             user.FirstName = owner.FirstName;
             user.LastName = owner.LastName;
             user.Email = owner.Email;
             user.PhoneNumber = owner.PhoneNumber;
-            user.PasswordHash = owner.Password;
+
+            if (owner.OldPassword != owner.Password)
+            {
+                var pass = await this.userHelper.ChangePasswordAsync(user, owner.OldPassword, owner.Password);
+                if (!pass.Succeeded)
+                {
+                    return BadRequest("No coincide la contraseña anterior, intente de nuevo");
+                }
+            }
 
             var result = await this.userHelper.UpdateUserAsync(user);
-            //if (user != null)
-            //{
-            //    user = Data.Entities.User
-            //    {
-            //        FirstName = owner.FirstName,
-            //        LastName = owner.LastName,
-            //        Email = owner.Email,
-            //        UserName = owner.Email,
-            //        PhoneNumber = owner.PhoneNumber, 
-            //        PasswordHash = owner.Password
-            //    };
-            //    var result = await this.userHelper.UpdateUserAsync(user);
-            //}
 
-            //var emailOwner = new EmailRequest { Email = owner.Email };
-            //var oldOwner = this.ownerRepository.GetOwnerWithMaterialsByEmail(emailOwner);
-            //if (oldOwner != null)
-            //{
-            //    return BadRequest("No existe el usuario");
-            //}
-
-            var entityOwner = new Owner
-            {
-                User = user
-            };
-            //var updateOwner = await this.ownerRepository.UpdateAsync(entityOwner);
-            //await this.DeleteOwner(owner.Id);
             return Ok(result);
         }
 

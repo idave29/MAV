@@ -5,7 +5,7 @@
              BindingContext="{Binding Main, Source={StaticResource Locator}}">
     <ContentPage.Content>
         <ScrollView BindingContext="{Binding Login}">
-            <StackLayout Padding="10" BackgroundColor="Azure">
+            <StackLayout Padding="10">
                 <Image Source="logoumad" HeightRequest="150" WidthRequest="150"></Image>
                 <Label FontSize="Large" HorizontalOptions="Center" FontAttributes="Bold" 
                        Margin="0,50,0,20" TextColor="Gray">Medios Audiovisuales</Label>

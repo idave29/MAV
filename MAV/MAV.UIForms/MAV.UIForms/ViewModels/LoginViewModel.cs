@@ -31,7 +31,6 @@ namespace MAV.UIForms.ViewModels
         {
             this.apiService = new ApiService();
             this.IsEnabled = true;
-            this.IsRunning = false;
             this.Email = "eduardo.fong@gmail.com";
             this.Password = "123456";
         }
@@ -48,23 +47,26 @@ namespace MAV.UIForms.ViewModels
                 await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir una contraseña", "Aceptar");
                 return;
             }
+
+            this.IsRunning = true;
             this.IsEnabled = false;
-            this.isRunning = true;
+
             var request = new TokenRequest
             {
                 Password = this.Password,
                 Username = this.Email
             }; 
+
             var url = Application.Current.Resources["URLApi"].ToString();
             var response = await this.apiService.GetTokenAsync(url,
                 "/Account",
                 "/CreateToken",
                 request);
 
+            this.IsRunning = false;
             this.IsEnabled = true;
-            this.isRunning = false;
 
-            if(!response.IsSuccess)
+            if (!response.IsSuccess)
             {
                 await Application.Current.MainPage.DisplayAlert("Error", "Email o contraseña incorrecta", "Aceptar");
                 return;

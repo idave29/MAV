@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MAV.UIForms.Views.EditLoanDetailPage"
              BindingContext="{Binding Main, Source={StaticResource Locator}}"
-             Title="Edit loan detail">
+             Title="Edit Loan Detail">
     <ContentPage.Content>
         <ScrollView BindingContext="{Binding EditLoanDetail}" >
             <StackLayout>
@@ -13,19 +13,19 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Label Text="Observations" Grid.Column="0" Grid.Row="1" VerticalOptions="Center"></Label>
-                    <Entry Grid.Column="1" Grid.Row="1" Keyboard="Text" Placeholder="Introduce las observaciones" Text="{Binding Observations}">
+                    <Entry Grid.Column="1" Grid.Row="1" Keyboard="Text" Placeholder="Introduce las observaciones" Text="{Binding LoanDetails.Observations}">
                     </Entry>
 
                     <Label Text="Date time out" Grid.Column="0" Grid.Row="2" VerticalOptions="Center"></Label>
-                    <Entry Grid.Column="1" Grid.Row="2" Keyboard="Text" Placeholder="Introduce la fecha y hora de salida" Text="{Binding DateTimeOut}">
+                    <Entry Grid.Column="1" Grid.Row="2" Keyboard="Text" Placeholder="Introduce la fecha y hora de salida" Text="{Binding LoanDetails.DateTimeOut}">
                     </Entry>
 
                     <Label Text="Date time in" Grid.Column="0" Grid.Row="3" VerticalOptions="Center"></Label>
-                    <Entry Grid.Column="1" Grid.Row="3" Keyboard="Text" Placeholder="Introduce la fecha y hora de devolución" Text="{Binding DateTimeIn}">
+                    <Entry Grid.Column="1" Grid.Row="3" Keyboard="Text" Placeholder="Introduce la fecha y hora de devolución" Text="{Binding LoanDetails.DateTimeIn}">
                     </Entry>
 
                     <Label Text="Material" Grid.Column="0" Grid.Row="4" VerticalOptions="Center"></Label>
-                    <Picker Grid.Column="1" Grid.Row="4" Title="Selecciona un material" ItemsSource="{Binding MaterialTypeList}" SelectedItem="{Binding MaterialTypeList, Mode=TwoWay}"/>
+                    <Picker Grid.Column="1" Grid.Row="4" Title="Selecciona un material" ItemsSource="{Binding MaterialList}" SelectedItem="{Binding LoanDetails.Material, Mode=TwoWay}"/>
                 </Grid>
                 <ActivityIndicator IsRunning="{Binding IsRunning}" VerticalOptions="CenterAndExpand">
                 </ActivityIndicator>
