@@ -110,11 +110,6 @@
             {
                 return BadRequest("Id not found");
             }
-            var owner = this.ownerRepository.GetOwnerByName(material.Owner);
-            if (owner == null)
-            {
-                return BadRequest("owner not found");
-            }
             var status = this.statusRepository.GetStatusByName(material.Status);
             if (status == null)
             {
@@ -124,6 +119,11 @@
             if (materialType == null)
             {
                 return BadRequest("materialtype not found");
+            }
+            var owner = this.ownerRepository.GetGoodOwnerWithEmail(material.Owner);
+            if (owner == null)
+            {
+                return BadRequest("owner not found");
             }
             oldMaterial.Name = material.Name;
             oldMaterial.Owner = owner;
