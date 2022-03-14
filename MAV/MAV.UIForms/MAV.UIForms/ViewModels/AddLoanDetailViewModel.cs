@@ -76,7 +76,7 @@ namespace MAV.UIForms.ViewModels
                 await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir una fecha y hora de devolución", "Aceptar");
                 return;
             }
-            if (string.IsNullOrEmpty(Convert.ToString(Material)))
+            if (string.IsNullOrEmpty(Convert.ToString(MaterialList)))
             {
                 await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un material", "Aceptar");
                 return;
