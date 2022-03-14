@@ -335,7 +335,7 @@
         }
         public Applicant GetApplicantByName(string fullname)
         {
-            var a = this.dataContext.Applicants;
+            var a = this.dataContext.Applicants.Include(a => a.User);
             foreach (Applicant app in a)
             {
                 if (app.User.FullName == fullname)

@@ -260,7 +260,7 @@
         }
         public Intern GetInternByName(string fullname)
         {
-            var a = this.dataContext.Interns;
+            var a = this.dataContext.Interns.Include(t => t.User);
             foreach (Intern i in a)
             {
                 if (i.User.FullName == fullname)

@@ -6,7 +6,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <infra:InstanceLocator x:Key="Locator"/>
-            <x:String x:Key="URLApi">https://mavweb20220309112635.azurewebsites.net/</x:String>
+            <x:String x:Key="URLApi">https://mediosaudiovisualesweb.azurewebsites.net/</x:String>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
