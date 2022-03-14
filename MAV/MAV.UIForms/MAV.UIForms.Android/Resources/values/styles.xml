@@ -15,4 +15,8 @@
          which is used to tint widgets -->
     <!--<item name="colorAccent">#FF4081</item>-->
   </style>
+	<style name="Theme.Splash" parent="android:Theme">
+		<item name="android:windowBackground">@drawable/splashumad</item>
+		<item name="android:windowNoTitle">true</item>
+	</style>
 </resources>
