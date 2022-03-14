@@ -71,6 +71,12 @@
                 }
                 await this.userHelper.AddUserToRoleAsync(user, "Applicant");
             }
+            var emailApplicant = new EmailRequest { Email = applicant.Email };
+            var oldApplicant = this.applicantRepository.GetApplicantWithInternLoanLoanDetailsMaterialAndOwnerByEmail(emailApplicant);
+            if (oldApplicant != null)
+            {
+                return BadRequest("Ya existe el usuario");
+            }
             var entityApplicant = new MAV.Web.Data.Entities.Applicant
             {
                 Id = applicant.Id,
