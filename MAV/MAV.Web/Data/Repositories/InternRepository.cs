@@ -260,12 +260,27 @@
         }
         public Intern GetInternByName(string fullname)
         {
-            var a = this.dataContext.Interns.Include(t => t.User);
-            foreach (Intern i in a)
+            //var a = this.dataContext.Interns.Include(t => t.User);
+            //foreach (Intern i in a)
+            //{
+            //    if (i.User.FullName == fullname)
+            //    {
+            //        return i;
+            //    }
+            //}
+            var a = this.dataContext.Users;
+            var b = this.dataContext.Interns.Include(o => o.User);
+            foreach (Entities.User u in a)
             {
-                if (i.User.FullName == fullname)
+                if (u.FullName == fullname)
                 {
-                    return i;
+                    foreach (Intern i in b)
+                    {
+                        if (i.User == u)
+                        {
+                            return i;
+                        }
+                    }
                 }
             }
             return null;

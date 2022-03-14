@@ -335,21 +335,29 @@
         }
         public Applicant GetApplicantByName(string fullname)
         {
-            var a = this.dataContext.Applicants.Include(a => a.User);
-            foreach (Applicant app in a)
-            {
-                if (app.User.FullName == fullname)
-                {
-                    return app;
-                }
-            }
+            //var a = this.dataContext.Applicants.Include(a => a.User);
             //foreach (Applicant app in a)
             //{
-            //    foreach (Applicant app.User in a)
+            //    if (app.User.FullName == fullname)
             //    {
             //        return app;
             //    }
             //}
+            var a = this.dataContext.Users;
+            var b = this.dataContext.Applicants.Include(o => o.User);
+            foreach (Entities.User u in a)
+            {
+                if (u.FullName == fullname)
+                {
+                    foreach (Applicant ap in b)
+                    {
+                        if (ap.User == u)
+                        {
+                            return ap;
+                        }
+                    }
+                }
+            }
             return null;
         }
 
