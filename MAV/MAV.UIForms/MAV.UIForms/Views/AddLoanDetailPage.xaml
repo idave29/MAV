@@ -26,7 +26,7 @@
                     </Entry>
 
                     <Label Text="Material" Grid.Column="0" Grid.Row="4" VerticalOptions="Center"></Label>
-                    <Picker Grid.Column="1" Grid.Row="4" Title="Selecciona un material" ItemsSource="{Binding MaterialTypeList}" SelectedItem="{Binding MaterialTypeList, Mode=TwoWay}"/>
+                    <Picker Grid.Column="1" Grid.Row="4" Title="Selecciona un material" ItemsSource="{Binding MaterialList}" SelectedItem="{Binding MaterialList, Mode=TwoWay}"/>
                     
                 </Grid>
                 <ActivityIndicator IsRunning="{Binding IsRunning}" VerticalOptions="CenterAndExpand">

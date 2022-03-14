@@ -37,7 +37,7 @@
             var response = await this.apiService.GetListAsync<LoanDetailsRequest>(
                 url,
                 "/api",
-                "/Loandetails",
+                "/LoanDetails",
                 "bearer",
                 MainViewModel.GetInstance().Token.Token);
             this.IsRefreshing = false;
@@ -47,25 +47,26 @@
                 return;
             }
             myLoanDetails = (List<LoanDetailsRequest>)response.Result;
-            RefreshStatusesList();
+            RefreshLoanDetailsList();
         }
 
-        private void RefreshStatusesList()
+        private void RefreshLoanDetailsList()
         {
             this.LoanDetails = new ObservableCollection<LoanDetailItemViewModel>
-                (myLoanDetails.Select(mt => new LoanDetailItemViewModel
+                (myLoanDetails.Select(l => new LoanDetailItemViewModel
                 {
-                    Observations = mt.Observations,
-                    DateTimeOut = mt.DateTimeOut,
-                    DateTimeIn = mt.DateTimeIn,
-                    Material = mt.Material
-                }).OrderBy(mt => mt.DateTimeOut).ToList());
+                    Id = l.Id,
+                    Observations = l.Observations,
+                    DateTimeOut = l.DateTimeOut,
+                    DateTimeIn = l.DateTimeIn,
+                    Material = l.Material
+                }).OrderBy(l => l.Id).ToList());
         }
 
         public void AddLoanDetailToList(LoanDetailsRequest loanDetail)
         {
             this.myLoanDetails.Add(loanDetail);
-            RefreshStatusesList();
+            RefreshLoanDetailsList();
         }
 
         public void UpdateLoanDetailToList(LoanDetailsRequest loanDetail)
@@ -76,7 +77,7 @@
                 this.myLoanDetails.Remove(previousLoanDetail);
             }
             this.myLoanDetails.Add(loanDetail);
-            RefreshStatusesList();
+            RefreshLoanDetailsList();
         }
 
         public void DeleteLoanDetailInList(int loanDetailId)
@@ -86,7 +87,7 @@
             {
                 this.myLoanDetails.Remove(previousLoanDetail);
             }
-            RefreshStatusesList();
+            RefreshLoanDetailsList();
         }
     }
 }
