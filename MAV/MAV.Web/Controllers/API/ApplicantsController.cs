@@ -71,22 +71,22 @@
                 }
                 await this.userHelper.AddUserToRoleAsync(user, "Applicant");
             }
-            //var emailApplicant = new EmailRequest { Email = applicant.Email };
-            //var oldApplicant = this.applicantRepository.GetApplicantWithInternLoanLoanDetailsMaterialAndOwnerByEmail(emailApplicant);
-            //if (oldApplicant != null)
-            //{
-            //    return BadRequest("Ya existe el usuario");
-            //}
+            var emailApplicant = new EmailRequest { Email = applicant.Email };
+            var oldApplicant = this.applicantRepository.GetApplicantByEmail(emailApplicant);
+            if (oldApplicant != null)
+            {
+                return BadRequest("Ya existe el usuario");
+            }
             var entityApplicant = new MAV.Web.Data.Entities.Applicant
             {
                 User = user,
                 ApplicantType = applicantType
 
             };
-            if (entityApplicant == null)
-            {
-                return BadRequest("entityApplicant not found");
-            }
+            //if (entityApplicant == null)
+            //{
+            //    return BadRequest("entityApplicant not found");
+            //}
             var newApplicant = await this.applicantRepository.CreateAsync(entityApplicant);
             return Ok(newApplicant);
         }
@@ -114,11 +114,10 @@
             }
             var oldApplicant = await this.applicantRepository.GetByIdAsync(id);
 
-            oldApplicant.User.FirstName = applicant.FirstName;
-            oldApplicant.User.LastName = applicant.LastName;
-            oldApplicant.User.Email = applicant.Email;
-            oldApplicant.User.PhoneNumber = applicant.PhoneNumber;
-            oldApplicant.ApplicantType = applicantType;
+            user.FirstName = applicant.FirstName;
+            user.LastName = applicant.LastName;
+            user.Email = applicant.Email;
+            user.PhoneNumber = applicant.PhoneNumber;
 
             if (applicant.OldPassword != applicant.Password)
             {
@@ -130,6 +129,9 @@
             }
             //else
             //    return BadRequest("Es la misma contraseña que la anterior");
+
+            oldApplicant.User = user;
+            oldApplicant.ApplicantType = applicantType;
 
             var result = await this.userHelper.UpdateUserAsync(user);
 

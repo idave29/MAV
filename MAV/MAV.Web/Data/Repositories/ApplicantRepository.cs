@@ -56,68 +56,50 @@
         //        .FirstOrDefaultAsync(t => t.Id == id);
         //}
 
-        //public ApplicantRequest GetApplicantWithInternLoanLoanDetailsMaterialAndOwnerByEmail(EmailRequest emailApplicant)
-        //{
-        //    var a = this.dataContext.Applicants
-        //            .Include(a => a.User)
-        //            .Include(a => a.Loans)
-        //            .ThenInclude(l => l.LoanDetails)
-        //            .ThenInclude(ld => ld.Material)
-        //            .ThenInclude(m => m.Status)
-        //            .Include(a => a.Loans)
-        //            .ThenInclude(l => l.LoanDetails)
-        //            .ThenInclude(ld => ld.Material)
-        //            .ThenInclude(m => m.MaterialType)
-        //            .Include(a => a.Loans)
-        //            .ThenInclude(l => l.Intern)
-        //            .ThenInclude(a => a.User)
-        //            .Include(a => a.ApplicantType)
-        //            .Include(a => a.Loans)
-        //            .ThenInclude(l => l.LoanDetails)
-        //            .ThenInclude(m => m.Material)
-        //            .ThenInclude(o => o.Owner.User)
-        //            .FirstOrDefault(a => a.User.Email.ToLower() == emailApplicant.Email);
+        public ApplicantRequest GetApplicantByEmail(EmailRequest emailApplicant)
+        {
+            var a = this.dataContext.Applicants
+                    .Include(a => a.User)
+                    .Include(a => a.Loans)
+                    .ThenInclude(l => l.LoanDetails)
+                    .ThenInclude(ld => ld.Material)
+                    .ThenInclude(m => m.Status)
+                    .Include(a => a.Loans)
+                    .ThenInclude(l => l.LoanDetails)
+                    .ThenInclude(ld => ld.Material)
+                    .ThenInclude(m => m.MaterialType)
+                    .Include(a => a.Loans)
+                    .ThenInclude(l => l.Intern)
+                    .ThenInclude(a => a.User)
+                    .Include(a => a.ApplicantType)
+                    .Include(a => a.Loans)
+                    .ThenInclude(l => l.LoanDetails)
+                    .ThenInclude(m => m.Material)
+                    .ThenInclude(o => o.Owner.User)
+                    .FirstOrDefault(a => a.User.Email.ToLower() == emailApplicant.Email);
 
-        //    if (a == null)
-        //    {
-        //        return null;
-        //    }
-        //    var x = new ApplicantRequest
-        //    {
-        //        Id = a.Id,
-        //        FirstName = a.User.FirstName,
-        //        LastName = a.User.LastName,
-        //        Email = a.User.Email,
-        //        PhoneNumber = a.User.PhoneNumber,
-        //        ApplicantType = a.ApplicantType.Name,
-        //        Loans = a.Loans?.Select(l => new LoanRequest
-        //        {
-        //            Id = l.Id,
-        //            Intern = l.Intern.User.FullName,
-        //            LoanDetails = l.LoanDetails?.Select(ld => new LoanDetailsRequest
-        //            {
-        //                Id = ld.Id,
-        //                DateTimeIn = ld.DateTimeIn,
-        //                DateTimeOut = ld.DateTimeOut,
-        //                Observations = ld.Observations,
-        //                Material = new MaterialRequest
-        //                {
-        //                    Id = ld.Material.Id,
-        //                    Brand = ld.Material.Brand,
-        //                    Label = ld.Material.Label,
-        //                    MaterialModel = ld.Material.MaterialModel,
-        //                    MaterialType = ld.Material.MaterialType.Name,
-        //                    Name = ld.Material.Name,
-        //                    SerialNum = ld.Material.SerialNum,
-        //                    Status = ld.Material.Status.Name,
-        //                    Owner = ld.Material.Owner.User.FirstName
-        //                }
-        //            }).ToList()
-        //        }).ToList()
-        //    };
-        //    //.Where(ld => ld.Observations != null)
-        //    return x;
-        //}
+            if (a == null)
+            {
+                return null;
+            }
+            var x = new ApplicantRequest
+            {
+                Id = a.Id,
+                FirstName = a.User.FirstName,
+                LastName = a.User.LastName,
+                Email = a.User.Email,
+                PhoneNumber = a.User.PhoneNumber,
+                ApplicantType = a.ApplicantType.Name,
+                Loans = a.Loans?.Select(l => new LoanRequest
+                {
+                    Id = l.Id,
+                    Intern = l.Intern.User.FullName,
+                   
+                }).ToList()
+            };
+            //.Where(ld => ld.Observations != null)
+            return x;
+        }
 
         //public IEnumerable<ApplicantRequest> GetApplicantsWithInternLoanLoanDetailsMaterialAndOwnerByNameApplicant(string name)
         //{

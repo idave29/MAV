@@ -12,7 +12,7 @@
         //Task<Applicant> GetByIdApplicantWithLoansAsync(int id);
         //Task<Applicant> GetByIdApplicantWithLoansLoanDetailsAsync(int id);
         IQueryable GetApplicantsWithUser();
-        //ApplicantRequest GetApplicantWithInternLoanLoanDetailsMaterialAndOwnerByEmail(EmailRequest emailApplicant);
+        ApplicantRequest GetApplicantByEmail(EmailRequest emailApplicant);
         //IEnumerable<ApplicantRequest> GetApplicantsWithInternLoanLoanDetailsMaterialAndOwnerByNameApplicant(string name);
         //IEnumerable<ApplicantRequest> GetApplicantsWithInternLoanLoanDetailsMaterialAndOwnerByApplicantType(string type);
         //IEnumerable<ApplicantRequest> GetApplicantsWithInternLoanLoanDetailsMaterialAndOwner();
