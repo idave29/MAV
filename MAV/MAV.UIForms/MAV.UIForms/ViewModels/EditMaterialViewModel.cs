@@ -170,7 +170,7 @@ namespace MAV.UIForms.ViewModels
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
             }
-            OwnerList = ((List<OwnerRequest>)response.Result).Select(m => $"{m.LastName} {m.FirstName}").ToList();
+            OwnerList = ((List<OwnerRequest>)response.Result).Select(m => m.Email).ToList();
 
         }
     }
