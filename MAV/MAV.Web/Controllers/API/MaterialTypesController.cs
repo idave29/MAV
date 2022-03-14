@@ -7,7 +7,7 @@
     using System.Threading.Tasks;
 
     [Route("api/[Controller]")]
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class MaterialTypesController : Controller
     {
         private readonly IMaterialTypeRepository materialTypeRepository;
