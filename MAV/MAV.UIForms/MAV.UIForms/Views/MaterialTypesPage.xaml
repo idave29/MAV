@@ -41,7 +41,7 @@
                                            FontSize="Medium"
                                            TextColor="Black"></Label>
                                     </StackLayout>
-                                    <Image Grid.Column="2" Source="info.png">
+                                    <Image Grid.Column="2" Source="select">
 
                                     </Image>
                                 </Grid>
