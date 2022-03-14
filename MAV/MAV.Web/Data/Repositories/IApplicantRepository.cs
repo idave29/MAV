@@ -18,6 +18,6 @@
         //IEnumerable<ApplicantRequest> GetApplicantsWithInternLoanLoanDetailsMaterialAndOwner();
         ApplicantRequest GetByIdApplicantWithUser(int id);
         IEnumerable<ApplicantRequest> GetApplicants();
-
+        Applicant GetApplicantByName(string fullname);
     }
 }

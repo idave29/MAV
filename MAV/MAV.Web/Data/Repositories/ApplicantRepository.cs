@@ -338,6 +338,18 @@
 
             return x;
         }
-        
+        public Applicant GetApplicantByName(string fullname)
+        {
+            var a = this.dataContext.Applicants;
+            foreach (Applicant app in a)
+            {
+                if (app.User.FullName == fullname)
+                {
+                    return app;
+                }
+            }
+            return null;
+        }
+
     }
 }

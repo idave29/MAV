@@ -258,5 +258,17 @@
 
             return x;
         }
+        public Intern GetInternByName(string fullname)
+        {
+            var a = this.dataContext.Interns;
+            foreach (Intern i in a)
+            {
+                if (i.User.FullName == fullname)
+                {
+                    return i;
+                }
+            }
+            return null;
+        }
     }
 }

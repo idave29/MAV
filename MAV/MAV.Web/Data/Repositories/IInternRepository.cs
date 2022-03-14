@@ -27,6 +27,6 @@
         IEnumerable<InternRequest> GetInternsWithLoansLoanDetailsWithMaterialAndOwnerById(int id);
         //Task<Intern> GetByIdInternWithUserAsync(int id);
         Task<Intern> GetByIdInternWithLoansLoansDetailsAsync(int id);
-
+        Intern GetInternByName(string fullname);
     }
 }
