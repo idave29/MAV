@@ -12,11 +12,11 @@
     {
         private ApiService apiService;
         private List<MaterialRequest> myMaterials;
-        private ObservableCollection<MaterialItemViewModel> material;
+        private ObservableCollection<MaterialItemViewModel> materials;
         public ObservableCollection<MaterialItemViewModel> Materials
         {
-            get { return this.material; }
-            set { this.SetValue(ref this.material, value); }
+            get { return this.materials; }
+            set { this.SetValue(ref this.materials, value); }
         }
 
         private bool isRefreshing;

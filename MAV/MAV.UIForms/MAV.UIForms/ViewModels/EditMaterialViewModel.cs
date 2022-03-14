@@ -61,7 +61,7 @@ namespace MAV.UIForms.ViewModels
 
         private async void Save()
         {
-            if (string.IsNullOrEmpty(Material.Name))
+            if (string.IsNullOrEmpty(this.Material.Name))
             {
                 await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un nombre", "Aceptar");
                 return;

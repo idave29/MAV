@@ -1,7 +1,6 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using MAV.Common.Models;
 using MAV.UIForms.Views;
-using System;
 using System.Windows.Input;
 
 namespace MAV.UIForms.ViewModels

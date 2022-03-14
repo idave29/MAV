@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MAV.UIForms.Views.InternsPage"
-              BindingContext="{Binding Main, Source={StaticResource Locator}}"
+             BindingContext="{Binding Main, Source={StaticResource Locator}}"
              Title="Interns">
     <ContentPage.ToolbarItems>
         <ToolbarItem IconImageSource="ic_action_add_circle" Command="{Binding AddInternCommand}"/>
@@ -13,7 +13,7 @@
             Padding="10">
             <ListView 
                 IsPullToRefreshEnabled="True"
-                IsRefreshing="{Binding IsRefresing}"
+                IsRefreshing="{Binding IsRefreshing}"
                 HasUnevenRows="True"
                 ItemsSource="{Binding Interns}"
                 RefreshCommand="{Binding RefreshCommand}">
@@ -27,6 +27,7 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <StackLayout Grid.Column="0" VerticalOptions="Center" Margin="0,0,10,0">
                                     <Label Text="{Binding Id}" 
@@ -59,6 +60,7 @@
                                            TextColor="Gray"></Label>
                                     <Label/>
                                 </StackLayout>
+                                <Image Grid.Column="2" Source="info.png"/>
                             </Grid>
                         </ViewCell>
                     </DataTemplate>

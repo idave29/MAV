@@ -60,7 +60,14 @@ namespace MAV.UIForms.ViewModels
 
             isEnabled = false;
             isRunning = true;
-            var intern = new InternRequest { FirstName = FirstName, LastName = LastName, Email = Email, PhoneNumber = PhoneNumber};
+            var intern = new InternRequest 
+            { 
+                FirstName = FirstName, 
+                LastName = LastName, 
+                Email = Email, 
+                PhoneNumber = PhoneNumber,
+                Password = "123456"
+            };
             var url = Application.Current.Resources["URLApi"].ToString();
             var response = await this.apiService.PostAsync(url,
                 "/api",
@@ -80,6 +87,7 @@ namespace MAV.UIForms.ViewModels
             isRunning = false;
             await App.Navigator.PopAsync();
         }
+
         public AddInternViewModel()
         {
             this.apiService = new ApiService();

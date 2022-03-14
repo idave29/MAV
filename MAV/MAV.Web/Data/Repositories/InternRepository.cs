@@ -30,11 +30,31 @@
                 .FirstOrDefaultAsync(t => t.Id == id);
         }
 
-        public Task<Intern> GetByIdWithUserAsync(int id)
+        public async Task<Intern> GetByIdWithUserAsync(int id)
         {
-            return this.dataContext.Interns
+            return await this.dataContext.Interns
                  .Include(t => t.User)
                  .FirstOrDefaultAsync(e => e.Id == id);
+        }
+        public InternRequest GetInternWithUserById(int id)
+        {
+            var a = this.dataContext.Interns
+               .FirstOrDefault(u => u.Id == id);
+
+            if (a == null)
+            {
+                return null;
+            }
+            var x = new InternRequest
+            {
+                Id = a.Id,
+                Email = a.User.Email,
+                FirstName = a.User.FirstName,
+                LastName = a.User.LastName,
+                PhoneNumber = a.User.PhoneNumber
+            };
+
+            return x;
         }
 
         public IEnumerable<SelectListItem> GetComboInterns()
@@ -60,21 +80,20 @@
 
         public IEnumerable<InternRequest> GetInterns()
         {
-            var i = this.dataContext.Interns
-                .Include(i => i.User);
+            var i = this.dataContext.Interns;
 
             if (i == null)
             {
                 return null;
             }
 
-            var x = i.Select(a => new InternRequest
+            var x = i.Select(ar => new InternRequest
             {
-                Id = a.Id,
-                FirstName = a.User.FirstName,
-                LastName = a.User.LastName,
-                Email = a.User.Email,
-                PhoneNumber = a.User.PhoneNumber
+                Id = ar.Id,
+                FirstName = ar.User.FirstName,
+                LastName = ar.User.LastName,
+                PhoneNumber = ar.User.PhoneNumber,
+                Email = ar.User.Email,
             }).ToList();
 
             return x;
@@ -215,6 +234,27 @@
                 LastName = a.User.LastName,
                 PhoneNumber = a.User.PhoneNumber
             };
+
+            return x;
+        }
+        public IEnumerable<InternRequest> GetInternsWithUserByName(string name)
+        {
+            var a = this.dataContext.Interns;
+
+            if (a == null)
+            {
+                return null;
+            }
+
+            var x = a.Select(ar => new InternRequest
+            {
+                Id = ar.Id,
+                FirstName = ar.User.FirstName,
+                LastName = ar.User.LastName,
+                PhoneNumber = ar.User.PhoneNumber,
+                Email = ar.User.Email
+
+            }).ToList().Where(n => n.FirstName == name);
 
             return x;
         }

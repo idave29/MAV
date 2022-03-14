@@ -58,8 +58,7 @@ namespace MAV.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(intern);
-                await _context.SaveChangesAsync();
+                await this.internRepository.CreateAsync(intern);
                 return RedirectToAction(nameof(Index));
             }
             return View(intern);
@@ -73,7 +72,7 @@ namespace MAV.Web.Controllers
                 return NotFound();
             }
 
-            var intern = await _context.Interns.FindAsync(id);
+            var intern = await this.internRepository.GetByIdAsync(id.Value);
             if (intern == null)
             {
                 return NotFound();
@@ -97,8 +96,7 @@ namespace MAV.Web.Controllers
             {
                 try
                 {
-                    _context.Update(intern);
-                    await _context.SaveChangesAsync();
+                    await this.internRepository.UpdateAsync(intern);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -124,8 +122,7 @@ namespace MAV.Web.Controllers
                 return NotFound();
             }
 
-            var intern = await _context.Interns
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var intern = await this.internRepository.GetByIdAsync(id.Value);
             if (intern == null)
             {
                 return NotFound();

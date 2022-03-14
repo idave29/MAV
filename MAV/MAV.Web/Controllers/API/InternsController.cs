@@ -91,19 +91,28 @@
             {
                 return BadRequest();
             }
-            var oldIntern = await this.internRepository.GetByIdAsync(id);
+            var oldIntern = await this.userHelper.GetUserByEmailAsync(intern.Email);
             if (oldIntern == null)
             {
                 return BadRequest("Id not found");
             }
 
-            oldIntern.User.FirstName = intern.FirstName;
-            oldIntern.User.LastName = intern.LastName;
-            oldIntern.User.Email = intern.Email;
-            oldIntern.User.PhoneNumber = intern.PhoneNumber;
+            oldIntern.FirstName = intern.FirstName;
+            oldIntern.LastName = intern.LastName;
+            oldIntern.Email = intern.Email;
+            oldIntern.PhoneNumber = intern.PhoneNumber;
 
-            var updateIntern= await this.internRepository.UpdateAsync(oldIntern);
-            return Ok(updateIntern);
+            if (intern.OldPassword != intern.Password)
+            {
+                var pass = await this.userHelper.ChangePasswordAsync(oldIntern, intern.OldPassword, intern.Password);
+                if (!pass.Succeeded)
+                {
+                    return BadRequest("No coincide la contraseña anterior, intente de nuevo");
+                }
+            }
+            var result = await this.userHelper.UpdateUserAsync(oldIntern);
+
+            return Ok(result);
         }
 
         [HttpDelete("{id}")]
@@ -113,7 +122,6 @@
             {
                 return BadRequest(ModelState);
             }
-
             var oldIntern = await this.internRepository.GetByIdAsync(id);
             if (oldIntern == null)
             {
