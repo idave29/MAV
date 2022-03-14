@@ -32,14 +32,15 @@
                 return BadRequest(ModelState);
             }
 
-            //return Ok(this.loanDetailRepository.GetLoanDetails());
+            return Ok(this.loanDetailRepository.GetLoanDetails());
             //return Ok(this.loanDetailRepository.GetLoanDetailsWithMaterialWithoutDateTimeIn()); 
-            return Ok(this.loanDetailRepository.GetLoansDetailsWithMaterialAndOwner());
+            //return Ok(this.loanDetailRepository.GetLoansDetailsWithMaterialAndOwner());
             //return Ok(this.loanDetailRepository.GetLoanDetailWithMaterialAndOwnerById(1));
             //return Ok(this.loanDetailRepository.GetLoanDetailById(1));
             //DateTime thisDate = new DateTime(2021, 10, 5, 7, 30, 0);
             //return Ok(this.loanDetailRepository.GetLoansDetailsWithMaterialByDateTimeOut(thisDate));
             //return Ok(this.loanDetailRepository.GetLoansDetailsWithMaterialAndOwnerByNameMaterial("HDMI1"));
+            //return Ok(this.loanDetailRepository.GetLoanDetailsWithMaterialAndLoan());
         }
 
         [HttpPost]
