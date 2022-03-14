@@ -79,7 +79,6 @@
             //}
             var entityApplicant = new MAV.Web.Data.Entities.Applicant
             {
-                Id = applicant.Id,
                 User = user,
                 ApplicantType= applicantType
 
@@ -103,16 +102,23 @@
             {
                 return BadRequest();
             }
+            var applicantType = this.applicantTypeRepository.GetApplicantTypeByName(applicant.ApplicantType);
+            if (applicantType == null)
+            {
+                return BadRequest("applicanttype not found");
+            }
             var user = await this.userHelper.GetUserByEmailAsync(applicant.Email);
             if (user == null)
             {
                 return BadRequest("Id not found");
             }
+            var oldApplicant = await this.applicantRepository.GetByIdAsync(id);
 
-            user.FirstName = applicant.FirstName;
-            user.LastName = applicant.LastName;
-            user.Email = applicant.Email;
-            user.PhoneNumber = applicant.PhoneNumber;
+            oldApplicant.User.FirstName = applicant.FirstName;
+            oldApplicant.User.LastName = applicant.LastName;
+            oldApplicant.User.Email = applicant.Email;
+            oldApplicant.User.PhoneNumber = applicant.PhoneNumber;
+            oldApplicant.ApplicantType = applicantType;
 
             if (applicant.OldPassword != applicant.Password)
             {

@@ -80,6 +80,7 @@
 
             return x;
         }
+
         public ApplicantType GetApplicantTypeByName(string name)
         {
             var a = this.dataContext.ApplicantTypes;
