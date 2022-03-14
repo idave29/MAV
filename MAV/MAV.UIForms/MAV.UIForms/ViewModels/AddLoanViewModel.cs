@@ -87,12 +87,12 @@ namespace MAV.UIForms.ViewModels
         {
             if (string.IsNullOrEmpty(Intern))
             {
-                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un Intern", "Aceptar");
+                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un Becario", "Aceptar");
                 return;
             }
             if (string.IsNullOrEmpty(Applicant))
             {
-                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un apellido", "Aceptar");
+                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un Aplicante", "Aceptar");
                 return;
             }
 
