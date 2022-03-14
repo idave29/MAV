@@ -18,6 +18,6 @@
         public string OldPassword { get; set; }
         public string FullName => $"{LastName} {FirstName}";
 
-        public ICollection<LoanRequest> Loans { get; set; }
+        //public ICollection<LoanRequest> Loans { get; set; }
     }
 }

@@ -90,12 +90,7 @@
                 Email = a.User.Email,
                 PhoneNumber = a.User.PhoneNumber,
                 ApplicantType = a.ApplicantType.Name,
-                Loans = a.Loans?.Select(l => new LoanRequest
-                {
-                    Id = l.Id,
-                    Intern = l.Intern.User.FullName,
-                   
-                }).ToList()
+                
             };
             //.Where(ld => ld.Observations != null)
             return x;
@@ -348,6 +343,13 @@
                     return app;
                 }
             }
+            //foreach (Applicant app in a)
+            //{
+            //    foreach (Applicant app.User in a)
+            //    {
+            //        return app;
+            //    }
+            //}
             return null;
         }
 
