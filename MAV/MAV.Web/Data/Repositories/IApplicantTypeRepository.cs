@@ -14,5 +14,6 @@
         Task<ApplicantType> GetByIdAplicantTypeAsync(int id);
         ApplicantTypeRequest GetApplicantTypeById(int id);
         IEnumerable<ApplicantTypeRequest> GetApplicantTypesByName(string name);
+        ApplicantType GetApplicantTypeByName(string name);
     }
 }

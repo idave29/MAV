@@ -24,11 +24,11 @@
                     <Label Text="Telephone" Grid.Column="0" Grid.Row="3" VerticalOptions="Center"></Label>
                     <Entry Grid.Column="1" Grid.Row="3" Keyboard="Telephone" Placeholder="Introduce el Telefono" Text="{Binding PhoneNumber}">
                     </Entry>
-                    <Picker x:Name="StylesPicker" Title="Select stylesheet" 
-                        HorizontalOptions="FillAndExpand" 
-                        ItemsSource="{Binding TypeList}" />
+                    <Label Text="ApplicantTypes" Grid.Column="0" Grid.Row="4" VerticalOptions="Center"></Label>
+                    <Picker Grid.Column="1" Grid.Row="4" Title="Selecciona un tipo de aplicante" ItemsSource="{Binding ApplicantTypeList}" SelectedItem="{Binding ApplicantType, Mode=TwoWay}"/>
+
                 </Grid>
-                
+
                 <ActivityIndicator IsRunning="{Binding IsRunning}" VerticalOptions="CenterAndExpand">
                 </ActivityIndicator>
                 <Button Text="Save" 

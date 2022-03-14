@@ -80,5 +80,17 @@
 
             return x;
         }
+        public ApplicantType GetApplicantTypeByName(string name)
+        {
+            var a = this.dataContext.ApplicantTypes;
+            foreach (ApplicantType s in a)
+            {
+                if (s.Name == name)
+                {
+                    return s;
+                }
+            }
+            return null;
+        }
     }
 }

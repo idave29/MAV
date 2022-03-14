@@ -47,6 +47,7 @@
         public EditApplicantTypeViewModel EditApplicantType { get; set; }
         public EditAdministratorViewModel EditAdministrator { get; set; }
         public EditLoanDetailViewModel EditLoanDetail { get; set; }
+        public EditApplicantViewModel EditApplicant { get; set; }
 
 
 

@@ -7,14 +7,16 @@ namespace MAV.UIForms.ViewModels
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Linq;
     using System.Text;
     using Xamarin.Forms;
 
     public class ApplicantsViewModel : BaseViewModel
     {
         private ApiService apiService;
-        private ObservableCollection<ApplicantRequest> applicants;
-        public ObservableCollection<ApplicantRequest> Applicants
+        private List<ApplicantRequest> myApplicants;
+        private ObservableCollection<ApplicantItemViewModel> applicants;
+        public ObservableCollection<ApplicantItemViewModel> Applicants
         {
             get { return this.applicants; }
             set { this.SetValue(ref this.applicants, value); }
@@ -39,7 +41,7 @@ namespace MAV.UIForms.ViewModels
             var response = await this.apiService.GetListAsync<ApplicantRequest>(
                 url,
                 "/api",
-                "/Applicants", 
+                "/Applicants",
                 "bearer",
                 MainViewModel.GetInstance().Token.Token);
             this.IsRefreshing = false;
@@ -48,9 +50,46 @@ namespace MAV.UIForms.ViewModels
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
             }
-            var myApplicants = (List<ApplicantRequest>)response.Result;
-            this.Applicants = new ObservableCollection<ApplicantRequest>(myApplicants);
+            myApplicants = (List<ApplicantRequest>)response.Result;
+            RefreshApplicantList();
 
+        }
+        public void RefreshApplicantList()
+        {
+            this.Applicants = new ObservableCollection<ApplicantItemViewModel>(myApplicants.Select(a => new ApplicantItemViewModel
+            {
+                Id = a.Id,
+                FirstName = a.FirstName,
+                LastName = a.LastName,
+                Email = a.Email,
+                ApplicantType = a.ApplicantType,
+
+            }).OrderBy(a => a.FirstName).ToList());
+        }
+        public void AddApplicantToList(ApplicantRequest applicant)
+        {
+            this.myApplicants.Add(applicant);
+            RefreshApplicantList();
+        }
+
+        public void UpdateApplicantInList(ApplicantRequest applicant)
+        {
+            var previousApplicant = myApplicants.Where(a => a.Id == applicant.Id).FirstOrDefault();
+            if (previousApplicant != null)
+            {
+                this.myApplicants.Remove(previousApplicant);
+            }
+            this.myApplicants.Add(applicant);
+            RefreshApplicantList();
+        }
+        public void DeleteApplicantInList(int applicantId)
+        {
+            var previousApplicant = myApplicants.Where(mt => mt.Id == applicantId).FirstOrDefault();
+            if (previousApplicant != null)
+            {
+                this.myApplicants.Remove(previousApplicant);
+            }
+            RefreshApplicantList();
         }
     }
 }
