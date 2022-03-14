@@ -69,6 +69,11 @@
                 Intern = intern,
                 Applicant = applicant
             };
+            
+            if (entityLoan == null)
+            {
+                return BadRequest("loan not found");
+            }
             var newLoan = await this.loanRepository.CreateAsync(entityLoan);
             return Ok(newLoan);
         }

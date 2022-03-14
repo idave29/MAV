@@ -14,7 +14,7 @@
             Padding="10">
                 <ListView 
                 IsPullToRefreshEnabled="True"
-                IsRefreshing="{Binding IsRefresing}"
+                IsRefreshing="{Binding IsRefreshing}"
                 HasUnevenRows="True"
                 ItemsSource="{Binding Loans}"
                 RefreshCommand="{Binding RefreshCommand}">

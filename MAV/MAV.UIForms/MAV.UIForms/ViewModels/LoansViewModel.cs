@@ -51,6 +51,7 @@
         {
             this.Loans = new ObservableCollection<LoanItemViewModel>(myLoans.Select(l => new LoanItemViewModel
             {
+                Id = l.Id,
                 Applicant = l.Applicant,
                 Intern = l.Intern,
 

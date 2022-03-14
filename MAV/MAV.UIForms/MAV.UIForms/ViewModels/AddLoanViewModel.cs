@@ -101,10 +101,9 @@ namespace MAV.UIForms.ViewModels
 
             var Loan = new LoanRequest { Intern = Intern, Applicant=Applicant };
             var url = Application.Current.Resources["URLApi"].ToString();
-            var response = await this.apiService.PutAsync(url,
+            var response = await this.apiService.PostAsync(url,
                 "/api",
                 "/Loans",
-                Loan.Id,
                 Loan,
                 "bearer",
                 MainViewModel.GetInstance().Token.Token);
