@@ -44,7 +44,7 @@
             {
                 return BadRequest(ModelState);
             }
-           
+
             var applicantType = this.applicantTypeRepository.GetApplicantTypeByName(applicant.ApplicantType);
             if (applicantType == null)
             {
@@ -80,7 +80,7 @@
             var entityApplicant = new MAV.Web.Data.Entities.Applicant
             {
                 User = user,
-                ApplicantType= applicantType
+                ApplicantType = applicantType
 
             };
             if (entityApplicant == null)
