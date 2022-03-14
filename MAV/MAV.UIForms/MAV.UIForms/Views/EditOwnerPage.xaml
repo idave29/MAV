@@ -24,9 +24,15 @@
 
                     <Label Text="Phone Number" Grid.Column="0" Grid.Row="3" VerticalOptions="Center"></Label>
                     <Entry Grid.Column="1" Grid.Row="3" Keyboard="Telephone" Placeholder="Introduce número telefónico" Text="{Binding Owner.PhoneNumber}"></Entry>
-                    
+                                        
                     <Label Text="Password" Grid.Column="0" Grid.Row="4" VerticalOptions="Center"></Label>
-                    <Entry Grid.Column="1" Grid.Row="4" Text="{Binding Owner.Password}"></Entry>
+                    <Entry Grid.Column="1" Grid.Row="4" Keyboard="Text"  Placeholder="Introduce una nueva contraseña" Text="{Binding Owner.Password}"></Entry>
+                    
+                    <Label Text="Password" Grid.Column="0" Grid.Row="5" VerticalOptions="Center"></Label>
+                    <Entry Grid.Column="1" Grid.Row="5" Keyboard="Text"  Placeholder="Introduce la vieja contraseña" Text="{Binding Owner.OldPassword}"></Entry>
+                    
+                    <Label Text="*Si no quiere cambiar la contraseña, deje los espacios de password en blanco" Grid.Column="1" Grid.Row="6" VerticalOptions="Center"></Label>
+
                 </Grid>
                 <ActivityIndicator IsRunning="{Binding IsRunning}" VerticalOptions="CenterAndExpand">
                 </ActivityIndicator>

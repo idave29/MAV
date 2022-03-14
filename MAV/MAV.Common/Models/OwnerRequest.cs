@@ -16,7 +16,9 @@ namespace MAV.Common.Models
 
         public string PhoneNumber { get; set; }
 
-        public string Password { get; set; }    
+        public string Password { get; set; }
+        public string OldPassword { get; set; }
+
         //public ICollection<MaterialRequest> Materials { get; set; }
     }
 }
