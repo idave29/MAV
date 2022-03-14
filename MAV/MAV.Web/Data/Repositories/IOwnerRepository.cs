@@ -16,6 +16,8 @@
         OwnerRequest GetOwnerWithMaterialsByEmail(EmailRequest emailOwner);
         IEnumerable<OwnerRequest> GetOwnersWithMaterialsByName(string name);
         OwnerRequest GetOwnerWithMaterialsById(int id);
+        OwnerRequest GetOwnerWithUserByEmail(EmailRequest email);
         Owner GetOwnerByName(string name);
+        Owner GetGoodOwnerWithEmail(string Email);
     }
 }

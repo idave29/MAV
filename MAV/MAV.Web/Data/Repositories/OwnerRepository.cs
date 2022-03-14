@@ -2,6 +2,7 @@
 {
     using MAV.Common.Models;
     using MAV.Web.Data.Entities;
+    using MAV.Web.Helpers;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.EntityFrameworkCore;
     using System.Collections.Generic;
@@ -10,6 +11,7 @@
     public class OwnerRepository : GenericRepository<MAV.Web.Data.Entities.Owner>, IOwnerRepository
     {
         private readonly DataContext dataContext;
+        private readonly IUserHelper userHelper;
 
         public OwnerRepository(DataContext dataContext) : base(dataContext)
         {
@@ -22,6 +24,43 @@
                 .Include(t => t.User)
                 //.Include(t => t.Materials)
                 .FirstOrDefaultAsync(t => t.Id == id);
+        }
+
+        public Owner GetGoodOwnerWithEmail(string Email)
+        {
+            //var b = this.dataContext.Owners.Include(o => o.User);
+            //foreach (Entities.User u in this.dataContext.Users)
+            //{
+            //    if(u != null)
+            //    {
+            //        if (u.Email == Email)
+            //        {
+            //            foreach (Owner ow in b)
+            //            {
+            //                if(ow != null)
+            //                {
+            //                    if(ow.User == u)
+            //                    {
+            //                        return ow;
+            //                    }
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
+            //return null;
+            var b = this.dataContext.Owners.Include(o => o.User);
+            foreach (Owner u in this.dataContext.Owners.Include(m => m.User))
+            {
+                if (u != null)
+                {
+                    if (u.User.Email == Email)
+                    {
+                        return u;
+                    }
+                }
+            }
+            return null;
         }
 
         public IEnumerable<SelectListItem> GetComboOwners()
@@ -37,6 +76,27 @@
                 Value = "0"
             });
             return list;
+        }
+        public OwnerRequest GetOwnerWithUserByEmail(EmailRequest email)
+        {
+            var a = this.dataContext.Owners
+               .Include(t => t.User)
+               .FirstOrDefault(u => u.User.Email.ToLower() == email.ToString());
+
+            if (a == null)
+            {
+                return null;
+            }
+            var x = new OwnerRequest
+            {
+                Id = a.Id,
+                Email = a.User.Email,
+                FirstName = a.User.FirstName,
+                LastName = a.User.LastName,
+                PhoneNumber = a.User.PhoneNumber
+            };
+
+            return x;
         }
 
         public IQueryable GetOwnersWithUser()

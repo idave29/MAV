@@ -1,6 +1,8 @@
 ﻿namespace MAV.Web.Controllers.API
 {
+    using MAV.Common.Models;
     using MAV.Web.Data.Repositories;
+    using MAV.Web.Helpers;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -15,15 +17,18 @@
         private readonly IStatusRepository statusRepository;
         private readonly IMaterialTypeRepository materialTypeRepository;
         private readonly IOwnerRepository ownerRepository;
+        private readonly IUserHelper userHelper;
 
         public MaterialsController(IMaterialRepository materialRepository, IStatusRepository statusRepository, IMaterialTypeRepository materialTypeRepository,
-            IOwnerRepository ownerRepository)
+            IOwnerRepository ownerRepository, IUserHelper userHelper)
         {
             this.materialRepository = materialRepository;
             this.statusRepository = statusRepository;
             this.materialTypeRepository = materialTypeRepository;
             this.ownerRepository = ownerRepository;
+            this.userHelper = userHelper;
         }
+
 
         [HttpGet]
         public IActionResult GetMaterials()
@@ -47,8 +52,9 @@
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequest("ModelState mal");
             }
+
             var status = this.statusRepository.GetStatusByName(material.Status);
             if (status == null)
             {
@@ -59,11 +65,16 @@
             {
                 return BadRequest("materialtype not found");
             }
-            var owner = this.ownerRepository.GetOwnerByName(material.Owner);
+            var owner = this.ownerRepository.GetGoodOwnerWithEmail(material.Owner);          
             if (owner == null)
             {
                 return BadRequest("owner not found");
             }
+            //else
+            //{
+            //    return BadRequest("Owner bien");
+            //}
+
 
             var entityMaterial = new MAV.Web.Data.Entities.Material
             {
@@ -76,6 +87,10 @@
                 MaterialModel = material.MaterialModel,
                 SerialNum = material.SerialNum
             };
+            if (entityMaterial == null)
+            {
+                return BadRequest("entityMaterial not found");
+            }
             var newMaterial = await this.materialRepository.CreateAsync(entityMaterial);
             return Ok(newMaterial);
         }
