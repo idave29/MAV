@@ -3,12 +3,18 @@
     using System.ComponentModel.DataAnnotations;
     public class LoginViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "{0} es requerido")]
         [EmailAddress]
+        [Display(Name = "User Name")]
         public string Username { get; set; }
-        [Required]
-        [MinLength(6)]
+
+        [Required(ErrorMessage = "{0} es requerido")]
+        [MinLength(6, ErrorMessage = "{0} debe de tener minimo {1} caracteres")]
+        [DataType(DataType.Password)]
+        [Display(Name = "Password")]
         public string Password { get; set; }
+
+        [Display(Name = "Remember Me")]
         public bool RememberMe { get; set; }
     }
 }

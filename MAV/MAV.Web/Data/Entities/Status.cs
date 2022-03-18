@@ -6,12 +6,12 @@
     {
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "{0} is required")]
-        [MaxLength(20, ErrorMessage = "{0} must have maximun {1} characters")]
-        [Display(Name = "Status name")]
-
+        [Required(ErrorMessage = "{0} es requerido")]
+        [MaxLength(20, ErrorMessage = "{0} debe de tener máximo {1} caracteres")]
+        [Display(Name = "Nombre del status")]
         public string Name { get; set; }
 
-        //public ICollection<Material> Materials { set; get; }
+        public ICollection<Material> Materials { get; set; }
+        public ICollection<LoanDetail> LoanDetails { get; set; }
     }
 }

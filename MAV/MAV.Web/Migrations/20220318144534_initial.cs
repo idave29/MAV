@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MAV.Web.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,7 +13,7 @@ namespace MAV.Web.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(maxLength: 30, nullable: false)
+                    Name = table.Column<string>(maxLength: 20, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -67,7 +67,7 @@ namespace MAV.Web.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(maxLength: 30, nullable: false)
+                    Name = table.Column<string>(maxLength: 20, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -114,7 +114,7 @@ namespace MAV.Web.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(nullable: true)
+                    UserId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -133,7 +133,8 @@ namespace MAV.Web.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(nullable: true),
+                    Debtor = table.Column<bool>(nullable: false),
+                    UserId = table.Column<string>(nullable: false),
                     ApplicantTypeId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -244,7 +245,7 @@ namespace MAV.Web.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(nullable: true)
+                    UserId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -263,7 +264,7 @@ namespace MAV.Web.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(nullable: true)
+                    UserId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -308,9 +309,9 @@ namespace MAV.Web.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(maxLength: 30, nullable: false),
+                    Name = table.Column<string>(maxLength: 20, nullable: false),
                     Label = table.Column<string>(maxLength: 6, nullable: false),
-                    Brand = table.Column<string>(maxLength: 50, nullable: false),
+                    Brand = table.Column<string>(maxLength: 30, nullable: false),
                     MaterialModel = table.Column<string>(maxLength: 15, nullable: false),
                     SerialNum = table.Column<string>(maxLength: 15, nullable: false),
                     StatusId = table.Column<int>(nullable: true),
@@ -350,6 +351,7 @@ namespace MAV.Web.Migrations
                     DateTimeOut = table.Column<DateTime>(nullable: false),
                     DateTimeIn = table.Column<DateTime>(nullable: false),
                     MaterialId = table.Column<int>(nullable: true),
+                    StatusId = table.Column<int>(nullable: true),
                     LoanId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -365,6 +367,12 @@ namespace MAV.Web.Migrations
                         name: "FK_LoanDetails_Materials_MaterialId",
                         column: x => x.MaterialId,
                         principalTable: "Materials",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_LoanDetails_Statuses_StatusId",
+                        column: x => x.StatusId,
+                        principalTable: "Statuses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -437,6 +445,11 @@ namespace MAV.Web.Migrations
                 name: "IX_LoanDetails_MaterialId",
                 table: "LoanDetails",
                 column: "MaterialId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LoanDetails_StatusId",
+                table: "LoanDetails",
+                column: "StatusId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Loans_ApplicantId",

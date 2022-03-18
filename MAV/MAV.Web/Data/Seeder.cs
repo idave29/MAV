@@ -23,64 +23,78 @@ namespace MAV.Web.Data
         {
             //User
             await dataContext.Database.EnsureCreatedAsync();
-            await this.userHelper.CheckRoleAsync("Admininstrator");
-            await this.userHelper.CheckRoleAsync("Applicant");
-            await this.userHelper.CheckRoleAsync("Intern");
-            await this.userHelper.CheckRoleAsync("Owner");
+
             //Roles
+            await this.userHelper.CheckRoleAsync("Administrador");
+            await this.userHelper.CheckRoleAsync("Becario");
+            await this.userHelper.CheckRoleAsync("Solicitante");
+            await this.userHelper.CheckRoleAsync("Responsable");
+
+            //Administradores
             if (!this.dataContext.Administrators.Any())
             {
-                var user = await CheckUserAsync("Fong", "Eduardo", "eduardo.fong@gmail.com", "987654321", "123456", "Admininstrator");
+                var user = await CheckUserAsync("Fong", "Eduardo", "eduardo.fong@gmail.com", "987654321", "123456", "Administrador");
                 await CheckAdminAsync(user);
-                user = await CheckUserAsync("Ochoa", "Miguel", "miguel.ochoa@gmail.com", "987654321", "123456", "Admininstrator");
+                user = await CheckUserAsync("Ochoa", "Miguel", "miguel.ochoa@gmail.com", "987654321", "123456", "Administrador");
                 await CheckAdminAsync(user);
-                user = await CheckUserAsync("Garcia", "Miguel", "miguel.garcia@gmail.com", "123456789", "123456", "Admininstrator");
+                user = await CheckUserAsync("Garcia", "Miguel", "miguel.garcia@gmail.com", "123456789", "123456", "Administrador");
                 await CheckAdminAsync(user); 
             }
-            //ApplicantTypes
+
+            //Tipo de solicitantes
             if (!this.dataContext.ApplicantTypes.Any())
             {
-                await CheckApplicantTypeAsync("No deudor");
-                await CheckApplicantTypeAsync("Deudor");
+                await CheckApplicantTypeAsync("Alumno");
+                await CheckApplicantTypeAsync("Profesor");
+                await CheckApplicantTypeAsync("Administrativo"); 
             }
+
+            //Solicitantes
             if (!this.dataContext.Applicants.Any())
             {
-                var user = await CheckUserAsync("Zambrano", "Natalia", "natalia.xambrano@gmail.com", "987654321", "123456", "Applicant");
+                var user = await CheckUserAsync("Zambrano", "Natalia", "natalia.xambrano@gmail.com", "987654321", "123456", "Solicitante");
                 var applicantType = this.dataContext.ApplicantTypes.FirstOrDefault();
                 await CheckApplicantAsync(user, applicantType);
-                user = await CheckUserAsync("Sanchez", "Raquel", "raquel.sanchez@gmail.com", "987654321", "123456", "Applicant");
+                user = await CheckUserAsync("Sanchez", "Raquel", "raquel.sanchez@gmail.com", "987654321", "123456", "Solicitante");
                 applicantType = this.dataContext.ApplicantTypes.FirstOrDefault();
                 await CheckApplicantAsync(user, applicantType);
             }
+
+            //Becarios
             if (!this.dataContext.Interns.Any())
             {
-                var user = await CheckUserAsync("Hernandez", "David", "deivi.hr@gmail.com", "987654321", "123456", "Intern");
+                var user = await CheckUserAsync("Hernandez", "David", "deivi.hr@gmail.com", "987654321", "123456", "Becario");
                 await CheckInternAsync(user);
-                user = await CheckUserAsync("Villegas", "Arturo", "artur.vr@gmail.com", "987654321", "123456", "Intern");
+                user = await CheckUserAsync("Villegas", "Arturo", "artur.vr@gmail.com", "987654321", "123456", "Becario");
                 await CheckInternAsync(user);
             }
+
+            //Responsables
             if (!this.dataContext.Owners.Any())
             {
-                var user = await CheckUserAsync("Reeves", "Keanu", "keanu.reeves@gmail.com", "987654321", "123456", "Owner");
+                var user = await CheckUserAsync("Reeves", "Keanu", "keanu.reeves@gmail.com", "987654321", "123456", "Responsable");
                 await CheckOwnerAsync(user);
-                user = await CheckUserAsync("Zapata", "Carlos", "carlos.zapata@gmail.com", "987654321", "123456", "Owner");
+                user = await CheckUserAsync("Zapata", "Carlos", "carlos.zapata@gmail.com", "987654321", "123456", "Responsable");
                 await CheckOwnerAsync(user);
             }
             
-            //MaterialType
+            //Tipo de material
             if (!this.dataContext.MaterialTypes.Any())
             {
                 await CheckMaterialTypeAsync("Cable");
                 await CheckMaterialTypeAsync("Adaptador");
             }
+
             //Status
             if (!this.dataContext.Statuses.Any())
             {
                 await CheckStatusAsync("Disponible");
                 await CheckStatusAsync("Prestado");
+                await CheckStatusAsync("Regresado");
                 await CheckStatusAsync("Defectuoso");
             }
-            //Loan
+
+            //Préstamos
             if (!this.dataContext.Loans.Any())
             {
                 var applicant = this.dataContext.Applicants
@@ -98,6 +112,7 @@ namespace MAV.Web.Data
                     .FirstOrDefault(c => c.User.FirstName == "Arturo");
                 await CheckLoanAsync(applicant, intern);
             }
+
             //Material
             if (!this.dataContext.Materials.Any())
             {
@@ -118,20 +133,23 @@ namespace MAV.Web.Data
                     .FirstOrDefault(s => s.Name == "Cable");
                 await this.CheckMaterialAsync("VGA", owner, materialType, status, "HP", "MAV02", "Verde", "6817654");
             }
-            //LoanDetail
+
+            //Detalle del préstamo
             if (!this.dataContext.LoanDetails.Any())
             {
                 var loan = this.dataContext.Loans.FirstOrDefault();
                 var material = this.dataContext.Materials.FirstOrDefault();
+                var status = this.dataContext.Statuses.FirstOrDefault(s => s.Id == 3); 
                 var dateTimeIn = new DateTime(2021, 10, 5, 8, 18, 0);
                 var dateTimeOut = new DateTime(2021, 10, 6, 8, 30, 0);
-                await CheckLoanDetailAsync(loan, material, dateTimeIn, dateTimeOut);
+                await CheckLoanDetailAsync(loan, material, dateTimeIn, dateTimeOut, status, "");
+
                 loan = this.dataContext.Loans.FirstOrDefault(i => i.Id == 2);
                 material = this.dataContext.Materials.FirstOrDefault(nm => nm.Name == "VGA");
+                status=this.dataContext.Statuses.FirstOrDefault(s => s.Id == 3);
                 dateTimeIn = new DateTime(2021, 10, 4, 12, 18, 0);
                 dateTimeOut = new DateTime(2021, 10, 5, 7, 30, 0);
-                //dateTimeOut = new DateTime(0, 0, 0);
-                await CheckLoanDetailAsync(loan, material, dateTimeIn, dateTimeOut);
+                await CheckLoanDetailAsync(loan, material, dateTimeIn, dateTimeOut, status, "");
             }
         }
 
@@ -215,14 +233,16 @@ namespace MAV.Web.Data
             await this.dataContext.SaveChangesAsync();
         }
 
-        private async Task CheckLoanDetailAsync(Loan loan, Material material, DateTime dateTimeIn, DateTime dateTimeOut)
+        private async Task CheckLoanDetailAsync(Loan loan, Material material, DateTime dateTimeIn, DateTime dateTimeOut, Status status, string observations)
         {
             this.dataContext.LoanDetails.Add(new LoanDetail
             {
                 Loan = loan,
                 Material = material,
                 DateTimeIn = dateTimeIn,
-                DateTimeOut = dateTimeOut
+                DateTimeOut = dateTimeOut, 
+                Status = status,
+                Observations = observations
             });
             await this.dataContext.SaveChangesAsync();
         }

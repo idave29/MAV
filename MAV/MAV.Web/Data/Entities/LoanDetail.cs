@@ -6,16 +6,22 @@
     {
         public int Id { get; set; }
 
-        [Display(Name = "Observations")]
-        public string Observations { set; get; }
+        [Display(Name = "Observaciones")]
+        public string Observations { get; set; }
 
-        [Display(Name = "Date and time of loan")]
-        public DateTime DateTimeOut { set; get; }
+        [Display(Name = "Fecha y tiempo del préstamo")]
+        public DateTime DateTimeOut { get; set; }
 
-        [Display(Name = "Date and time of return")]
-        public DateTime DateTimeIn { set; get; }
+        [Display(Name = "Fecha y tiempo de la devolución")]
+        public DateTime DateTimeIn { get; set; }
 
+        [Display(Name = "Material")]
         public Material Material { get; set; }
+
+        [Display(Name = "Status")]
+        public Status Status { get; set; }
+
+        [Display(Name = "Préstamo")]
         public Loan Loan { get; set; }
     }
 }

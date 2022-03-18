@@ -1,7 +1,9 @@
 ﻿namespace MAV.Web.Controllers
 {
+    using MAV.Web.Data;
     using MAV.Web.Helpers;
     using MAV.Web.Models;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.IdentityModel.Tokens;
@@ -11,18 +13,30 @@
     using System.Security.Claims;
     using System.Text;
     using System.Threading.Tasks;
+    using Microsoft.EntityFrameworkCore;
 
     public class AccountController : Controller
     {
+        private readonly DataContext _context;
         private readonly IUserHelper userHelper;
         private readonly IConfiguration configuration;
+        //private readonly ICombosHelper combosHelper;
 
-        public AccountController(IUserHelper userHelper, IConfiguration 
+        public AccountController(DataContext context, IUserHelper userHelper, IConfiguration 
             configuration)
         {
+            _context = context;
             this.userHelper = userHelper;
             this.configuration = configuration;
         }
+
+        [Authorize(Roles = "Responsable, Administrador")]
+        // GET: Statuses
+        public async Task<IActionResult> Index()
+        {
+            return View(await _context.Users.ToListAsync());
+        }
+
 
         public IActionResult Login()
         {
@@ -96,5 +110,7 @@
             }
             return BadRequest();
         }
+
+
     }
 }

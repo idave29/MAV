@@ -7,37 +7,37 @@
     {
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "{0} is required")]
-        [MaxLength(30, ErrorMessage = "{0} must have maximun {1} characters")]
-        [Display(Name = "Name")]
-        public string Name { set; get; }
+        [Required(ErrorMessage = "{0} es requerido")]
+        [MaxLength(20, ErrorMessage = "{0} debe de tener máximo {1} caracteres")]
+        [Display(Name = "Nombre")]
+        public string Name { get; set; }
 
-        [Required(ErrorMessage = "{0} is required")]
-        [MaxLength(6, ErrorMessage = "{0} must have maximun {1} characters")]
-        [Display(Name = "Label")]
-        public string Label { set; get; }
+        [Required(ErrorMessage = "{0} es requerido")]
+        [MaxLength(6, ErrorMessage = "{0} debe de tener máximo {1} caracteres")]
+        [Display(Name = "Etiqueta")]
+        public string Label { get; set; }
 
-        [MaxLength(50, ErrorMessage = "{0} must have maximun {1} characters")]
-        [Display(Name = "Brand")]
-        [Required(ErrorMessage = "{0} is required")]
-        public string Brand { set; get; }
+        [Required(ErrorMessage = "{0} es requerido")]
+        [MaxLength(30, ErrorMessage = "{0} debe de tener máximo {1} caracteres")]
+        [Display(Name = "Marca")]
+        public string Brand { get; set; }
 
-        [MaxLength(15, ErrorMessage = "{0} must have maximun {1} characters")]
-        [Display(Name = "Model")]
-        [Required(ErrorMessage = "{0} is required")]
-        public string MaterialModel { set; get; }
+        [Required(ErrorMessage = "{0} es requerido")]
+        [MaxLength(15, ErrorMessage = "{0} debe de tener máximo {1} caracteres")]
+        [Display(Name = "Modelo")]
+        public string MaterialModel { get; set; }
 
-        [MaxLength(15, ErrorMessage = "{0} must have maximun {1} characters")]
-        [Display(Name = "Serial Number")]
-        [Required(ErrorMessage = "{0} is required")]
-        public string SerialNum { set; get; }
+        [Required(ErrorMessage = "{0} es requerido")]
+        [MaxLength(15, ErrorMessage = "{0} debe de tener máximo {1} caracteres")]
+        [Display(Name = "Número de serie")]
+        public string SerialNum { get; set; }
 
         public Status Status { get; set; }
 
         public Owner Owner { get; set; }
 
-        //public ICollection<LoanDetail> LoanDetails { set; get; }
+        public ICollection<LoanDetail> LoanDetails { get; set; }
 
-        public MaterialType MaterialType { set; get; }
+        public MaterialType MaterialType { get; set; }
     }
 }

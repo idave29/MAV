@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MAV.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20211109204436_Initial")]
-    partial class Initial
+    [Migration("20220318144534_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -29,6 +29,7 @@ namespace MAV.Web.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -48,7 +49,11 @@ namespace MAV.Web.Migrations
                     b.Property<int?>("ApplicantTypeId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("Debtor")
+                        .HasColumnType("bit");
+
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -69,8 +74,8 @@ namespace MAV.Web.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(30)")
-                        .HasMaxLength(30);
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
 
                     b.HasKey("Id");
 
@@ -85,6 +90,7 @@ namespace MAV.Web.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -138,11 +144,16 @@ namespace MAV.Web.Migrations
                     b.Property<string>("Observations")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("StatusId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("LoanId");
 
                     b.HasIndex("MaterialId");
+
+                    b.HasIndex("StatusId");
 
                     b.ToTable("LoanDetails");
                 });
@@ -156,8 +167,8 @@ namespace MAV.Web.Migrations
 
                     b.Property<string>("Brand")
                         .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
 
                     b.Property<string>("Label")
                         .IsRequired()
@@ -174,8 +185,8 @@ namespace MAV.Web.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(30)")
-                        .HasMaxLength(30);
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
 
                     b.Property<int?>("OwnerId")
                         .HasColumnType("int");
@@ -208,8 +219,8 @@ namespace MAV.Web.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(30)")
-                        .HasMaxLength(30);
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
 
                     b.HasKey("Id");
 
@@ -224,6 +235,7 @@ namespace MAV.Web.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -462,7 +474,9 @@ namespace MAV.Web.Migrations
                 {
                     b.HasOne("MAV.Web.Data.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("MAV.Web.Data.Entities.Applicant", b =>
@@ -473,14 +487,18 @@ namespace MAV.Web.Migrations
 
                     b.HasOne("MAV.Web.Data.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("MAV.Web.Data.Entities.Intern", b =>
                 {
                     b.HasOne("MAV.Web.Data.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("MAV.Web.Data.Entities.Loan", b =>
@@ -503,6 +521,10 @@ namespace MAV.Web.Migrations
                     b.HasOne("MAV.Web.Data.Entities.Material", "Material")
                         .WithMany("LoanDetails")
                         .HasForeignKey("MaterialId");
+
+                    b.HasOne("MAV.Web.Data.Entities.Status", "Status")
+                        .WithMany("LoanDetails")
+                        .HasForeignKey("StatusId");
                 });
 
             modelBuilder.Entity("MAV.Web.Data.Entities.Material", b =>
@@ -524,7 +546,9 @@ namespace MAV.Web.Migrations
                 {
                     b.HasOne("MAV.Web.Data.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
