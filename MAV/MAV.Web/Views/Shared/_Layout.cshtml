@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - Medios Audiovisuales</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
 </head>
 <body>
     <header>
@@ -30,26 +31,26 @@
                                 <li class="dropdown">
                                     <a href="#" class="nav-link text-dark" data-toggle="dropdown">Loans</a>
                                     <ul class="dropdown-menu">
-                                        <li><a class="nav-link text-dark" asp-area="" asp-controller="Loans" asp-action="Index">Loans</a></li>
-                                        <li><a class="nav-link text-dark" asp-area="" asp-controller="LoanDetails" asp-action="Index">Loan Details</a></li>
-                                        <li><a class="nav-link text-dark" asp-area="" asp-controller="Materials" asp-action="Index">Materials</a></li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Loans" asp-action="Index">Loans</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="LoanDetails" asp-action="Index">Loan Details</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Materials" asp-action="Index">Materials</a>
                                     </ul>
                                 </li>
                                 <li class="dropdown">
                                     <a href="#" class="nav-link text-dark" data-toggle="dropdown">Users</a>
                                     <ul class="dropdown-menu">
-                                        <li><a class="nav-link text-dark" asp-area="" asp-controller="Interns" asp-action="Index">Interns</a></li>
-                                        <li><a class="nav-link text-dark" asp-area="" asp-controller="Administrators" asp-action="Index">Administrators</a></li>
-                                        <li><a class="nav-link text-dark" asp-area="" asp-controller="Applicants" asp-action="Index">Applicants</a></li>
-                                        <li><a class="nav-link text-dark" asp-area="" asp-controller="Owners" asp-action="Index">Owners</a></li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Interns" asp-action="Index">Interns</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Administrators" asp-action="Index">Administrators</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Applicants" asp-action="Index">Applicants</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Owners" asp-action="Index">Owners</a>
                                     </ul>
                                 </li>
                                 <li class="dropdown">
                                     <a href="#" class="nav-link text-dark" data-toggle="dropdown">Catalogues</a>
                                     <ul class="dropdown-menu">
-                                        <li><a class="nav-link text-dark" asp-area="" asp-controller="ApplicantTypes" asp-action="Index">Applicant Types</a></li>
-                                        <li><a class="nav-link text-dark" asp-area="" asp-controller="MaterialTypes" asp-action="Index">Material Types</a></li>
-                                        <li><a class="nav-link text-dark" asp-area="" asp-controller="Status" asp-action="Index">Status</a></li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="ApplicantTypes" asp-action="Index">Applicant Types</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="MaterialTypes" asp-action="Index">Material Types</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Status" asp-action="Index">Status</a>
                                     </ul>
                                 </li>
                             }
@@ -59,9 +60,9 @@
                                 <li class="dropdown">
                                     <a href="#" class="nav-link text-dark" data-toggle="dropdown">Loans</a>
                                     <ul class="dropdown-menu">
-                                        <li><a class="nav-link text-dark" asp-area="" asp-controller="Loans" asp-action="Index">Loans</a></li>
-                                        <li><a class="nav-link text-dark" asp-area="" asp-controller="LoanDetails" asp-action="Index">Loan Details</a></li>
-                                        <li><a class="nav-link text-dark" asp-area="" asp-controller="Materials" asp-action="Index">Materials</a></li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Loans" asp-action="Index">Loans</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="LoanDetails" asp-action="Index">Loan Details</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Materials" asp-action="Index">Materials</a>
                                     </ul>
                                 </li>
                             }
@@ -71,20 +72,20 @@
                                 <li class="dropdown">
                                     <a href="#" class="nav-link text-dark" data-toggle="dropdown">Loans</a>
                                     <ul class="dropdown-menu">
-                                        <li><a class="nav-link text-dark" asp-area="" asp-controller="Materials" asp-action="Index">Materials</a></li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Materials" asp-action="Index">Materials</a>
                                     </ul>
                                 </li>
                             }
                             <li class="dropdown">
-                                    <a href="#" class="nav-link text-dark" data-toggle="dropdown">@this.User.Identity.Name<b class="caret"></b></a>
-                                    <ul class="dropdown-menu">
-                                        <li>@this.User.Identity.Name</li>
+                                    <a href="#" class="nav-link text-dark" data-toggle="dropdown"><span class="fas fa-user"></span></a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item"> @this.User.Identity.Name </a>
                                         @if (this.User.IsInRole("Responsable") || this.User.IsInRole("Administrador"))
-                                    {
-                                        <li><a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Index">Users List</a></li>
-                                    }
-                                    <li><a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a></li>
-                                </ul>
+                                        {
+                                            <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Index">Users List</a>
+                                        }
+                                        <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+                                </div>
                                 </li>
                         </ul>
                     </div>
