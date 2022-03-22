@@ -57,6 +57,7 @@ namespace MAV.Web
 
             services.AddTransient<Seeder>();
 
+            services.AddScoped<ICombosHelper, CombosHelper>();
             services.AddScoped<IUserHelper, UserHelper>();
             services.AddScoped<IImageHelper, ImageHelper>();
             services.AddScoped<IStatusRepository, StatusRepository>();
@@ -69,6 +70,11 @@ namespace MAV.Web
             services.AddScoped<IMaterialRepository, MaterialRepository>();
             services.AddScoped<ILoanDetailRepository, LoanDetailRepository>();
             services.AddScoped<ILoanRepository, LoanRepository>();
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Account/NotAuthorized";
+                options.AccessDeniedPath = "/Account/NotAuthorized";
+            });
 
             services.AddControllersWithViews();
 

@@ -111,6 +111,54 @@
             return BadRequest();
         }
 
+        public IActionResult NotAuthorized()
+        {
+            return View();
+        }
+
+        // GET: Administrators/Details/5
+        public async Task<IActionResult> Details(string Id)
+        {
+            if (Id == null)
+            {
+                return new NotFoundViewResult("UserNotFound");
+            }
+
+            var user = await _context.Users.FirstOrDefaultAsync(m => m.Id == Id);
+
+            if (user == null)
+            {
+                return new NotFoundViewResult("UserNotFound");
+            }
+
+            if (!this.User.IsInRole("Responsable") && !this.User.IsInRole("Administrador") && user.UserName != this.User.Identity.Name)
+            {
+                return new NotFoundViewResult("UserNotFound");
+            }
+
+            return View(user);
+        }
+
+
+        [HttpGet]
+        // GET: Administrators/Details/5
+        public async Task<IActionResult> DetailsActual(int? id)
+        {
+            var userName = id.ToString();
+            var user = await userHelper.GetUserByNameAsync(userName);
+
+            if (user == null)
+            {
+                return new NotFoundViewResult("UserNotFound");
+            }
+
+            if (!this.User.IsInRole("Responsable") && !this.User.IsInRole("Administrador") && userName != this.User.Identity.Name)
+            {
+                return new NotFoundViewResult("UserNotFound");
+            }
+
+            return RedirectToAction(String.Format("Details/{0}", user.Id), "Account");
+        }
 
     }
 }

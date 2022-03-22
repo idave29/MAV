@@ -10,6 +10,8 @@
     {
         Task<User> GetUserByEmailAsync(string email);
 
+        Task<User> GetUserByNameAsync(string userName);
+
         Task<IdentityResult> AddUserAsync(User user, string password);
 
         Task<SignInResult> LoginAsync(string username, string password, bool rememberMe);
