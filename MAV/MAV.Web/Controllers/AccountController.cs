@@ -14,6 +14,7 @@
     using System.Text;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.AspNetCore.Identity;
 
     public class AccountController : Controller
     {
@@ -40,31 +41,33 @@
 
         public IActionResult Login()
         {
-            if (this.User.Identity.IsAuthenticated)
+            if (User.Identity.IsAuthenticated)
             {
-                return this.RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Home");
             }
-            return this.View();
+            return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel loginViewModel)
         {
-            var result = await this.userHelper.LoginAsync(
-                loginViewModel.Username, 
-                loginViewModel.Password,
-                loginViewModel.RememberMe);
-
-            if(result.Succeeded)
+            if (ModelState.IsValid)
             {
-                if(this.Request.Query.Keys.Contains("ReturnUrl"))
+                var result = await userHelper.LoginAsync(loginViewModel.Username, loginViewModel.Password, loginViewModel.RememberMe);
+                if (result.Succeeded)
                 {
-                    return this.Redirect(this.Request.Query["ReturnUrl"].First());
+                    if (Request.Query.Keys.Contains("ReturnUrl"))
+                    {
+                        return Redirect(this.Request.Query["ReturnUrl"].First());
+                    }
+
+                    return RedirectToAction("Index", "Home");
                 }
-                return this.RedirectToAction("Index", "Home");
             }
-            this.ModelState.AddModelError(string.Empty, "No se pudo logear");
-            return this.View(loginViewModel);
+
+            ModelState.AddModelError(string.Empty, "User or password invalid.");
+            loginViewModel.Password = string.Empty;
+            return View(loginViewModel);
         }
 
         public async Task<IActionResult> Logout()
@@ -142,9 +145,9 @@
 
         [HttpGet]
         // GET: Administrators/Details/5
-        public async Task<IActionResult> DetailsActual(int? id)
+        public async Task<IActionResult> DetailsActual(string id)
         {
-            var userName = id.ToString();
+            var userName = id;
             var user = await userHelper.GetUserByNameAsync(userName);
 
             if (user == null)

@@ -43,6 +43,20 @@ namespace MAV.Web.Controllers
             }
 
             return View(administrator);
+            //if (id == null)
+            //{
+            //    return NotFound();
+            //}
+
+            //var administrator = await _context.Administrators
+            //    .Include(s => s.User)
+            //    .FirstOrDefaultAsync(m => m.Id == id);
+            //if (administrator == null)
+            //{
+            //    return NotFound();
+            //}
+
+            //return View(administrator);
         }
 
         // GET: Administrators/Create

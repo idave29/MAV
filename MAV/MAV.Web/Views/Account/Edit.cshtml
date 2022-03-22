@@ -3,6 +3,9 @@
 @{
     ViewData["Title"] = "Edit User";
 }
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" />
+<link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
 
 <h2>Edit User</h2>
 
@@ -60,7 +63,7 @@
                 {
                     <a asp-action="ChangePassword" asp-route-id="@Model.Id" class="btn btn-warning">Change Password</a>
                 }
-                <button type="submit" value="Save" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span></button>
+                <button type="submit" value="Save" class="btn btn-success"><span class="fas fa-check"></span></button>
             </div>
         </form>
     </div>

@@ -39,10 +39,13 @@ namespace MAV.Web
                 cfg.Password.RequiredUniqueChars = 0;
             }).AddEntityFrameworkStores<DataContext>();
 
-            services.AddDbContext<DataContext>(cfg =>
-            {
-                cfg.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-            });
+            //Añade el DBContext para la conexión a la base de datos
+            services.AddDbContext<DataContext>(
+                cfg =>
+                {
+                    cfg.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                });
+
 
             services.AddAuthentication().AddCookie().AddJwtBearer(cfg =>
             {
