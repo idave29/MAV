@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<MAV.Web.Data.Entities.MaterialType>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Lista de tipo de materiales";
 }
 
 <link href="~/css/jquery.dataTables.min.css" rel="stylesheet" />
@@ -15,7 +15,7 @@
             @if (this.User.IsInRole("Administrador"))
                 {
                     <p>
-                        <a asp-action="Create" class="btn btn-success"><span class="fas fa-plus"></span></a>
+                        <a asp-action="Create" class="btn btn-outline-success"><span class="fas fa-plus"></span></a>
                     </p>
                 }
                 <table id="MiTabla">
@@ -34,9 +34,9 @@
                                 @Html.DisplayFor(modelItem => item.Name)
                             </td>
                             <td>
-                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning"><span class="fas fa-eye"></span></a> |
-                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info"><span class="fas fa-pen"></span></a> |
-                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger"><span class="fas fa-trash"></span></a>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info"><span class="fas fa-eye"></span></a>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning"><span class="fas fa-pen"></span></a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger"><span class="fas fa-trash"></span></a>
                             </td>
                         </tr>
                 }

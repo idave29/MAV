@@ -20,7 +20,8 @@ namespace MAV.Web.Data.Repositories
         {
             return this.dataContext.LoanDetails
                 .Include(t => t.Material)
-                .Include(t => t.Loan);
+                .Include(t => t.Loan)
+                .Include(t => t.Status); 
         }
 
         public IQueryable GetLoanDetails()

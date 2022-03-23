@@ -1,40 +1,82 @@
 ﻿@model IEnumerable<MAV.Web.Data.Entities.Applicant>
 
 @{
-    ViewData["Title"] = "Applicants";
+    ViewData["Title"] = "Solicitantes";
 }
 
-<h1>Applicant</h1>
 
-<p>
-    <a asp-action="Create" class="btn btn-success">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.User.FullName)</th>
-            <th>@Html.DisplayNameFor(model => model.User.Email)</th>
-            <th>@Html.DisplayNameFor(model => model.User.PhoneNumber)</th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.PhoneNumber)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">Delete</a>
-            </td>
-        </tr>
+
+<link href="~/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" />
+<link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2>Solicitantes</h2>
+            </div>
+            <div class="panel-body">
+                @if (this.User.IsInRole("Administrador"))
+                {
+                    <p>
+                        <a asp-action="Create" class="btn btn-outline-success"><span class="fas fa-plus"></span></a>
+                    </p>
+                }
+
+                <table id="MiTabla">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.User.FullName)</th>
+                            <th>@Html.DisplayNameFor(model => model.User.Email)</th>
+                            <th>@Html.DisplayNameFor(model => model.User.PhoneNumber)</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                            @Html.DisplayFor(modelItem => item.User.FullName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.User.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.User.PhoneNumber)
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info"><span class="fas fa-eye"></span></a>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning"><span class="fas fa-pen"></span></a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger"><span class="fas fa-trash"></span></a>
+                        </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#MiTabla').DataTable();
+            // Delete item
+            var item_to_delete;
+            $('.deleteItem').click((e) => {
+                item_to_delete = e.currentTarget.dataset.id;
+            });
+            $("#btnYesDelete").click(function () {
+                window.location.href = '/Careers/Delete/' + item_to_delete;
+            });
+        });
+    </script>
 }
-    </tbody>
-</table>
