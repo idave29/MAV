@@ -79,7 +79,7 @@
                             <li class="dropdown">
                                     <a href="#" class="nav-link text-dark" data-toggle="dropdown"><span class="fas fa-user"></span></a>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" asp-controller="Account" asp-action="DetailsActual" asp-route-id="@(this.User.Identity.Name)">@this.User.Identity.Name</a>
+                                        <a class="dropdown-item" asp-controller="Account" asp-action="DetailsA" asp-route-id="@(this.User.Identity.Name)">@this.User.Identity.Name</a>
                                         @if (this.User.IsInRole("Responsable") || this.User.IsInRole("Administrador"))
                                         {
                                             <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Index">Users List</a>

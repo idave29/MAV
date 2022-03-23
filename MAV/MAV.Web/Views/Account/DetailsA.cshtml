@@ -1,0 +1,41 @@
+﻿@model MAV.Web.Data.Entities.User
+
+@{
+    ViewData["Title"] = "View User Account";
+}
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" />
+<link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
+
+<h2>View User</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FullName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FullName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </dd>
+    </dl>
+</div>
+
+<div>
+    @if (this.User.IsInRole("Responsable") || this.User.IsInRole("Administrador"))
+    {
+        <a asp-action="Index" class="btn btn-primary"><span class="fas fa-arrow-left"></span></a>
+    }
+</div>

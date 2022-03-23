@@ -1,6 +1,7 @@
 ﻿namespace MAV.Web.Controllers
 {
     using MAV.Web.Data;
+    using MAV.Web.Data.Entities;
     using MAV.Web.Helpers;
     using MAV.Web.Models;
     using Microsoft.AspNetCore.Authorization;
@@ -142,12 +143,11 @@
             return View(user);
         }
 
-
         [HttpGet]
         // GET: Administrators/Details/5
-        public async Task<IActionResult> DetailsActual(string id)
+        public async Task<IActionResult> DetailsA(string id)
         {
-            var userName = id;
+            var userName = id.ToString();
             var user = await userHelper.GetUserByNameAsync(userName);
 
             if (user == null)
@@ -155,12 +155,15 @@
                 return new NotFoundViewResult("UserNotFound");
             }
 
-            if (!this.User.IsInRole("Responsable") && !this.User.IsInRole("Administrador") && userName != this.User.Identity.Name)
+            if (!this.User.IsInRole("Owner") && !this.User.IsInRole("Administrator") && userName != this.User.Identity.Name)
             {
                 return new NotFoundViewResult("UserNotFound");
             }
 
-            return RedirectToAction(String.Format("Details/{0}", user.Id), "Account");
+            return View(user);
+
+            //return RedirectToAction(String.Format("Details/{0}", user.Id), "Account");
+            //return RedirectToAction("Details/", "Account", user.Id );
         }
 
     }
