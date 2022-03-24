@@ -4,6 +4,11 @@
     ViewData["Title"] = "Detalles del administrador";
 }
 
+<link href="~/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" />
+<link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
+
 <h1>Detalles del administrador</h1>
 
 <div>
@@ -37,6 +42,5 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-primary"> <span class="fas fa-arrow-left"></span></a>
 </div>

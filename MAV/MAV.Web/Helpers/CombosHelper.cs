@@ -8,7 +8,6 @@ namespace MAV.Web.Helpers
     public class CombosHelper : ICombosHelper
     {
         private readonly DataContext dataContext;
-
         public CombosHelper(DataContext dataContext)
         {
             this.dataContext = dataContext;
@@ -96,11 +95,11 @@ namespace MAV.Web.Helpers
 
         public IEnumerable<SelectListItem> GetComboUsers()
         {
-            var list = dataContext.Users
+            var list = this.dataContext.Users
                 .Select(
                 c => new SelectListItem
                 {
-                    Text = string.Format("{0} {1}", c.FullName, c.Email),
+                    Text = string.Format("{0} - {1}", c.FullName, c.Email),
                     Value = $"{c.UserName}"
                 }).ToList();
             list.Insert(0, new SelectListItem

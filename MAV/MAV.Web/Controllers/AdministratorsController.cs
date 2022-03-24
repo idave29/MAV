@@ -8,38 +8,48 @@ using Microsoft.EntityFrameworkCore;
 using MAV.Web.Data;
 using MAV.Web.Data.Entities;
 using MAV.Web.Data.Repositories;
+using MAV.Web.Helpers;
+using Microsoft.AspNetCore.Authorization;
+using MAV.Web.Models;
 
 namespace MAV.Web.Controllers
 {
     public class AdministratorsController : Controller
     {
         private readonly DataContext _context;
-
+        private readonly ICombosHelper combosHelper;
+        private readonly IUserHelper userHelper;
         private readonly IAdministratorRepository administratorRepository;
 
-        public AdministratorsController(IAdministratorRepository administratorRepository)
+        public AdministratorsController(IAdministratorRepository administratorRepository,
+            ICombosHelper combosHelper,
+            IUserHelper userHelper)
         {
             this.administratorRepository = administratorRepository;
+            this.combosHelper = combosHelper;
+            this.userHelper = userHelper;
         }
 
+        [Authorize(Roles = "Administrador")]
         // GET: Administrators
         public IActionResult Index()
         {
             return View(this.administratorRepository.GetAdministratorsWithUser());
         }
 
+        [Authorize(Roles = "Administrador")]
         // GET: Administrators/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("AdministratorNotFound");
             }
 
             var administrator = await this.administratorRepository.GetByIdWithUserAsync(id.Value);
             if (administrator == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("AdministratorNotFound");
             }
 
             return View(administrator);
@@ -59,102 +69,151 @@ namespace MAV.Web.Controllers
             //return View(administrator);
         }
 
+        [Authorize(Roles = "Administrador")]
         // GET: Administrators/Create
         public IActionResult Create()
         {
-            return View();
+            var model = new AdministratorViewModel
+            {
+                Users = combosHelper.GetComboUsers()
+            };
+
+            //No carga la seleccion de combo box
+            return View(model);
         }
 
+        [Authorize(Roles = "Administrador")]
         // POST: Administrators/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id")] Administrator administrator)
+        public async Task<IActionResult> Create(AdministratorViewModel model)
         {
-            if (ModelState.IsValid)
+            if (model.UserUserName != "[You have to choose a username...]")
             {
+                var user = await userHelper.GetUserByNameAsync(model.UserUserName);
+
+                if (user == null)
+                {
+                    return new NotFoundViewResult("AdministratorNotFound");
+                }
+
+                foreach (Administrator adminTemp in administratorRepository.GetAll().Include(c => c.User))
+                {
+                    if (adminTemp.User == user)
+                    {
+                        ModelState.AddModelError(string.Empty, "Administrator already exists");
+                        return View(model);
+                    }
+                }
+
+                var administrator = new Administrator { User = user };
+
+
+                await userHelper.AddUserToRoleAsync(user, "Administrator");
+
                 await this.administratorRepository.CreateAsync(administrator);
                 return RedirectToAction(nameof(Index));
             }
-            return View(administrator);
+
+
+            //[Bind("Id")] Administrator administrator
+            //if (!ModelState.IsValid)
+            //{
+            //    new NotFoundViewResult("AdministratorNotFound");
+            //}
+            //if (ModelState.IsValid)
+            //{
+
+
+            //    await this.administratorRepository.CreateAsync(administrator.UserUserName);
+            //    return RedirectToAction(nameof(Index));
+            //}
+            return View(model);
         }
 
         // GET: Administrators/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //public async Task<IActionResult> Edit(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var administrator = await this.administratorRepository.GetByIdAsync(id.Value);
-            if (administrator == null)
-            {
-                return NotFound();
-            }
-            return View(administrator);
-        }
+        //    var administrator = await this.administratorRepository.GetByIdAsync(id.Value);
+        //    if (administrator == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return View(administrator);
+        //}
 
         // POST: Administrators/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id")] Administrator administrator)
-        {
-            if (id != administrator.Id)
-            {
-                return NotFound();
-            }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Edit(int id, [Bind("Id")] Administrator administrator)
+        //{
+        //    if (id != administrator.Id)
+        //    {
+        //        return NotFound();
+        //    }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    await this.administratorRepository.UpdateAsync(administrator);
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!AdministratorExists(administrator.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(administrator);
-        }
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            await this.administratorRepository.UpdateAsync(administrator);
+        //        }
+        //        catch (DbUpdateConcurrencyException)
+        //        {
+        //            if (!AdministratorExists(administrator.Id))
+        //            {
+        //                return NotFound();
+        //            }
+        //            else
+        //            {
+        //                throw;
+        //            }
+        //        }
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(administrator);
+        //}
 
+        [Authorize(Roles = "Administrador")]
         // GET: Administrators/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("AdministratorNotFound");
             }
 
-            var administrator = await this.administratorRepository.GetByIdAsync(id.Value);
-            if (administrator == null)
+            var administrator = await this.administratorRepository.GetByIdWithUserAsync(id.Value);
+            if (administrator.User == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("AdministratorNotFound");
             }
 
             return View(administrator);
         }
 
+        [Authorize(Roles = "Administrador")]
         // POST: Administrators/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var administrator = await _context.Administrators.FindAsync(id);
-            _context.Administrators.Remove(administrator);
-            await _context.SaveChangesAsync();
+            var administrator = await this.administratorRepository.GetByIdWithUserAsync(id);
+            if (administrator.User == null)
+            {
+                return new NotFoundViewResult("AdministratorNotFound");
+            }
+            await userHelper.RemoveUserFromRoleAsync(administrator.User, "Administrator");
+            await this.administratorRepository.DeleteAsync(administrator);
             return RedirectToAction(nameof(Index));
         }
 
