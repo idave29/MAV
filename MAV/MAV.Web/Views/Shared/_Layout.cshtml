@@ -103,7 +103,7 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer id="myfooter" class="border-top footer text-muted">
         <div class="container">
             <p style="color : aliceblue">
                 &copy; 2022 - Universidad Madero - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacidad</a>
@@ -118,8 +118,9 @@
 </html>
 
 <style>
-    footer {
-    background-image: url(../Images/plecahd.png); 
-    background-size: cover; 
+    #myfooter{
+        background-size: cover;
+        background: url(../Images/plecahd.png); 
+        background-color: grey;
     }
 </style>

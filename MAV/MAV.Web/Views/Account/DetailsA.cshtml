@@ -37,5 +37,6 @@
     @if (this.User.IsInRole("Responsable") || this.User.IsInRole("Administrador"))
     {
         <a asp-action="Index" class="btn btn-primary"><span class="fas fa-arrow-left"></span></a>
+        <a asp-action="Index" class="btn btn-outline-warning"><span class="fas fa-pen"></span></a>
     }
 </div>
