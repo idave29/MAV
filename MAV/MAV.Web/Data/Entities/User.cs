@@ -20,10 +20,10 @@
         [Display(Name = "Número de celular")]
         public override string PhoneNumber { get; set; }
 
-        [Required(ErrorMessage = "{0} is required")]
+        [Required(ErrorMessage = "{0} es obligatorio")]
         public override string Email { get; set; }
 
-        [Display(Name = "Full name")]
+        [Display(Name = "Nombre Completo")]
         public string FullName => $"{LastName} {FirstName}";
     }
 }

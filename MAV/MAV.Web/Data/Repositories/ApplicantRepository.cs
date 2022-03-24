@@ -35,7 +35,8 @@
         public IQueryable GetApplicantsWithUser()
         {
             return this.dataContext.Applicants
-                .Include(a => a.User);
+                .Include(a => a.User)
+                .Include(a => a.ApplicantType);
         }
 
         //public async Task<Applicant> GetByIdApplicantWithLoansAsync(int id)

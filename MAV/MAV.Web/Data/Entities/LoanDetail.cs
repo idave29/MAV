@@ -18,7 +18,7 @@
         [Display(Name = "Material")]
         public Material Material { get; set; }
 
-        [Display(Name = "Status")]
+        [Display(Name = "Estado")]
         public Status Status { get; set; }
 
         [Display(Name = "Préstamo")]

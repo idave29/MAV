@@ -22,7 +22,7 @@ namespace MAV.Web.Helpers
             }).ToList();
             list.Insert(0, new SelectListItem
             {
-                Text = "(Select a Status...)",
+                Text = "(Selecciona un estado...)",
                 Value = "0"
             });
             return list;
@@ -37,7 +37,7 @@ namespace MAV.Web.Helpers
             }).ToList();
             list.Insert(0, new SelectListItem
             {
-                Text = "(Select an Applicant Type...)",
+                Text = "(Selecciona un tipo de solicitante...)",
                 Value = "0"
             });
             return list;
@@ -87,7 +87,7 @@ namespace MAV.Web.Helpers
 
             list.Insert(0, new SelectListItem
             {
-                Text = "[You have to choose a material...]",
+                Text = "(Selecciona un material...)",
                 Value = "0"
             });
             return list;
@@ -104,7 +104,7 @@ namespace MAV.Web.Helpers
                 }).ToList();
             list.Insert(0, new SelectListItem
             {
-                Text = "[You have to choose an user...]",
+                Text = "(Selecciona un usuario...)",
                 Value = "0"
             });
             return list;
@@ -120,7 +120,7 @@ namespace MAV.Web.Helpers
                 }).ToList();
             list.Insert(0, new SelectListItem
             {
-                Text = "[You have to choose a role...]",
+                Text = "(Selecciona un rol...)",
                 Value = "0"
             });
             return list;
@@ -128,7 +128,7 @@ namespace MAV.Web.Helpers
 
         public IEnumerable<SelectListItem> GetComboMaterialTypes()
         {
-            var list = dataContext.Roles.Select(
+            var list = dataContext.MaterialTypes.Select(
                 c => new SelectListItem
                 {
                     Text = c.Name,
@@ -136,7 +136,7 @@ namespace MAV.Web.Helpers
                 }).ToList();
             list.Insert(0, new SelectListItem
             {
-                Text = "[You have to choose a role...]",
+                Text = "(Selecciona un tipo de material...)",
                 Value = "0"
             });
             return list;
@@ -144,15 +144,15 @@ namespace MAV.Web.Helpers
 
         public IEnumerable<SelectListItem> GetComboOwners()
         {
-            var list = dataContext.Roles.Select(
+            var list = dataContext.Owners.Select(
                 c => new SelectListItem
                 {
-                    Text = c.Name,
-                    Value = $"{c.Name}"
+                    Text = c.User.FullName,
+                    Value = $"{c.Id}"
                 }).ToList();
             list.Insert(0, new SelectListItem
             {
-                Text = "[You have to choose a role...]",
+                Text = "(Selecciona un responsable...)",
                 Value = "0"
             });
             return list;

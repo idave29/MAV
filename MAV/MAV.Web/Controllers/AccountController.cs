@@ -22,14 +22,15 @@
         private readonly DataContext _context;
         private readonly IUserHelper userHelper;
         private readonly IConfiguration configuration;
-        //private readonly ICombosHelper combosHelper;
+        private readonly ICombosHelper combosHelper;
 
-        public AccountController(DataContext context, IUserHelper userHelper, IConfiguration 
-            configuration)
+        public AccountController(DataContext context, IUserHelper userHelper, IConfiguration
+            configuration, ICombosHelper combosHelper)
         {
             _context = context;
             this.userHelper = userHelper;
             this.configuration = configuration;
+            this.combosHelper = combosHelper;
         }
 
         [Authorize(Roles = "Responsable, Administrador")]
@@ -165,6 +166,211 @@
             //return RedirectToAction(String.Format("Details/{0}", user.Id), "Account");
             //return RedirectToAction("Details/", "Account", user.Id );
         }
+
+        [Authorize(Roles = "Responsable, Administrador")]
+        public IActionResult Register()
+        {
+            var model = new RegisterViewModel { Roles = combosHelper.GetComboRoles(), Types = combosHelper.GetComboApplicantTypes() };
+
+            return View(model);
+        }
+
+        [Authorize(Roles = "Responsable, Administrador")]
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await userHelper.GetUserByNameAsync(model.Email.ToString());
+
+                if (user == null)
+                {
+                    user = new User
+                    {
+                        FirstName = model.FirstName,
+                        LastName = model.LastName,
+                        PhoneNumber = model.PhoneNumber,
+                        Email = model.Email,
+                        UserName = model.Email.ToString(),                        
+                    };
+
+                    var result = await userHelper.AddUserAsync(user, model.Password);
+
+                    if (result != IdentityResult.Success)
+                    {
+                        ModelState.AddModelError(string.Empty, "El usuario no se pudo crear");
+                        return View(model);
+                    }
+
+                    if (ModelState.IsValid)
+                    {
+                        if (model.RoleName != "0")
+                        {
+                            await userHelper.AddUserToRoleAsync(user, model.RoleName);
+                        }
+
+                        switch (model.RoleName)
+                        {
+                            case "Administrador":
+                                _context.Administrators.Add(new Administrator { User = user });
+                                break;
+                            case "Becario":
+                                _context.Interns.Add(new Intern { User = user });
+                                break;
+                            case "Responsable":
+                                _context.Owners.Add(new Owner { User = user });
+                                break;
+                            case "Solicitante":
+                                var applicantType = _context.ApplicantTypes.FirstOrDefault(m => m.Id == model.TypeId);
+                                _context.Applicants.Add(new Applicant { User = user, ApplicantType = applicantType, Debtor = false });
+                                break;
+                            default:
+                                applicantType = _context.ApplicantTypes.FirstOrDefault(m => m.Id == model.TypeId);
+                                _context.Applicants.Add(new Applicant { User = user, ApplicantType = applicantType, Debtor = false });
+                                await userHelper.AddUserToRoleAsync(user, "Solicitante");
+                                break;
+                        }
+
+                        await _context.SaveChangesAsync();
+
+                        return RedirectToAction("Index", "Account");
+                    }
+                }
+
+                ModelState.AddModelError(string.Empty, "El usuario ya existe");
+            }
+
+            return View(model);
+        }
+
+        [Authorize(Roles = "Responsable, Administrador")]
+        // GET: Administrators/Delete/5
+        public async Task<IActionResult> Delete(string Id)
+        {
+            if (Id == null)
+            {
+                return new NotFoundViewResult("UserNotFound");
+            }
+
+            var user = await _context.Users.FirstOrDefaultAsync(m => m.Id == Id);
+
+
+
+            if (user == null)
+            {
+                return new NotFoundViewResult("UserNotFound");
+            }
+
+            return View(user);
+        }
+
+        [Authorize(Roles = "Responsable, Administrador")]
+        // POST: Administrators/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(string Id)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(m => m.Id == Id);
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+
+        // GET: Administrators/Edit/5
+        public async Task<IActionResult> Edit(string Id)
+        {
+
+            if (Id == null)
+            {
+                return new NotFoundViewResult("UserNotFound");
+            }
+
+            var user = await _context.Users.FirstOrDefaultAsync(m => m.Id == Id);
+
+            if (user == null)
+            {
+                return new NotFoundViewResult("UserNotFound");
+            }
+
+            var model = new User
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                PhoneNumber = user.PhoneNumber,
+                Email = user.Email
+
+            };
+
+            if (!this.User.IsInRole("Responsable") && !this.User.IsInRole("Administrador") && user.UserName != this.User.Identity.Name)
+            {
+                return new NotFoundViewResult("UserNotFound");
+            }
+
+            return View(model);
+        }
+
+
+        //// POST: Administrators/Edit/5
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Edit(string id)
+        //{
+        //    if (id != model.Id)
+        //    {
+        //        return new NotFoundViewResult("UserNotFound");
+        //    }
+
+        //    if (ModelState.IsValid)
+        //    {
+
+        //        var user = await userHelper.GetUserByNameAsync(model.UserName);
+
+        //        if (user == null)
+        //        {
+        //            return new NotFoundViewResult("UserNotFound");
+        //        }
+
+        //        var user2 = await userHelper.GetUserByNameAsync(model.RegistrationNumber.ToString());
+
+        //        if (user2 != null && user2 != user)
+        //        {
+        //            ModelState.AddModelError(string.Empty, "Registration number already asigned");
+        //            return View(model);
+        //        }
+
+        //        user2 = await userHelper.GetUserByEmailAsync(model.Email);
+
+        //        if (user2 != null && user2 != user)
+        //        {
+        //            ModelState.AddModelError(string.Empty, "Email already asigned");
+        //            return View(model);
+        //        }
+
+
+
+        //        user.PhoneNumber = model.PhoneNumber;
+        //        user.Email = model.Email;
+        //        user.RegistrationNumber = model.RegistrationNumber;
+        //        user.FirstName = model.FirstName;
+        //        user.LastName = model.LastName;
+
+        //        if (model.ImageFile != null)
+        //        {
+        //            user.ImageURL = await imageHelper.UploadImageAsync(model.ImageFile, user.FullName, "FotosEstudiantes");
+        //        }
+
+        //        _context.Update(user);
+        //        await _context.SaveChangesAsync();
+
+        //        return RedirectToAction(String.Format("Details/{0}", user.Id), "Account");
+
+        //    }
+
+        //    return View(model);
+        //}
 
     }
 }

@@ -1,13 +1,13 @@
 ﻿@model MAV.Web.Data.Entities.User
 
 @{
-    ViewData["Title"] = "View User";
+    ViewData["Title"] = "Detalles del Usuario";
 }
 <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 <link rel="stylesheet" href="~/css/site.css" />
 <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
 
-<h2>View User</h2>
+<h2>Detalles del Usuario</h2>
 
 <div>
     <hr />
@@ -36,6 +36,6 @@
 <div>
     @if (this.User.IsInRole("Responsable") || this.User.IsInRole("Administrador"))
     {
-        <a asp-action="Index" class="btn btn-primary"><span class="fas fa-arrow-left"></span></a>
+        <a asp-action="Index" class="btn btn-outline-primary"><span class="fas fa-arrow-left"></span></a>
     }
 </div>

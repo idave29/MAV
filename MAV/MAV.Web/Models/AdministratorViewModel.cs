@@ -7,9 +7,9 @@
     public class AdministratorViewModel:Administrator
     {
 
-        [Required(ErrorMessage = "{0} is required")]
-        [Range(1, int.MaxValue, ErrorMessage = "You have to select an User")]
-        [Display(Name = "User")]
+        [Required(ErrorMessage = "{0} es obligatorio")]
+        [Range(1, int.MaxValue, ErrorMessage = "Debe de ecoger un usuario")]
+        [Display(Name = "Usuario")]
         public string UserUserName { get; set; }
 
         public IEnumerable<SelectListItem> Users { get; set; }
