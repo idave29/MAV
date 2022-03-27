@@ -99,7 +99,7 @@ namespace MAV.Web.Helpers
                 .Select(
                 c => new SelectListItem
                 {
-                    Text = string.Format("{0} - {1}", c.FullName, c.Email),
+                    Text = string.Format("{0} - {1}", c.UserName, c.FullName),
                     Value = $"{c.UserName}"
                 }).ToList();
             list.Insert(0, new SelectListItem

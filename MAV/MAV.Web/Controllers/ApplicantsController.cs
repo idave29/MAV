@@ -18,10 +18,11 @@ namespace MAV.Web.Controllers
         private readonly IUserHelper userHelper;
         private readonly IApplicantRepository applicantRepository;
 
-        public ApplicantsController(IApplicantRepository applicantRepository,
+        public ApplicantsController(DataContext context, IApplicantRepository applicantRepository,
             ICombosHelper combosHelper,
             IUserHelper userHelper)
         {
+            _context = context;
             this.applicantRepository = applicantRepository;
             this.combosHelper = combosHelper;
             this.userHelper = userHelper;
@@ -75,14 +76,14 @@ namespace MAV.Web.Controllers
         {
             if (model.UserUserName != "(Debe de escoger un usuario)" && model.TypeId != 0)
             {
-                var user = await userHelper.GetUserByNameAsync(model.UserUserName);
+                var user = await userHelper.GetUserByEmailAsync(model.UserUserName);
 
                 if (user == null)
                 {
                     return new NotFoundViewResult("ApplicantNotFound");
                 }
 
-                foreach (Applicant applTemp in applicantRepository.GetAll().Include(c => c.User))
+                foreach (Applicant applTemp in _context.Applicants.Include(c => c.User))
                 {
                     if (applTemp.User == user)
                     {
@@ -97,10 +98,11 @@ namespace MAV.Web.Controllers
 
                 await userHelper.AddUserToRoleAsync(user, "Solicitante");
 
-                await this.applicantRepository.CreateAsync(applicant);
+                _context.Add(applicant);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-
             }
+
             return View(model);
         }
 
