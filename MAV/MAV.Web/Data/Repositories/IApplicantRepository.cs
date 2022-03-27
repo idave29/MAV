@@ -12,6 +12,8 @@
         //Task<Applicant> GetByIdApplicantWithLoansAsync(int id);
         //Task<Applicant> GetByIdApplicantWithLoansLoanDetailsAsync(int id);
         IQueryable GetApplicantsWithUser();
+        Task<Applicant> GetByIdWithUserAsync(int id);
+
         Task<Applicant> GetByIdUserWithUserApplicantAsync(string id);
         ApplicantRequest GetApplicantByEmail(EmailRequest emailApplicant);
         //IEnumerable<ApplicantRequest> GetApplicantsWithInternLoanLoanDetailsMaterialAndOwnerByNameApplicant(string name);

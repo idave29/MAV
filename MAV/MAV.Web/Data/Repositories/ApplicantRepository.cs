@@ -47,6 +47,13 @@
                 .Include(a => a.ApplicantType);
         }
 
+        public async Task<Applicant> GetByIdWithUserAsync(int id)
+        {
+            return await this.dataContext.Applicants
+                .Include(t => t.User)
+                .FirstOrDefaultAsync(e => e.Id == id);
+        }
+
         //public async Task<Applicant> GetByIdApplicantWithLoansAsync(int id)
         //{
         //    return await this.dataContext.Applicants

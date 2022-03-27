@@ -111,7 +111,7 @@ namespace MAV.Web.Controllers
                 var administrator = new Administrator { User = user };
 
 
-                await userHelper.AddUserToRoleAsync(user, "Administrator");
+                await userHelper.AddUserToRoleAsync(user, "Administrador");
 
                 await this.administratorRepository.CreateAsync(administrator);
                 return RedirectToAction(nameof(Index));
@@ -164,7 +164,7 @@ namespace MAV.Web.Controllers
             {
                 return new NotFoundViewResult("AdministratorNotFound");
             }
-            await userHelper.RemoveUserFromRoleAsync(administrator.User, "Administrator");
+            await userHelper.RemoveUserFromRoleAsync(administrator.User, "Administrador");
             await this.administratorRepository.DeleteAsync(administrator);
             await this.userHelper.DeleteUserAsync(user);
             return RedirectToAction(nameof(Index));
