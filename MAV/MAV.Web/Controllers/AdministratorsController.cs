@@ -133,55 +133,6 @@ namespace MAV.Web.Controllers
             return View(model);
         }
 
-        // GET: Administrators/Edit/5
-        //public async Task<IActionResult> Edit(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var administrator = await this.administratorRepository.GetByIdAsync(id.Value);
-        //    if (administrator == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return View(administrator);
-        //}
-
-        // POST: Administrators/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(int id, [Bind("Id")] Administrator administrator)
-        //{
-        //    if (id != administrator.Id)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            await this.administratorRepository.UpdateAsync(administrator);
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!AdministratorExists(administrator.Id))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(administrator);
-        //}
 
         [Authorize(Roles = "Administrador")]
         // GET: Administrators/Delete/5
@@ -208,12 +159,14 @@ namespace MAV.Web.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var administrator = await this.administratorRepository.GetByIdWithUserAsync(id);
+            var user = await this.userHelper.GetUserByIdAsync(administrator.User.Id);
             if (administrator.User == null)
             {
                 return new NotFoundViewResult("AdministratorNotFound");
             }
             await userHelper.RemoveUserFromRoleAsync(administrator.User, "Administrator");
             await this.administratorRepository.DeleteAsync(administrator);
+            await this.userHelper.DeleteUserAsync(user);
             return RedirectToAction(nameof(Index));
         }
 

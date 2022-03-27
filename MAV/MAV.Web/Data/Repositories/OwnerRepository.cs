@@ -26,6 +26,14 @@
                 .FirstOrDefaultAsync(t => t.Id == id);
         }
 
+        public async Task<Owner> GetByIdUserOwnerWithUserAsync(string id)
+        {
+            return await this.dataContext.Owners
+                .Include(t => t.User)
+                .Include(t => t.Materials)
+                .FirstOrDefaultAsync(e => e.User.Id == id);
+        }
+
         public Owner GetGoodOwnerWithEmail(string Email)
         {
             //var b = this.dataContext.Owners.Include(o => o.User);

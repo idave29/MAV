@@ -25,7 +25,14 @@
                 //.Include(t => t.LoanDetails);
         }
 
-        public IEnumerable<LoanRequest> GetLoans()
+        public async Task<Loan> GetByIdAppOrInternLoansAsync(string id)
+        {
+            return await this.dataContext.Loans
+                .Include(t => t.LoanDetails)
+                .FirstOrDefaultAsync(e => e.Intern.User.Id == id || e.Applicant.User.Id == id);
+        }
+
+            public IEnumerable<LoanRequest> GetLoans()
         {
             var l = this.dataContext.Loans
                     .Include(i => i.Intern.User)

@@ -11,6 +11,7 @@
         IEnumerable<SelectListItem> GetComboInterns();
         IEnumerable<InternRequest> GetInterns();
         IQueryable GetInternsWithUser();
+        Task<Intern> GetByIdUserInternWithUserAsync(string id);
         Task<Intern> GetByIdWithUserAsync(int id);
 
         InternRequest GetInternWithUserById(int id);

@@ -10,6 +10,8 @@
     {
         IEnumerable<SelectListItem> GetComboOwners();
         Task<Owner> GetByIdOwnerWithMaterialsAsync(int id);
+        Task<Owner> GetByIdUserOwnerWithUserAsync(string id);
+
         IQueryable GetOwnersWithUser();
         IEnumerable<OwnerRequest> GetOwners();
         IEnumerable<OwnerRequest> GetOwnersWithMaterials();

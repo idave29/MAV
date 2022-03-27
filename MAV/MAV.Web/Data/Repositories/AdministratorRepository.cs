@@ -67,26 +67,26 @@
                 .FirstOrDefaultAsync(e => e.Id == id);
         }
 
-        public AdministratorRequest GetAdministratorWithUserById(int id)
+        public async Task<Administrator> GetByIdUserWithUserAdminAsync(string id)
         {
-             var a = this.dataContext.Administrators
+            return await this.dataContext.Administrators
                 .Include(t => t.User)
-                .FirstOrDefault(u => u.Id == id);
+                .FirstOrDefaultAsync(e => e.User.Id == id);
 
-            if (a == null)
-            {
-                return null;
-            }
-            var x = new AdministratorRequest
-            {
-                Id = a.Id,
-                Email = a.User.Email,
-                FirstName = a.User.FirstName,
-                LastName = a.User.LastName,
-                PhoneNumber = a.User.PhoneNumber
-            };
+            //if (a == null)
+            //{
+            //    return null;
+            //}
+            //var x = new AdministratorRequest
+            //{
+            //    Id = a.Id,
+            //    Email = a.User.Email,
+            //    FirstName = a.User.FirstName,
+            //    LastName = a.User.LastName,
+            //    PhoneNumber = a.User.PhoneNumber
+            //};
 
-            return x;
+            //return a;
         }
 
         public AdministratorRequest GetAdministratorWithUserByEmail(EmailRequest email)

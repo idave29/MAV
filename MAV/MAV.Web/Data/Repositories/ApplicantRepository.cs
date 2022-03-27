@@ -32,6 +32,14 @@
             return list;
         }
 
+        public async Task<Applicant> GetByIdUserWithUserApplicantAsync(string id)
+        {
+            return await this.dataContext.Applicants
+                .Include(t => t.User)
+                .Include(l => l.Loans)
+                .FirstOrDefaultAsync(e => e.User.Id == id);
+        }
+
         public IQueryable GetApplicantsWithUser()
         {
             return this.dataContext.Applicants

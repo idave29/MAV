@@ -16,6 +16,13 @@
             this.dataContext = dataContext;
         }
 
+        public async Task<Intern> GetByIdUserInternWithUserAsync(string id)
+        {
+            return await this.dataContext.Interns
+                .Include(t => t.User)
+                .FirstOrDefaultAsync(e => e.User.Id == id);
+        }
+
         public async Task<Intern> GetByIdInternWithLoansAsync(int id)
         {
             return await this.dataContext.Interns

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace MAV.Web.Data.Repositories
 {
@@ -28,6 +29,12 @@ namespace MAV.Web.Data.Repositories
         {
             return this.dataContext.LoanDetails
                 .Where(ld => ld.DateTimeIn != null);
+        }
+
+        public async Task<LoanDetail> GetByIdAppOrInternLoanDetailsAsync(string id)
+        {
+            return await this.dataContext.LoanDetails
+                .FirstOrDefaultAsync(e => e.Loan.Intern.User.Id == id || e.Loan.Applicant.User.Id == id);
         }
 
         public IEnumerable<LoanDetailsRequest> GetLoanDetailsWithMaterialWithoutDateTimeIn() //Where(ld => ld.DateTimeIn == null)

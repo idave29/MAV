@@ -16,7 +16,9 @@
         IQueryable GetAdministratorsWithUser();
         Task<Administrator> GetByIdWithUserAsync(int id);
 
-        AdministratorRequest GetAdministratorWithUserById(int id);
+        //AdministratorRequest GetAdministratorWithUserById(int id);
+
+        Task<Administrator> GetByIdUserWithUserAdminAsync(string id);
 
         AdministratorRequest GetAdministratorWithUserByEmail(EmailRequest email);
 

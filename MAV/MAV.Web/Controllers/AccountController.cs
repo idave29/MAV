@@ -16,21 +16,37 @@
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.AspNetCore.Identity;
+    using MAV.Web.Data.Repositories;
+    using System.Collections.Generic;
 
     public class AccountController : Controller
     {
         private readonly DataContext _context;
+        private readonly IAdministratorRepository adminRep;
+        private readonly IOwnerRepository ownerRep;
+        private readonly IInternRepository internRep;
+        private readonly ILoanRepository loanRep;
+        private readonly ILoanDetailRepository loanDetailRep;
+        private readonly IMaterialRepository materialRep;
+        private readonly IApplicantRepository applicantRep;
         private readonly IUserHelper userHelper;
         private readonly IConfiguration configuration;
         private readonly ICombosHelper combosHelper;
 
         public AccountController(DataContext context, IUserHelper userHelper, IConfiguration
-            configuration, ICombosHelper combosHelper)
+            configuration, ICombosHelper combosHelper, IAdministratorRepository adminRep, IOwnerRepository ownerRep, IInternRepository internRep, ILoanRepository loanRep, ILoanDetailRepository loanDetailRep, IMaterialRepository materialRep, IApplicantRepository applicantRep)
         {
             _context = context;
             this.userHelper = userHelper;
             this.configuration = configuration;
             this.combosHelper = combosHelper;
+            this.adminRep = adminRep;
+            this.ownerRep = ownerRep;
+            this.internRep = internRep;
+            this.loanRep = loanRep;
+            this.loanDetailRep = loanDetailRep;
+            this.materialRep = materialRep;
+            this.applicantRep = applicantRep;
         }
 
         [Authorize(Roles = "Responsable, Administrador")]
@@ -215,7 +231,7 @@
                                 _context.Administrators.Add(new Administrator { User = user });
                                 break;
                             case "Becario":
-                                _context.Interns.Add(new Intern { User = user });
+                                _context.Interns.Add(new Intern { User = user  });
                                 break;
                             case "Responsable":
                                 _context.Owners.Add(new Owner { User = user });
@@ -268,14 +284,80 @@
         // POST: Administrators/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string Id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(m => m.Id == Id);
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
+            if (ModelState.IsValid)
+            {   
+                //Buscamos al usuario en la tabla User
+                var user = await this.userHelper.GetUserByIdAsync(id);
+                if (user == null)
+                {
+                    return new NotFoundViewResult("UserNotFound");
+                }
+
+                //Agregamos en una lista los roles 
+                IList<string> roles = await userHelper.GetRolesAsync(user);
+
+                foreach (string rol in roles)
+                {
+                    if (rol == "Administrador") //Si es administardor, se borrara desde la tabla de admin
+                    {
+                        var adminWithUser = await this.adminRep.GetByIdUserWithUserAdminAsync(id);
+                        await this.adminRep.DeleteAsync(adminWithUser);
+                    }
+                    //if (rol == "Becario") //Listo
+                    //{
+                    //    var loanDetailUser = await this.loanDetailRep.GetByIdAppOrInternLoanDetailsAsync(id);
+                    //    if (loanDetailUser == null)
+                    //    {
+                    //        return new NotFoundViewResult("UserNotFound");
+                    //    };
+                    //    await this.loanDetailRep.DeleteAsync(loanDetailUser);
+                    //    var loanUser = await this.loanRep.GetByIdAppOrInternLoansAsync(id);
+                    //    if (loanUser == null)
+                    //    {
+                    //        return new NotFoundViewResult("UserNotFound");
+                    //    };
+                    //    await this.loanRep.DeleteAsync(loanUser);
+                    //    var internWithUser = await this.internRep.GetByIdUserInternWithUserAsync(id);
+                    //    if (internWithUser == null)
+                    //    {
+                    //        return new NotFoundViewResult("UserNotFound");
+                    //    };
+                    //    await this.internRep.DeleteAsync(internWithUser);
+                    //}
+                    if (rol == "Responsable") 
+                    {
+                        var ownerWithUser = await this.ownerRep.GetByIdUserOwnerWithUserAsync(id);
+                        await this.ownerRep.DeleteAsync(ownerWithUser);
+                    }
+                    if (rol == "Solicitante" || rol == "Becario") 
+                    {
+                        var loanDetailUser = await this.loanDetailRep.GetByIdAppOrInternLoanDetailsAsync(id);
+                        await this.loanDetailRep.DeleteAsync(loanDetailUser);
+
+                        var loanUser = await this.loanRep.GetByIdAppOrInternLoansAsync(id);
+                        await this.loanRep.DeleteAsync(loanUser);
+
+                        if (rol == "Solicitante")
+                        {
+                            var applicantWithUser = await   this.applicantRep.GetByIdUserWithUserApplicantAsync(id);
+                            await this.applicantRep.DeleteAsync(applicantWithUser);
+                        }
+                        if (rol == "Becario") 
+                        {
+                            var internWithUser = await this.internRep.GetByIdUserInternWithUserAsync(id);
+                            await this.internRep.DeleteAsync(internWithUser);
+                        }
+                    }
+
+                }
+
+                await this.userHelper.DeleteUserAsync(user);
+            }
+
             return RedirectToAction(nameof(Index));
         }
-
 
         // GET: Administrators/Edit/5
         public async Task<IActionResult> Edit(string Id)
@@ -313,64 +395,41 @@
         }
 
 
-        //// POST: Administrators/Edit/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(string id)
-        //{
-        //    if (id != model.Id)
-        //    {
-        //        return new NotFoundViewResult("UserNotFound");
-        //    }
+        //POST: Administrators/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(string id, User model)
+        {
+            if (id != model.Id)
+            {
+                return new NotFoundViewResult("UserNotFound");
+            }
 
-        //    if (ModelState.IsValid)
-        //    {
+            if (ModelState.IsValid)
+            {
 
-        //        var user = await userHelper.GetUserByNameAsync(model.UserName);
+                var user = await userHelper.GetUserByIdAsync(id);
 
-        //        if (user == null)
-        //        {
-        //            return new NotFoundViewResult("UserNotFound");
-        //        }
+                if (user == null)
+                {
+                    return new NotFoundViewResult("UserNotFound");
+                }
 
-        //        var user2 = await userHelper.GetUserByNameAsync(model.RegistrationNumber.ToString());
+                user.PhoneNumber = model.PhoneNumber;
+                user.Email = model.Email;
+                user.FirstName = model.FirstName;
+                user.LastName = model.LastName;
 
-        //        if (user2 != null && user2 != user)
-        //        {
-        //            ModelState.AddModelError(string.Empty, "Registration number already asigned");
-        //            return View(model);
-        //        }
+                //await _context.SaveChangesAsync();
 
-        //        user2 = await userHelper.GetUserByEmailAsync(model.Email);
+                await this.userHelper.UpdateUserAsync(user);
 
-        //        if (user2 != null && user2 != user)
-        //        {
-        //            ModelState.AddModelError(string.Empty, "Email already asigned");
-        //            return View(model);
-        //        }
+                return RedirectToAction(String.Format("Details/", user.Id), "Account");
 
+            }
 
-
-        //        user.PhoneNumber = model.PhoneNumber;
-        //        user.Email = model.Email;
-        //        user.RegistrationNumber = model.RegistrationNumber;
-        //        user.FirstName = model.FirstName;
-        //        user.LastName = model.LastName;
-
-        //        if (model.ImageFile != null)
-        //        {
-        //            user.ImageURL = await imageHelper.UploadImageAsync(model.ImageFile, user.FullName, "FotosEstudiantes");
-        //        }
-
-        //        _context.Update(user);
-        //        await _context.SaveChangesAsync();
-
-        //        return RedirectToAction(String.Format("Details/{0}", user.Id), "Account");
-
-        //    }
-
-        //    return View(model);
-        //}
+            return View(model);
+        }
 
     }
 }

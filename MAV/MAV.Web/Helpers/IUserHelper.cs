@@ -8,6 +8,7 @@
 
     public interface IUserHelper
     {
+        Task<IList<string>> GetRolesAsync(User user);
         Task<User> GetUserByEmailAsync(string email);
 
         Task<User> GetUserByNameAsync(string userName);

@@ -7,10 +7,14 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
+
     public interface ILoanDetailRepository : IGenericRepository<LoanDetail>
     {
         IQueryable GetLoanDetailsWithMaterialAndLoan();
         IQueryable GetLoanDetails();
+        Task<LoanDetail> GetByIdAppOrInternLoanDetailsAsync(string id);
+
         IEnumerable<LoanDetailsRequest> GetLoanDetailsWithMaterialWithoutDateTimeIn(); //Where(ld => ld.DateTimeIn == null)
         IEnumerable<LoanDetailsRequest> GetLoansDetailsWithMaterialAndOwner();
         LoanDetailsRequest GetLoanDetailWithMaterialAndOwnerById(int id);

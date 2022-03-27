@@ -14,7 +14,6 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="None" class="text-danger"></div>
-            <input type="hidden" asp-for="User.UserName"/>
             <div class="form-group">
                 <div class="form-group">
 
@@ -26,6 +25,7 @@
                 </div>
             </div>
             <div class="form-group">
+                <input type="hidden" asp-for="User.UserName"/>
                 <a asp-action="Index" class="btn btn-primary"> <span class="fas fa-arrow-left"></span></a>
                 <button type="submit" class="btn btn-success"> <span class="fas fa-plus"></span> </button>
             </div>
