@@ -8,36 +8,49 @@ using Microsoft.EntityFrameworkCore;
 using MAV.Web.Data;
 using MAV.Web.Data.Entities;
 using MAV.Web.Data.Repositories;
+using Microsoft.AspNetCore.Authorization;
+using MAV.Web.Helpers;
+using MAV.Web.Models;
 
 namespace MAV.Web.Controllers
 {
     public class InternsController : Controller
     {
         private readonly DataContext _context;
+        private readonly IUserHelper userHelper;
+        private readonly ICombosHelper combosHelper;
         private readonly IInternRepository internRepository;
-        public InternsController(IInternRepository internRepository)
+        private readonly ILoanRepository loanRepository;
+        private readonly ILoanDetailRepository loanDetailRepository;
+        public InternsController(IInternRepository internRepository, IUserHelper userHelper, ICombosHelper combosHelper, ILoanRepository loanRepository, ILoanDetailRepository loanDetailRepository)
         {
+            this.userHelper = userHelper;
             this.internRepository = internRepository;
+            this.combosHelper = combosHelper;
+            this.loanDetailRepository = loanDetailRepository;
+            this.loanRepository = loanRepository;
         }
 
+        [Authorize(Roles = "Responsable, Administrador")]
         // GET: Interns
         public IActionResult Index()
         {
             return View(this.internRepository.GetInternsWithUser());
         }
 
+        [Authorize(Roles = "Responsable, Administrador")]
         // GET: Interns/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("InternsNotFound");
             }
 
             var intern = await this.internRepository.GetByIdWithUserAsync(id.Value);
             if (intern == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("InternsNotFound");
             }
 
             return View(intern);
@@ -46,22 +59,49 @@ namespace MAV.Web.Controllers
         // GET: Interns/Create
         public IActionResult Create()
         {
-            return View();
+            var model = new InternViewModel
+            {
+                Users = combosHelper.GetComboUsers()
+            };
+
+            return View(model);
         }
 
         // POST: Interns/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Responsable, Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id")] Intern intern)
+        public async Task<IActionResult> Create(InternViewModel model)
         {
-            if (ModelState.IsValid)
+            if (model.UserUserName != "(Selecciona un usuario...)")
             {
+                var user = await userHelper.GetUserByNameAsync(model.UserUserName);
+
+                if (user == null)
+                {
+                    return new NotFoundViewResult("InternsNotFound");
+                }
+
+                foreach (Intern internTemp in internRepository.GetInternsWithUser())
+                {
+                    if (internTemp.User == user)
+                    {
+                        ModelState.AddModelError(string.Empty, "Ya existe el Becario");
+                        return View(model);
+                    }
+                }
+
+                var intern = new Intern { User = user };
+
+
+                await userHelper.AddUserToRoleAsync(user, "Becario");
+
                 await this.internRepository.CreateAsync(intern);
                 return RedirectToAction(nameof(Index));
             }
-            return View(intern);
+            return View(model);
         }
 
         // GET: Interns/Edit/5
@@ -114,31 +154,50 @@ namespace MAV.Web.Controllers
             return View(intern);
         }
 
+        [Authorize(Roles = "Responsable, Administrador")]
         // GET: Interns/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("InternsNotFound");
             }
 
-            var intern = await this.internRepository.GetByIdAsync(id.Value);
+            var intern = await this.internRepository.GetByIdWithUserAsync(id.Value);
             if (intern == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("InternsNotFound");
             }
 
             return View(intern);
         }
 
         // POST: Interns/Delete/5
+        [Authorize(Roles = "Responsable, Administrador")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var intern = await _context.Interns.FindAsync(id);
-            _context.Interns.Remove(intern);
-            await _context.SaveChangesAsync();
+            var intern = await this.internRepository.GetByIdWithUserAsync(id);
+            //var user = await this.userHelper.GetUserByIdAsync(intern.User.Id);
+            if (intern.User == null)
+            {
+                return new NotFoundViewResult("InternsNotFound");
+            }
+
+            var loanDetailUser = await this.loanDetailRepository.GetByIdAppOrInternLoanDetailsAsync(intern.User.Id);
+            if (loanDetailUser != null)
+                await this.loanDetailRepository.DeleteAsync(loanDetailUser);
+
+            var loanUser = await this.loanRepository.GetByIdAppOrInternLoansAsync(intern.User.Id);
+            if (loanUser != null)
+                await this.loanRepository.DeleteAsync(loanUser);
+
+            //Agregar material para cambiarle el estatus y el loan detail se convierta en null
+
+            await userHelper.RemoveUserFromRoleAsync(intern.User, "Becario");
+            await this.internRepository.DeleteAsync(intern);
+            //await this.userHelper.DeleteUserAsync(user);
             return RedirectToAction(nameof(Index));
         }
 

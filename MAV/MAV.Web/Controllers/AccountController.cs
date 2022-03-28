@@ -172,15 +172,12 @@
                 return new NotFoundViewResult("UserNotFound");
             }
 
-            if (!this.User.IsInRole("Owner") && !this.User.IsInRole("Administrator") && userName != this.User.Identity.Name)
+            if (!this.User.IsInRole("Responsable") && !this.User.IsInRole("Administrador") && userName != this.User.Identity.Name)
             {
                 return new NotFoundViewResult("UserNotFound");
             }
 
-            return View(user);
-
-            //return RedirectToAction(String.Format("Details/{0}", user.Id), "Account");
-            //return RedirectToAction("Details/", "Account", user.Id );
+            return RedirectToAction("Details", "Account", new { id = user.Id });
         }
 
         [Authorize(Roles = "Responsable, Administrador")]
@@ -303,51 +300,39 @@
                     if (rol == "Administrador") //Si es administardor, se borrara desde la tabla de admin
                     {
                         var adminWithUser = await this.adminRep.GetByIdUserWithUserAdminAsync(id);
-                        await this.adminRep.DeleteAsync(adminWithUser);
+                        if (adminWithUser != null)
+                            await this.adminRep.DeleteAsync(adminWithUser);
                     }
-                    //if (rol == "Becario") //Listo
-                    //{
-                    //    var loanDetailUser = await this.loanDetailRep.GetByIdAppOrInternLoanDetailsAsync(id);
-                    //    if (loanDetailUser == null)
-                    //    {
-                    //        return new NotFoundViewResult("UserNotFound");
-                    //    };
-                    //    await this.loanDetailRep.DeleteAsync(loanDetailUser);
-                    //    var loanUser = await this.loanRep.GetByIdAppOrInternLoansAsync(id);
-                    //    if (loanUser == null)
-                    //    {
-                    //        return new NotFoundViewResult("UserNotFound");
-                    //    };
-                    //    await this.loanRep.DeleteAsync(loanUser);
-                    //    var internWithUser = await this.internRep.GetByIdUserInternWithUserAsync(id);
-                    //    if (internWithUser == null)
-                    //    {
-                    //        return new NotFoundViewResult("UserNotFound");
-                    //    };
-                    //    await this.internRep.DeleteAsync(internWithUser);
-                    //}
                     if (rol == "Responsable") 
                     {
                         var ownerWithUser = await this.ownerRep.GetByIdUserOwnerWithUserAsync(id);
-                        await this.ownerRep.DeleteAsync(ownerWithUser);
+                        if (ownerWithUser != null)
+                            await this.ownerRep.DeleteAsync(ownerWithUser);
+
+                        //Agregar metodo para quitar material
                     }
                     if (rol == "Solicitante" || rol == "Becario") 
                     {
                         var loanDetailUser = await this.loanDetailRep.GetByIdAppOrInternLoanDetailsAsync(id);
-                        await this.loanDetailRep.DeleteAsync(loanDetailUser);
+                        if(loanDetailUser != null)
+                            await this.loanDetailRep.DeleteAsync(loanDetailUser);
+                        //
 
                         var loanUser = await this.loanRep.GetByIdAppOrInternLoansAsync(id);
-                        await this.loanRep.DeleteAsync(loanUser);
+                        if (loanUser != null)
+                            await this.loanRep.DeleteAsync(loanUser);
 
                         if (rol == "Solicitante")
                         {
                             var applicantWithUser = await   this.applicantRep.GetByIdUserWithUserApplicantAsync(id);
-                            await this.applicantRep.DeleteAsync(applicantWithUser);
+                            if (applicantWithUser != null)
+                                await this.applicantRep.DeleteAsync(applicantWithUser);
                         }
                         if (rol == "Becario") 
                         {
                             var internWithUser = await this.internRep.GetByIdUserInternWithUserAsync(id);
-                            await this.internRep.DeleteAsync(internWithUser);
+                            if (internWithUser != null)
+                                await this.internRep.DeleteAsync(internWithUser);
                         }
                     }
 
@@ -424,7 +409,7 @@
 
                 await this.userHelper.UpdateUserAsync(user);
 
-                return RedirectToAction(String.Format("Details/", user.Id), "Account");
+                return RedirectToAction("Details", "Account", new {id = user.Id});
 
             }
 

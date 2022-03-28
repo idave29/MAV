@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MAV.Web.Models
 {
-    public class InternViewModelIntern : Intern
+    public class InternViewModel : Intern
     {
         [Required(ErrorMessage = "{0} es requerido")]
         [Range(1, int.MaxValue, ErrorMessage = "Tienes que seleccionar un usuario")]

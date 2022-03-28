@@ -78,7 +78,6 @@ namespace MAV.Web.Controllers
                 Users = combosHelper.GetComboUsers()
             };
 
-            //No carga la seleccion de combo box
             return View(model);
         }
 
@@ -90,7 +89,7 @@ namespace MAV.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(AdministratorViewModel model)
         {
-            if (model.UserUserName != "[You have to choose a username...]")
+            if (model.UserUserName != "(Selecciona un usuario...)")
             {
                 var user = await userHelper.GetUserByNameAsync(model.UserUserName);
 
@@ -99,11 +98,11 @@ namespace MAV.Web.Controllers
                     return new NotFoundViewResult("AdministratorNotFound");
                 }
 
-                foreach (Administrator adminTemp in administratorRepository.GetAll().Include(c => c.User))
+                foreach (Administrator adminTemp in administratorRepository.GetAdministratorsWithUser())
                 {
                     if (adminTemp.User == user)
                     {
-                        ModelState.AddModelError(string.Empty, "Administrator already exists");
+                        ModelState.AddModelError(string.Empty, "Ya existe el Administrador");
                         return View(model);
                     }
                 }
@@ -159,14 +158,14 @@ namespace MAV.Web.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var administrator = await this.administratorRepository.GetByIdWithUserAsync(id);
-            var user = await this.userHelper.GetUserByIdAsync(administrator.User.Id);
+            //var user = await this.userHelper.GetUserByIdAsync(administrator.User.Id);
             if (administrator.User == null)
             {
                 return new NotFoundViewResult("AdministratorNotFound");
             }
             await userHelper.RemoveUserFromRoleAsync(administrator.User, "Administrador");
             await this.administratorRepository.DeleteAsync(administrator);
-            await this.userHelper.DeleteUserAsync(user);
+            //await this.userHelper.DeleteUserAsync(user);
             return RedirectToAction(nameof(Index));
         }
 

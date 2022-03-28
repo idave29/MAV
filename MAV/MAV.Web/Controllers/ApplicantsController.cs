@@ -17,25 +17,28 @@ namespace MAV.Web.Controllers
         private readonly ICombosHelper combosHelper;
         private readonly IUserHelper userHelper;
         private readonly IApplicantRepository applicantRepository;
+        private readonly ILoanRepository loanRepository;
+        private readonly ILoanDetailRepository loanDetailRepository;
 
         public ApplicantsController(DataContext context, IApplicantRepository applicantRepository,
-            ICombosHelper combosHelper,
-            IUserHelper userHelper)
+            ICombosHelper combosHelper, IUserHelper userHelper, ILoanRepository loanRepository, ILoanDetailRepository loanDetailRepository)
         {
             _context = context;
             this.applicantRepository = applicantRepository;
             this.combosHelper = combosHelper;
             this.userHelper = userHelper;
+            this.loanDetailRepository = loanDetailRepository;
+            this.loanRepository = loanRepository;
         }
 
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Administrador, Responsable")]
         // GET: Applicants
         public IActionResult Index()
         {
             return View(this.applicantRepository.GetApplicantsWithUser());
         }
 
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Administrador, Responsable")]
         // GET: Applicants/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -66,7 +69,7 @@ namespace MAV.Web.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Administrador, Responsable")]
         // POST: Applicants/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -162,14 +165,13 @@ namespace MAV.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("ApplicantNotFound");
             }
 
-            var applicant = await _context.Applicants
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var applicant = await this.applicantRepository.GetByIdWithUserAsync(id.Value);
             if (applicant == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("ApplicantNotFound");
             }
 
             return View(applicant);
@@ -180,9 +182,26 @@ namespace MAV.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var applicant = await _context.Applicants.FindAsync(id);
-            _context.Applicants.Remove(applicant);
-            await _context.SaveChangesAsync();
+            var applicant = await this.applicantRepository.GetByIdWithUserAsync(id);
+            //var user = await this.userHelper.GetUserByIdAsync(applicant.User.Id);
+            if (applicant.User == null)
+            {
+                return new NotFoundViewResult("ApplicantNotFound");
+            }
+
+            var loanDetailUser = await this.loanDetailRepository.GetByIdAppOrInternLoanDetailsAsync(applicant.User.Id);
+            if (loanDetailUser != null)
+                await this.loanDetailRepository.DeleteAsync(loanDetailUser);
+
+            //Agregar material para cambiarle el estatus y el loan detail se convierta en null
+
+            var loanUser = await this.loanRepository.GetByIdAppOrInternLoansAsync(applicant.User.Id);
+            if (loanUser != null)
+                await this.loanRepository.DeleteAsync(loanUser);
+
+            await userHelper.RemoveUserFromRoleAsync(applicant.User, "Solicitante");
+            await this.applicantRepository.DeleteAsync(applicant);
+            //await this.userHelper.DeleteUserAsync(user);
             return RedirectToAction(nameof(Index));
         }
 

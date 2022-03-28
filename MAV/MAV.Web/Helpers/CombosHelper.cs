@@ -81,7 +81,7 @@ namespace MAV.Web.Helpers
                 .Select(
                 c => new SelectListItem
                 {
-                    Text = string.Format("{0} {1}", c.Name, c.Label),
+                    Text = string.Format("{0} - {1}", c.Name, c.Label),
                     Value = $"{c.Id}"
                 }).ToList();
 
