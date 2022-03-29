@@ -57,6 +57,17 @@
                 .Include(t => t.Owner.User);
         }
 
+        public async Task<Material> GetByIdWithMaterialTypeOwnerStatusAsync(int id)
+        {
+            return await this.dataContext.Materials
+                .Include(t => t.MaterialType)
+                .Include(t => t.Status)
+                .Include(t => t.Owner.User)
+                .Include(t => t.LoanDetails)
+                .FirstOrDefaultAsync(m => m.Id == id);
+        }
+
+
         public MaterialRequest GetMaterialWithTypeWithStatusAndOwnerById(int id)
         {
             var m = this.dataContext.Materials

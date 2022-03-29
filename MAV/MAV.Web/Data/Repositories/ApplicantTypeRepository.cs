@@ -40,6 +40,7 @@
         public async Task<ApplicantType> GetByIdAplicantTypeAsync(int id)
         {
             return await this.dataContext.ApplicantTypes
+                .Include(at => at.Applicants)
                 .FirstOrDefaultAsync(e => e.Id == id);
         }
 

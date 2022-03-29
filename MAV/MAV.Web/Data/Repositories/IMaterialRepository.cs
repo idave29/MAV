@@ -14,6 +14,7 @@
         IQueryable GetMaterialsWithTypeWithStatusAndOwner();
         IQueryable GetMaterials();
         IQueryable GetMaterialsWithOwner();
+        Task<Material> GetByIdWithMaterialTypeOwnerStatusAsync(int id);
         MaterialRequest GetMaterialWithTypeWithStatusAndOwnerById(int id);
         MaterialRequest GetMaterialWithTypeAndStatusBySerialNum(string num);
         MaterialRequest GetMaterialBySerialNum(string num);

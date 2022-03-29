@@ -5,6 +5,7 @@
     using Microsoft.AspNetCore.Mvc.Rendering;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
 
     public interface IStatusRepository : IGenericRepository<Status>
     {
@@ -12,5 +13,6 @@
         IQueryable GetStatus();
         StatusRequest GetStatusById(int id);
         Status GetStatusByName(string name);
+        Task<Status> GetByIdStatusAsync(int id); 
     }
 }

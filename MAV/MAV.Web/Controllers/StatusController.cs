@@ -3,6 +3,7 @@
     using MAV.Web.Data;
     using MAV.Web.Data.Entities;
     using MAV.Web.Data.Repositories;
+    using MAV.Web.Helpers;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using System.Linq;
@@ -11,9 +12,11 @@
     public class StatusController : Controller
     {
         private readonly IStatusRepository statusRepository;
+        private readonly DataContext _context;
 
-        public StatusController(IStatusRepository statusRepository)
+        public StatusController(DataContext context, IStatusRepository statusRepository)
         {
+            _context = context;
             this.statusRepository = statusRepository;
         }
 
@@ -26,13 +29,13 @@
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("StatusNotFound");
             }
 
             var status = await this.statusRepository.GetByIdAsync(id.Value);
             if (status == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("StatusNotFound");
             }
 
             return View(status);
@@ -59,13 +62,13 @@
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("StatusNotFound");
             }
 
             var status = await this.statusRepository.GetByIdAsync(id.Value);
             if (status == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("StatusNotFound");
             }
             return View(status);
         }
@@ -76,7 +79,7 @@
         {
             if (id != status.Id)
             {
-                return NotFound();
+                return new NotFoundViewResult("StatusNotFound");
             }
 
             if (ModelState.IsValid)
@@ -89,7 +92,7 @@
                 {
                     if (!await this.statusRepository.ExistAsync(status.Id))
                     {
-                        return NotFound();
+                        return new NotFoundViewResult("StatusNotFound");
                     }
                     else
                     {
@@ -105,16 +108,44 @@
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("StatusNotFound");
             }
 
-            var status = await this.statusRepository.GetByIdAsync(id.Value);
+            var status = await this.statusRepository.GetByIdStatusAsync(id.Value);
             if (status == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("StatusNotFound");
             }
-            await this.statusRepository.DeleteAsync(status);
+
+            if (status.Materials.Count != 0)
+            {
+                ModelState.AddModelError(string.Empty, "This type is used in one or more applicant, delete them first before deleting this.");
+                return RedirectToAction("Index", "Status");
+            }
+
+            if (status.LoanDetails.Count != 0)
+            {
+                ModelState.AddModelError(string.Empty, "This type is used in one or more applicant, delete them first before deleting this.");
+                return RedirectToAction("Index", "Status");
+            }
+
+            return View(status);
+        }
+
+        // POST: ApplicantTypes/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var status = await _context.Statuses.FindAsync(id);
+            _context.Statuses.Remove(status);
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        private bool StatusesExists(int id)
+        {
+            return _context.Statuses.Any(e => e.Id == id);
         }
     }
 }

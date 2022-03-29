@@ -1,12 +1,12 @@
 ﻿@model MAV.Web.Data.Entities.MaterialType
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Agregar";
 }
 
-<h1>Create</h1>
+<h1>Agregar</h1>
 
-<h4>MaterialType</h4>
+<h4>Tipo de material</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -18,14 +18,11 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-outline-primary"><span class="fas fa-arrow-left"></span></a>
+                <button type="submit" class="btn btn-outline-success"><span class="fas fa-plus"></span></button>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

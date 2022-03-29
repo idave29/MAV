@@ -51,10 +51,7 @@ namespace MAV.Web.Controllers
                 return new NotFoundViewResult("MaterialNotFound");
             }
 
-            var material = await this._context.Materials
-                .Include(t => t.MaterialType)
-                .Include(t => t.Status)
-                .Include(t => t.Owner.User).FirstOrDefaultAsync(m => m.Id == id); 
+            var material = await this.materialRepository.GetByIdWithMaterialTypeOwnerStatusAsync(id.Value); 
 
             if (material == null)
             {
@@ -124,11 +121,8 @@ namespace MAV.Web.Controllers
                 return new NotFoundViewResult("MaterialNotFound");
             }
 
-            var material = await _context.Materials
-                .Include(s => s.Status)
-                .Include(s => s.MaterialType)
-                .Include(s => s.Owner).ThenInclude(c=> c.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var material = await this.materialRepository.GetByIdWithMaterialTypeOwnerStatusAsync(id.Value);
+
             if (material == null)
             {
                 return new NotFoundViewResult("MaterialNotFound");
@@ -233,20 +227,16 @@ namespace MAV.Web.Controllers
                 return new NotFoundViewResult("MaterialNotFound");
             }
 
-            var material = await _context.Materials
-                .Include(s => s.Status)
-                .Include(s => s.LoanDetails)
-                .Include(s => s.MaterialType)
-                .Include(s => s.Owner)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var material = await this.materialRepository.GetByIdWithMaterialTypeOwnerStatusAsync(id.Value);
+
             if (material == null)
             {
                 return new NotFoundViewResult("MaterialNotFound");
             }
 
-            if (material.LoanDetails.Count != 0)
+            if (material.Status.Name == "Prestado") //SOLO BORREN DEFECTUOSOS
             {
-                ModelState.AddModelError(string.Empty, "Este material está en préstamo, elimínelos primero antes de eliminar a este usuario");
+                ModelState.AddModelError(string.Empty, "Este material está en préstamo, elimínelos primero antes de eliminar a este material");
                 return RedirectToAction("Index", "Materials");
             }
 

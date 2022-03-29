@@ -1,17 +1,13 @@
 ﻿@model MAV.Web.Data.Entities.Status
 
 @{
-    ViewData["Title"] = "Detalles de Estado";
+    ViewData["Title"] = "Detalles";
 }
-<link href="~/css/jquery.dataTables.min.css" rel="stylesheet" />
-<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-<link rel="stylesheet" href="~/css/site.css" />
-<link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
 
-<h1>Details</h1>
+<h1>Detalles</h1>
 
 <div>
-    <h4>Status</h4>
+    <h4>Estados</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -23,6 +19,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-outline-primary"><span class="fas fa-arrow-left"></span></a>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-warning"><span class="fas fa-pencil"></span></a> 
 </div>

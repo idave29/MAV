@@ -1,17 +1,22 @@
 ﻿namespace MAV.Web.Controllers
 {
+    using MAV.Web.Data;
     using MAV.Web.Data.Entities;
     using MAV.Web.Data.Repositories;
+    using MAV.Web.Helpers;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
+    using System.Linq;
     using System.Threading.Tasks;
 
     public class MaterialTypesController : Controller
     {
         private readonly IMaterialTypeRepository materialTypeRepository;
+        private readonly DataContext _context;
 
-        public MaterialTypesController(IMaterialTypeRepository materialTypeRepository)
+        public MaterialTypesController(DataContext context, IMaterialTypeRepository materialTypeRepository)
         {
+            _context = context;
             this.materialTypeRepository = materialTypeRepository;
         }
 
@@ -24,13 +29,13 @@
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("MaterialTypeNotFound");
             }
 
             var materialType = await this.materialTypeRepository.GetByIdAsync(id.Value);
             if (materialType == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("MaterialTypeNotFound");
             }
 
             return View(materialType);
@@ -57,13 +62,13 @@
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("MaterialTypeNotFound");
             }
 
             var materialType = await this.materialTypeRepository.GetByIdAsync(id.Value);
             if (materialType == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("MaterialTypeNotFound");
             }
             return View(materialType);
         }
@@ -74,7 +79,7 @@
         {
             if (id != materialType.Id)
             {
-                return NotFound();
+                return new NotFoundViewResult("MaterialTypeNotFound");
             }
 
             if (ModelState.IsValid)
@@ -87,7 +92,7 @@
                 {
                     if (!await this.materialTypeRepository.ExistAsync(materialType.Id))
                     {
-                        return NotFound();
+                        return new NotFoundViewResult("MaterialTypeNotFound");
                     }
                     else
                     {
@@ -103,16 +108,39 @@
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("MaterialTypeNotFound");
             }
 
-            var materialType = await this.materialTypeRepository.GetByIdAsync(id.Value);
+            var materialType = await this.materialTypeRepository.GetByIdMaterialTypeAsync(id.Value);
             if (materialType == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("MaterialTypeNotFound");
             }
-            await this.materialTypeRepository.DeleteAsync(materialType);
+
+            if (materialType.Materials.Count != 0)
+            {
+                ModelState.AddModelError(string.Empty, "This type is used in one or more applicant, delete them first before deleting this.");
+                return RedirectToAction("Index", "MaterialTypes");
+            }
+
+            return View(materialType);
+        }
+
+        // POST: ApplicantTypes/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var materialType = await _context.MaterialTypes.FindAsync(id);
+            _context.MaterialTypes.Remove(materialType);
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+        private bool MaterialTypeExists(int id)
+        {
+            return _context.MaterialTypes.Any(e => e.Id == id);
+        }
+
     }
 }

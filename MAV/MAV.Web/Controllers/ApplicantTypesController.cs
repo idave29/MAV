@@ -3,6 +3,7 @@
     using MAV.Web.Data;
     using MAV.Web.Data.Entities;
     using MAV.Web.Data.Repositories;
+    using MAV.Web.Helpers;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using System.Linq;
@@ -11,9 +12,11 @@
     public class ApplicantTypesController : Controller
     {
         private readonly IApplicantTypeRepository applicantTypeRepository;
+        private readonly DataContext _context;
 
-        public ApplicantTypesController(IApplicantTypeRepository applicantTypeRepository)
+        public ApplicantTypesController(DataContext context, IApplicantTypeRepository applicantTypeRepository)
         {
+            _context = context;
             this.applicantTypeRepository = applicantTypeRepository;
         }
 
@@ -26,13 +29,13 @@
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("ApplicantTypeNotFound");
             }
 
             var status = await this.applicantTypeRepository.GetByIdAsync(id.Value);
             if (status == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("ApplicantTypeNotFound");
             }
 
             return View(status);
@@ -59,13 +62,13 @@
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("ApplicantTypeNotFound");
             }
 
             var applicantType = await this.applicantTypeRepository.GetByIdAsync(id.Value);
             if (applicantType == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("ApplicantTypeNotFound");
             }
             return View(applicantType);
         }
@@ -76,7 +79,7 @@
         {
             if (id != applicantType.Id)
             {
-                return NotFound();
+                return new NotFoundViewResult("ApplicantTypeNotFound");
             }
 
             if (ModelState.IsValid)
@@ -89,7 +92,7 @@
                 {
                     if (!await this.applicantTypeRepository.ExistAsync(applicantType.Id))
                     {
-                        return NotFound();
+                        return new NotFoundViewResult("ApplicantTypeNotFound");
                     }
                     else
                     {
@@ -105,16 +108,40 @@
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("ApplicantTypeNotFound");
             }
 
-            var applicantType = await this.applicantTypeRepository.GetByIdAsync(id.Value);
+            var applicantType = await this.applicantTypeRepository.GetByIdAplicantTypeAsync(id.Value);
             if (applicantType == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("ApplicantTypeNotFound");
             }
-            await this.applicantTypeRepository.DeleteAsync(applicantType);
+
+            if (applicantType.Applicants.Count != 0 && applicantType.Applicants != null)
+            {
+                ModelState.AddModelError(string.Empty, "This type is used in one or more applicant, delete them first before deleting this.");
+                return RedirectToAction("Index", "ApplicantTypes");
+            }
+
+            return View(applicantType);
+        }
+
+
+        // POST: ApplicantTypes/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var applicantType = await _context.ApplicantTypes.FindAsync(id);
+            _context.ApplicantTypes.Remove(applicantType);
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+        private bool ApplicantTypeExists(int id)
+        {
+            return _context.ApplicantTypes.Any(e => e.Id == id);
+        }
+
     }
 }

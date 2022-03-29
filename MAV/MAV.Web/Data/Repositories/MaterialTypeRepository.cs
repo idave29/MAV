@@ -6,6 +6,7 @@
     using Microsoft.EntityFrameworkCore;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
 
     public class MaterialTypeRepository : GenericRepository<MAV.Web.Data.Entities.MaterialType>, IMaterialTypeRepository
     {
@@ -35,6 +36,14 @@
         {
             return this.dataContext.MaterialTypes;
         }
+
+        public async Task<MaterialType> GetByIdMaterialTypeAsync(int id)
+        {
+            return await this.dataContext.MaterialTypes
+                .Include(mt => mt.Materials)
+                .FirstOrDefaultAsync(e => e.Id == id);
+        }
+
 
         public MaterialTypeRequest GetMaterialTypeById(int id)
         {

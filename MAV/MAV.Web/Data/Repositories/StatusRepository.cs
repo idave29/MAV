@@ -3,8 +3,10 @@
     using MAV.Common.Models;
     using MAV.Web.Data.Entities;
     using Microsoft.AspNetCore.Mvc.Rendering;
+    using Microsoft.EntityFrameworkCore;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
 
     public class StatusRepository : GenericRepository<Status>, IStatusRepository
     {
@@ -34,6 +36,16 @@
         {
             return this.dataContext.Statuses;
         }
+
+        public async Task<Status> GetByIdStatusAsync(int id)
+        {
+            return await this.dataContext.Statuses
+                .Include(st => st.Materials)
+                .Include(st => st.LoanDetails)
+                .FirstOrDefaultAsync(e => e.Id == id);
+        }
+
+
 
         public StatusRequest GetStatusById(int id)
         {
