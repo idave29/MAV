@@ -8,21 +8,34 @@ using Microsoft.EntityFrameworkCore;
 using MAV.Web.Data;
 using MAV.Web.Data.Entities;
 using MAV.Web.Data.Repositories;
+using MAV.Web.Helpers;
+using Microsoft.AspNetCore.Authorization;
+using MAV.Web.Models;
 
 namespace MAV.Web.Controllers
 {
     public class MaterialsController : Controller
     {
         private readonly DataContext _context;
-
         private readonly IMaterialRepository materialRepository;
         private readonly IStatusRepository statusRepository;
+        private readonly ICombosHelper combosHelper;
+        private readonly IImageHelper imageHelper;
 
-        public MaterialsController(IMaterialRepository materialRepository, IStatusRepository statusRepository)
+        public MaterialsController(DataContext dataContext,
+            IMaterialRepository materialRepository, 
+            IStatusRepository statusRepository, 
+            ICombosHelper combosHelper, 
+            IImageHelper imageHelper)
         {
             this.statusRepository = statusRepository;
             this.materialRepository = materialRepository;
+            this._context = dataContext;
+            this.combosHelper = combosHelper;
+            this.imageHelper = imageHelper;
         }
+
+        [Authorize(Roles = "Administrador")]
         // GET: Materials
         public IActionResult Index()
         {
@@ -35,13 +48,17 @@ namespace MAV.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("MaterialNotFound");
             }
 
-            var material = await this.materialRepository.GetByIdAsync(id.Value);
+            var material = await this._context.Materials
+                .Include(t => t.MaterialType)
+                .Include(t => t.Status)
+                .Include(t => t.Owner.User).FirstOrDefaultAsync(m => m.Id == id); 
+
             if (material == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("MaterialNotFound");
             }
 
             return View(material);
@@ -50,33 +67,53 @@ namespace MAV.Web.Controllers
         // GET: Materials/Create
         public IActionResult Create()
         {
-            return View();
+            var model = new MaterialViewModel
+            {
+                Status = _context.Statuses.FirstOrDefault(),
+                StatusId = 1,
+                Statuses = combosHelper.GetComboStatuses(),
+                MaterialTypes = combosHelper.GetComboMaterialTypes(), 
+                Owners = combosHelper.GetComboOwners()
+            };
+
+            return View(model);
         }
 
         // POST: Materials/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("Id,Name,Label,Brand,MaterialModel,SerialNum")] Material material)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        await this.materialRepository.CreateAsync(material);
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(material);
-        //}
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create( Material material)
+        public async Task<IActionResult> Create(MaterialViewModel model)
         {
             if (ModelState.IsValid)
             {
-                await this.materialRepository.CreateAsync(material);
+                var status = await _context.Statuses.FirstOrDefaultAsync(m => m.Id == model.StatusId);
+                var owner = await _context.Owners.FirstOrDefaultAsync(m => m.Id == model.OwnerId);
+                var materialtype = await _context.MaterialTypes.FirstOrDefaultAsync(m => m.Id == model.MaterialTypeId);
+
+                var Material = new Material { 
+                    Brand = model.Brand, 
+                    Label = model.Label, 
+                    MaterialModel = model.MaterialModel, 
+                    Name = model.Name, 
+                    SerialNum = model.SerialNum, 
+                    Function = model.Function,
+                    Status = status,
+                    MaterialType = materialtype,
+                    Owner = owner, 
+                };
+
+                if (model.ImageFile != null)
+                {
+                    Material.ImageURL = await imageHelper.UploadImageAsync(model.ImageFile, Material.Name, "Materiales");
+                }
+
+                _context.Add(Material);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(material);
+
+            return View(model);
         }
 
         // GET: Materials/Edit/5
@@ -84,15 +121,38 @@ namespace MAV.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("MaterialNotFound");
             }
 
-            var material = await _context.Materials.FindAsync(id);
+            var material = await _context.Materials
+                .Include(s => s.Status)
+                .Include(s => s.MaterialType)
+                .Include(s => s.Owner).ThenInclude(c=> c.User)
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (material == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("MaterialNotFound");
             }
-            return View(material);
+
+            var model = new MaterialViewModel
+            {
+                Brand = material.Brand,
+                Name = material.Name,
+                MaterialModel = material.MaterialModel,
+                Status = material.Status,
+                Label = material.Label,
+                SerialNum = material.SerialNum,
+                Function = material.Function,
+                ImageURL = material.ImageURL,
+                StatusId = material.Status.Id,
+                MaterialTypeId = material.MaterialType.Id,
+                OwnerId = material.Owner.Id,
+                Statuses = combosHelper.GetComboStatuses(),
+                Owners = combosHelper.GetComboOwners(),
+                MaterialTypes = combosHelper.GetComboMaterialTypes()
+            };
+
+            return View(model);
         }
 
         // POST: Materials/Edit/5
@@ -130,33 +190,39 @@ namespace MAV.Web.Controllers
         //}
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Material material)
+        public async Task<IActionResult> Edit(int id, MaterialViewModel model)
         {
-            if (id != material.Id)
-            {
-                return NotFound();
-            }
 
             if (ModelState.IsValid)
             {
-                try
+                var material = await _context.Materials.FirstOrDefaultAsync(m => m.Id == model.Id);
+
+                if (material == null)
                 {
-                    await this.materialRepository.UpdateAsync(material);
+                    return new NotFoundViewResult("MaterialNotFound");
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!await this.materialRepository.ExistAsync(material.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+
+                material.ImageURL = model.ImageURL;
+                material.Name = model.Name;
+                material.Label = model.Label;
+                material.Brand = model.Brand;
+                material.MaterialModel = model.MaterialModel;
+                material.SerialNum = model.SerialNum;
+                material.Function = model.Function;
+
+                var status = await _context.Statuses.FirstOrDefaultAsync(m => m.Id == model.StatusId);
+                material.Status = status;
+                var owner = await _context.Owners.FirstOrDefaultAsync(m => m.Id == model.OwnerId);
+                material.Owner = owner;
+                var materialType = await _context.MaterialTypes.FirstOrDefaultAsync(m => m.Id == model.MaterialTypeId);
+                material.MaterialType = materialType;
+
+                _context.Update(material);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(material);
+
+            return View(model);
         }
 
         // GET: Materials/Delete/5
@@ -164,15 +230,26 @@ namespace MAV.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("MaterialNotFound");
             }
 
-            var material = await this.materialRepository.GetByIdAsync(id.Value);
+            var material = await _context.Materials
+                .Include(s => s.Status)
+                .Include(s => s.LoanDetails)
+                .Include(s => s.MaterialType)
+                .Include(s => s.Owner)
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (material == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("MaterialNotFound");
             }
-            await this.materialRepository.DeleteAsync(material);
+
+            if (material.LoanDetails.Count != 0)
+            {
+                ModelState.AddModelError(string.Empty, "Este material está en préstamo, elimínelos primero antes de eliminar a este usuario");
+                return RedirectToAction("Index", "Materials");
+            }
+
             return View(material);
         }
 

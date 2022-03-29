@@ -132,7 +132,7 @@ namespace MAV.Web.Helpers
                 c => new SelectListItem
                 {
                     Text = c.Name,
-                    Value = $"{c.Name}"
+                    Value = $"{c.Id}"
                 }).ToList();
             list.Insert(0, new SelectListItem
             {

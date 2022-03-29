@@ -123,7 +123,7 @@ namespace MAV.Web.Data
                     .FirstOrDefault(s => s.Name == "Disponible");
                 var materialType = this.dataContext.MaterialTypes
                     .FirstOrDefault(s => s.Name == "Cable");
-                await this.CheckMaterialAsync("HDMI1",owner, materialType, status, "Sony", "MAV01", "Azul","897654");
+                await this.CheckMaterialAsync("HDMI1",owner, materialType, status, "Sony", "MAV01", "Azul","897654", "Manda video y audio");
                 owner = this.dataContext.Owners
                     .Include(c => c.User)
                     .FirstOrDefault(c => c.User.FirstName == "Carlos");
@@ -131,7 +131,7 @@ namespace MAV.Web.Data
                     .FirstOrDefault(s => s.Name == "Disponible");
                 materialType = this.dataContext.MaterialTypes
                     .FirstOrDefault(s => s.Name == "Cable");
-                await this.CheckMaterialAsync("VGA", owner, materialType, status, "HP", "MAV02", "Verde", "6817654");
+                await this.CheckMaterialAsync("VGA", owner, materialType, status, "HP", "MAV02", "Verde", "6817654", "Solo manda video");
             }
 
             //Detalle del préstamo
@@ -247,7 +247,7 @@ namespace MAV.Web.Data
             await this.dataContext.SaveChangesAsync();
         }
 
-        private async Task CheckMaterialAsync(string name, Owner owner, MaterialType materialType, Status status, string brand, string label, string materialModel, string serialNum)
+        private async Task CheckMaterialAsync(string name, Owner owner, MaterialType materialType, Status status, string brand, string label, string materialModel, string serialNum, string function)
         {
             this.dataContext.Materials.Add(new Material
             {
@@ -258,7 +258,8 @@ namespace MAV.Web.Data
                 Brand = brand,
                 Label = label,
                 MaterialModel = materialModel,
-                SerialNum = serialNum
+                SerialNum = serialNum, 
+                Function = function
             });
             await this.dataContext.SaveChangesAsync();
         }

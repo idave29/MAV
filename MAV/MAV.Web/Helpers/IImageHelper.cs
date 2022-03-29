@@ -3,7 +3,7 @@
     using Microsoft.AspNetCore.Http;
     using System.Threading.Tasks;
 
-    interface IImageHelper
+    public interface IImageHelper
     {
         Task<string> UploadImageAsync(
     IFormFile imageFile,

@@ -41,7 +41,6 @@ namespace MAV.Web.Migrations
                     Id = table.Column<string>(nullable: false),
                     UserName = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
-                    Email = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(nullable: false),
                     PasswordHash = table.Column<string>(nullable: true),
@@ -54,7 +53,8 @@ namespace MAV.Web.Migrations
                     AccessFailedCount = table.Column<int>(nullable: false),
                     FirstName = table.Column<string>(maxLength: 50, nullable: false),
                     LastName = table.Column<string>(maxLength: 50, nullable: false),
-                    PhoneNumber = table.Column<string>(maxLength: 10, nullable: false)
+                    PhoneNumber = table.Column<string>(maxLength: 10, nullable: false),
+                    Email = table.Column<string>(maxLength: 256, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -309,11 +309,13 @@ namespace MAV.Web.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    ImageURL = table.Column<string>(nullable: true),
                     Name = table.Column<string>(maxLength: 20, nullable: false),
                     Label = table.Column<string>(maxLength: 6, nullable: false),
                     Brand = table.Column<string>(maxLength: 30, nullable: false),
                     MaterialModel = table.Column<string>(maxLength: 15, nullable: false),
                     SerialNum = table.Column<string>(maxLength: 15, nullable: false),
+                    Function = table.Column<string>(maxLength: 100, nullable: false),
                     StatusId = table.Column<int>(nullable: true),
                     OwnerId = table.Column<int>(nullable: true),
                     MaterialTypeId = table.Column<int>(nullable: true)

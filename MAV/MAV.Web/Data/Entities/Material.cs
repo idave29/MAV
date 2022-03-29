@@ -7,6 +7,9 @@
     {
         public int Id { get; set; }
 
+        [Display(Name = "Foto")]
+        public string ImageURL { get; set; }
+
         [Required(ErrorMessage = "{0} es requerido")]
         [MaxLength(20, ErrorMessage = "{0} debe de tener máximo {1} caracteres")]
         [Display(Name = "Nombre")]
@@ -31,6 +34,11 @@
         [MaxLength(15, ErrorMessage = "{0} debe de tener máximo {1} caracteres")]
         [Display(Name = "Número de serie")]
         public string SerialNum { get; set; }
+
+        [Required(ErrorMessage = "{0} es requerido")]
+        [MaxLength(100, ErrorMessage = "{0} debe de tener máximo {1} caracteres")]
+        [Display(Name = "Función")]
+        public string Function { get; set; }
 
         public Status Status { get; set; }
 

@@ -18,6 +18,10 @@
     <Compile Remove="Migrations\20211109172847_Initial1.Designer.cs" />
     <Compile Remove="Migrations\20211109204436_Initial.cs" />
     <Compile Remove="Migrations\20211109204436_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20220318144534_initial.cs" />
+    <Compile Remove="Migrations\20220318144534_initial.Designer.cs" />
+    <Compile Remove="Migrations\20220329001938_initial.cs" />
+    <Compile Remove="Migrations\20220329001938_initial.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -44,6 +48,7 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
+    <Folder Include="wwwroot\Images\Materiales\" />
   </ItemGroup>
 
   <ItemGroup>

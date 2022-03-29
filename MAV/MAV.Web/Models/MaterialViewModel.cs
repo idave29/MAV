@@ -1,4 +1,5 @@
 ﻿using MAV.Web.Data.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -17,7 +18,7 @@ namespace MAV.Web.Models
         [Range(1, int.MaxValue, ErrorMessage = "Tienes que seleccionar un responsable")]
         [Display(Name = "Responsable")]
         public int OwnerId { get; set; }
-        public IEnumerable<SelectListItem> Applicants { get; set; }
+        public IEnumerable<SelectListItem> Owners { get; set; }
 
         [Required(ErrorMessage = "{0} es requerido")]
         [Range(1, int.MaxValue, ErrorMessage = "Tienes que seleccionar un tipo de material")]
@@ -25,6 +26,8 @@ namespace MAV.Web.Models
         public int MaterialTypeId { get; set; }
         public IEnumerable<SelectListItem> MaterialTypes { get; set; }
 
+        [Display(Name = "Foto")]
+        public IFormFile ImageFile { get; set; }
 
     }
 }
