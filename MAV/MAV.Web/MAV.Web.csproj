@@ -55,4 +55,11 @@
     <None Include="wwwroot\Images\plecaumad.JPG" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\Images\fondohome.png">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

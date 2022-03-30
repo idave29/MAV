@@ -4,6 +4,7 @@
     using MAV.Web.Data.Entities;
     using MAV.Web.Data.Repositories;
     using MAV.Web.Helpers;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using System.Linq;
@@ -20,11 +21,13 @@
             this.applicantTypeRepository = applicantTypeRepository;
         }
 
+        [Authorize(Roles = "Administrador")]
         public IActionResult Index()
         {
             return View(this.applicantTypeRepository.GetAll());
         }
 
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -41,11 +44,13 @@
             return View(status);
         }
 
+        [Authorize(Roles = "Administrador")]
         public IActionResult Create()
         {
             return View();
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ApplicantType applicantType)
@@ -58,6 +63,7 @@
             return View(applicantType);
         }
 
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,6 +79,7 @@
             return View(applicantType);
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, ApplicantType applicantType)
@@ -104,6 +111,7 @@
             return View(applicantType);
         }
 
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -126,7 +134,7 @@
             return View(applicantType);
         }
 
-
+        [Authorize(Roles = "Administrador")]
         // POST: ApplicantTypes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -138,6 +146,7 @@
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Administrador")]
         private bool ApplicantTypeExists(int id)
         {
             return _context.ApplicantTypes.Any(e => e.Id == id);

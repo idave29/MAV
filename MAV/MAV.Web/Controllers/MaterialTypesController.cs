@@ -4,6 +4,7 @@
     using MAV.Web.Data.Entities;
     using MAV.Web.Data.Repositories;
     using MAV.Web.Helpers;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using System.Linq;
@@ -20,11 +21,13 @@
             this.materialTypeRepository = materialTypeRepository;
         }
 
+        [Authorize(Roles = "Administrador")]
         public IActionResult Index()
         {
             return View(this.materialTypeRepository.GetAll());
         }
 
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -41,11 +44,13 @@
             return View(materialType);
         }
 
+        [Authorize(Roles = "Administrador")]
         public IActionResult Create()
         {
             return View();
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(MaterialType materialType)
@@ -58,6 +63,7 @@
             return View(materialType);
         }
 
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,6 +79,7 @@
             return View(materialType);
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, MaterialType materialType)
@@ -104,6 +111,7 @@
             return View(materialType);
         }
 
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -126,6 +134,7 @@
             return View(materialType);
         }
 
+        [Authorize(Roles = "Administrador")]
         // POST: ApplicantTypes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -137,6 +146,7 @@
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Administrador")]
         private bool MaterialTypeExists(int id)
         {
             return _context.MaterialTypes.Any(e => e.Id == id);

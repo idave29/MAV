@@ -2,7 +2,13 @@
 
 @{
     ViewData["Title"] = "Detalles";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<link href="~/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" />
+<link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
 
 <h1>Detalles</h1>
 
@@ -22,3 +28,7 @@
     <a asp-action="Index" class="btn btn-outline-primary"><span class="fas fa-arrow-left"></span></a>
     <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-warning"><span class="fas fa-pencil"></span></a> 
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

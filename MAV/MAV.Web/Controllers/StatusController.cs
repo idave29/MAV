@@ -4,6 +4,7 @@
     using MAV.Web.Data.Entities;
     using MAV.Web.Data.Repositories;
     using MAV.Web.Helpers;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using System.Linq;
@@ -20,11 +21,13 @@
             this.statusRepository = statusRepository;
         }
 
+        [Authorize(Roles = "Administrador")]
         public IActionResult Index()
         {
             return View(this.statusRepository.GetAll());
         }
 
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -41,11 +44,13 @@
             return View(status);
         }
 
+        [Authorize(Roles = "Administrador")]
         public IActionResult Create()
         {
             return View();
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Status status)
@@ -58,6 +63,7 @@
             return View(status);
         }
 
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,6 +79,7 @@
             return View(status);
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Status status)
@@ -104,6 +111,7 @@
             return View(status);
         }
 
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -132,6 +140,7 @@
             return View(status);
         }
 
+        [Authorize(Roles = "Administrador")]
         // POST: ApplicantTypes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -143,6 +152,7 @@
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Administrador")]
         private bool StatusesExists(int id)
         {
             return _context.Statuses.Any(e => e.Id == id);

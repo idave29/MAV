@@ -4,8 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Medios Audiovisuales</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
 </head>
 <body>
@@ -97,10 +98,8 @@
             </div>
         </nav>
     </header>
-    <div style = "background: url(../Images/fondohome.png); background-size: cover; ">
-        <main role="main" class="pb-3">
+    <div id="miFondo">
             @RenderBody()
-        </main>
     </div>
 
     <footer id="myfooter" class="border-top footer text-muted">
@@ -116,11 +115,3 @@
     @RenderSection("Scripts", required: false)
 </body>
 </html>
-
-<style>
-    #myfooter{
-        background-size: cover;
-        background: url(../Images/plecahd.png); 
-        background-color: grey;
-    }
-</style>
