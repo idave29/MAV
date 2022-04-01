@@ -22,8 +22,10 @@ namespace MAV.Web.Controllers
         private readonly IInternRepository internRepository;
         private readonly ILoanRepository loanRepository;
         private readonly ILoanDetailRepository loanDetailRepository;
-        public InternsController(IInternRepository internRepository, IUserHelper userHelper, ICombosHelper combosHelper, ILoanRepository loanRepository, ILoanDetailRepository loanDetailRepository)
+        public InternsController(DataContext context, IInternRepository internRepository, IUserHelper userHelper, ICombosHelper combosHelper, 
+            ILoanRepository loanRepository, ILoanDetailRepository loanDetailRepository)
         {
+            _context = context;
             this.userHelper = userHelper;
             this.internRepository = internRepository;
             this.combosHelper = combosHelper;
@@ -104,56 +106,6 @@ namespace MAV.Web.Controllers
             return View(model);
         }
 
-        // GET: Interns/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var intern = await this.internRepository.GetByIdAsync(id.Value);
-            if (intern == null)
-            {
-                return NotFound();
-            }
-            return View(intern);
-        }
-
-        // POST: Interns/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id")] Intern intern)
-        {
-            if (id != intern.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    await this.internRepository.UpdateAsync(intern);
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!InternExists(intern.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(intern);
-        }
-
         [Authorize(Roles = "Responsable, Administrador")]
         // GET: Interns/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -185,15 +137,15 @@ namespace MAV.Web.Controllers
                 return new NotFoundViewResult("InternsNotFound");
             }
 
-            var loanDetailUser = await this.loanDetailRepository.GetByIdAppOrInternLoanDetailsAsync(intern.User.Id);
-            if (loanDetailUser != null)
-                await this.loanDetailRepository.DeleteAsync(loanDetailUser);
+            //var loanDetailUser = await this.loanDetailRepository.GetByIdAppOrInternLoanDetailsAsync(intern.User.Id);
+            //if (loanDetailUser != null)
+            //    await this.loanDetailRepository.DeleteAsync(loanDetailUser);
 
-            var loanUser = await this.loanRepository.GetByIdAppOrInternLoansAsync(intern.User.Id);
-            if (loanUser != null)
-                await this.loanRepository.DeleteAsync(loanUser);
+            //var loanUser = await this.loanRepository.GetByIdAppOrInternLoansAsync(intern.User.Id);
+            //if (loanUser != null)
+            //    await this.loanRepository.DeleteAsync(loanUser);
 
-            //Agregar material para cambiarle el estatus y el loan detail se convierta en null
+            ////Agregar material para cambiarle el estatus y el loan detail se convierta en null
 
             await userHelper.RemoveUserFromRoleAsync(intern.User, "Becario");
             await this.internRepository.DeleteAsync(intern);
@@ -205,5 +157,56 @@ namespace MAV.Web.Controllers
         {
             return _context.Interns.Any(e => e.Id == id);
         }
+
+
+        //// GET: Interns/Edit/5
+        //public async Task<IActionResult> Edit(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var intern = await this.internRepository.GetByIdAsync(id.Value);
+        //    if (intern == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return View(intern);
+        //}
+
+        //// POST: Interns/Edit/5
+        //// To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        //// more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Edit(int id, [Bind("Id")] Intern intern)
+        //{
+        //    if (id != intern.Id)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            await this.internRepository.UpdateAsync(intern);
+        //        }
+        //        catch (DbUpdateConcurrencyException)
+        //        {
+        //            if (!InternExists(intern.Id))
+        //            {
+        //                return NotFound();
+        //            }
+        //            else
+        //            {
+        //                throw;
+        //            }
+        //        }
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(intern);
+        //}
     }
 }

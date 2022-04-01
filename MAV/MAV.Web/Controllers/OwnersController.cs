@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using MAV.Web.Data;
 using MAV.Web.Data.Entities;
 using MAV.Web.Data.Repositories;
+using MAV.Web.Helpers;
+using Microsoft.AspNetCore.Authorization;
+using MAV.Web.Models;
 
 namespace MAV.Web.Controllers
 {
@@ -15,135 +18,131 @@ namespace MAV.Web.Controllers
     {
         private readonly DataContext _context;
         private readonly IOwnerRepository ownerRepository;
-
-        public OwnersController(IOwnerRepository ownerRepository)
+        private readonly IUserHelper userHelper;
+        private readonly ICombosHelper combosHelper;
+        public OwnersController(DataContext context, IOwnerRepository ownerRepository, IUserHelper userHelper, ICombosHelper combosHelper)
         {
+            _context = context;
             this.ownerRepository = ownerRepository;
+            this.userHelper = userHelper;
+            this.combosHelper = combosHelper;
         }
 
+        [Authorize(Roles = "Responsable, Administrador")]
         // GET: Owners
         public IActionResult Index()
         {
             return View(this.ownerRepository.GetOwnersWithUser());
         }
 
+        [Authorize(Roles = "Responsable, Administrador")]
         // GET: Owners/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("OwnersNotFound");
             }
 
-            var owner = await _context.Owners
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (owner == null)
+            var applicant = await this.ownerRepository.GetByIdOwnerWithMaterialsAsync(id.Value);
+            if (applicant == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("OwnersNotFound");
             }
 
-            return View(owner);
+            return View(applicant);
         }
 
+        [Authorize(Roles = "Responsable, Administrador")]
         // GET: Owners/Create
         public IActionResult Create()
         {
-            return View();
+            var model = new OwnerViewModel
+            {
+                Users = combosHelper.GetComboUsers()
+            };
+
+            return View(model);
         }
 
+        [Authorize(Roles = "Responsable, Administrador")]
         // POST: Owners/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id")] Owner owner)
+        public async Task<IActionResult> Create(OwnerViewModel model)
         {
-            if (ModelState.IsValid)
+            if (model.UserUserName != "(Selecciona un usuario...)")
             {
-                _context.Add(owner);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(owner);
-        }
+                var user = await userHelper.GetUserByNameAsync(model.UserUserName);
 
-        // GET: Owners/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var owner = await _context.Owners.FindAsync(id);
-            if (owner == null)
-            {
-                return NotFound();
-            }
-            return View(owner);
-        }
-
-        // POST: Owners/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id")] Owner owner)
-        {
-            if (id != owner.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+                if (user == null)
                 {
-                    _context.Update(owner);
-                    await _context.SaveChangesAsync();
+                    return new NotFoundViewResult("OwnersNotFound");
                 }
-                catch (DbUpdateConcurrencyException)
+
+                foreach (Owner ownerTemp in ownerRepository.GetOwnersWithUser())
                 {
-                    if (!OwnerExists(owner.Id))
+                    if (ownerTemp.User == user)
                     {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
+                        ModelState.AddModelError(string.Empty, "Ya existe el responsable");
+                        return View(model);
                     }
                 }
+
+                var owner = new Owner { User = user };
+
+
+                await userHelper.AddUserToRoleAsync(user, "Responsable");
+
+                await this.ownerRepository.CreateAsync(owner);
                 return RedirectToAction(nameof(Index));
             }
-            return View(owner);
+            return View(model);
         }
 
+        [Authorize(Roles = "Responsable, Administrador")]
         // GET: Owners/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("OwnersNotFound");
             }
 
-            var owner = await _context.Owners
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var owner = await this.ownerRepository.GetByIdOwnerWithMaterialsAsync(id.Value);
+
             if (owner == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("OwnersNotFound");
+            }
+
+            if (owner.Materials.Count != 0)
+            {
+                ModelState.AddModelError(string.Empty, "This user has materials, delete them first before deleting this user");
+                return RedirectToAction("Index", "Owners");
             }
 
             return View(owner);
         }
 
+        [Authorize(Roles = "Responsable, Administrador")]
         // POST: Owners/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var owner = await _context.Owners.FindAsync(id);
-            _context.Owners.Remove(owner);
-            await _context.SaveChangesAsync();
+            var owner = await this.ownerRepository.GetByIdOwnerWithMaterialsAsync(id);
+
+            if (owner.User == null)
+            {
+                return new NotFoundViewResult("OwnersNotFound");
+            }
+
+            await userHelper.RemoveUserFromRoleAsync(owner.User, "Responsable");
+            await this.ownerRepository.DeleteAsync(owner);
+            //await this.userHelper.DeleteUserAsync(user);
             return RedirectToAction(nameof(Index));
         }
 
@@ -151,5 +150,60 @@ namespace MAV.Web.Controllers
         {
             return _context.Owners.Any(e => e.Id == id);
         }
+
+
+        //[Authorize(Roles = "Responsable, Administrador")]
+        //// GET: Owners/Edit/5
+        //public async Task<IActionResult> Edit(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var owner = await _context.Owners.FindAsync(id);
+        //    if (owner == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return View(owner);
+        //}
+
+        //[Authorize(Roles = "Responsable, Administrador")]
+        //// POST: Owners/Edit/5
+        //// To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        //// more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Edit(int id, [Bind("Id")] Owner owner)
+        //{
+        //    if (id != owner.Id)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            _context.Update(owner);
+        //            await _context.SaveChangesAsync();
+        //        }
+        //        catch (DbUpdateConcurrencyException)
+        //        {
+        //            if (!OwnerExists(owner.Id))
+        //            {
+        //                return NotFound();
+        //            }
+        //            else
+        //            {
+        //                throw;
+        //            }
+        //        }
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(owner);
+        //}
+
     }
 }

@@ -22,7 +22,7 @@
         {
             return await this.dataContext.Owners
                 .Include(t => t.User)
-                //.Include(t => t.Materials)
+                .Include(t => t.Materials)
                 .FirstOrDefaultAsync(t => t.Id == id);
         }
 

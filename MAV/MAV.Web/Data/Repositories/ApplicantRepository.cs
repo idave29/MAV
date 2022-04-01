@@ -50,7 +50,19 @@
         public async Task<Applicant> GetByIdWithUserAsync(int id)
         {
             return await this.dataContext.Applicants
-                .Include(t => t.User)
+                .Include(s => s.User)
+                .Include(s => s.Loans)
+                .ThenInclude(c => c.LoanDetails)
+                .ThenInclude(v => v.Status)
+                .Include(s => s.Loans)
+                .ThenInclude(c => c.LoanDetails)
+                .ThenInclude(v => v.Material)
+                .Include(s => s.Loans)
+                .ThenInclude(c => c.LoanDetails)
+                .ThenInclude(v => v.Loan)
+                .ThenInclude(x => x.Intern)
+                .ThenInclude(y => y.User)
+                .Include(s => s.ApplicantType)
                 .FirstOrDefaultAsync(e => e.Id == id);
         }
 
