@@ -1,4 +1,4 @@
-﻿@model MAV.Web.Data.Entities.Loan
+﻿@model MAV.Web.Models.LoanViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -17,31 +17,26 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Intern" />
+            <input type="hidden" asp-for="Applicant" />
+            <input type="hidden" asp-for="LoanDetails" />
             <div class="form-group">
-                <label asp-for="Applicant" class="control-label">Ingrese nombre del solicitante:</label>
-                <input asp-for="Applicant" class="form-control" />
-                <span asp-validation-for="Applicant" class="text-danger"></span>
+                <label asp-for="ApplicantId" class="control-label"></label>
+                <select asp-for="ApplicantId" asp-items="Model.Applicants" class="form-control"> </select>
+                <span asp-validation-for="ApplicantId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Intern" class="control-label">Ingrese nombre del becario:</label>
-                <input asp-for="Intern" class="form-control" />
-                <span asp-validation-for="Intern" class="text-danger"></span>
+                <label asp-for="MaterialId" class="control-label"></label>
+                <select asp-for="MaterialId" asp-items="Model.Materials" class="form-control"> </select>
+                <span asp-validation-for="MaterialId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="LoanDetails" class="control-label">Ingrese nombre del becario:</label>
-                <input asp-for="LoanDetails" class="form-control" />
-                <span asp-validation-for="LoanDetails" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Agregar" class="btn btn-success" />
-                <a asp-action="Index" class="btn btn-primary">Volver</a>
+                <a asp-action="Index" class="btn btn-primary"> <span class="fas fa-arrow-left"></span></a>
+                <button type="submit" class="btn btn-success"> <span class="fas fa-plus"></span> </button>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

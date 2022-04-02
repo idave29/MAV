@@ -14,44 +14,40 @@
 <div>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            <dt class="col-sm-2">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.User.FirstName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.User.FirstName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.User.LastName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.User.LastName)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.User.Email)
         </dt>
-        <dd>
-            <dd class="col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.User.Email)
         </dd>
-         <dt>
-            <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.User.FullName)
-        </dt>
-        <dd>
-            <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.User.FullName)
-        </dd>
-        <dt>
-            <dt class="col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.User.PhoneNumber)
         </dt>
-        <dd>
-            <dd class="col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.User.PhoneNumber)
         </dd>
-        <dt>
-            <dd class="col-sm-2">
+       <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ApplicantType.Name)
         </dt>
-        <dd>
-            <dd class="col-sm-10">
+        <dd class="col-sm-10">
            @Html.DisplayFor(model => model.ApplicantType.Name)
         </dd>
-        <dt>
-            <dd class="col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Debtor)
         </dt>
-        <dd>
-            <dd class="col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Debtor)
         </dd>
     </dl>

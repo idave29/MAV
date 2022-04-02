@@ -9,18 +9,45 @@
 <link rel="stylesheet" href="~/css/site.css" />
 <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
 
-<h1>Delete</h1>
+<h2>Eliminar</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>¿Estás seguro que deseas borrar este préstamo?</h3>
 <div>
-    <h4>Loan</h4>
     <hr />
-    <dl class="row">
+    <dl class="dl-horizontal">
+        <dt>
+            Solicitante: 
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Applicant.User.FullName)
+        </dd>
+        <dt>
+            Becario: 
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Intern.User.FullName)
+        </dd>
+        <dt>
+            Date
+        </dt>
+        @if (Model.LoanDetails.Count == 0 || Model.LoanDetails == null)
+        {
+            <dd>
+                --------
+            </dd>
+        }
+        else
+        {
+            <dd>
+                @Html.DisplayFor(modelItem => Model.LoanDetails.First().DateTimeOut)
+
+            </dd>
+        }
     </dl>
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="Index" class="btn btn-primary"> <span class="fas fa-arrow-left"></span></a>
+        <button type="submit" class="btn btn-danger"> <span class="fas fa-trash"></span></button>
     </form>
 </div>

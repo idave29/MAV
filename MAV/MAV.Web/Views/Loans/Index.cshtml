@@ -32,28 +32,56 @@
                             <th>@Html.DisplayNameFor(model => model.Applicant)</th>
                             <th>@Html.DisplayNameFor(model => model.Intern)</th>
                             <th>@Html.DisplayNameFor(model => model.LoanDetails)</th>
+                            <th>Fecha</th>
+                            <th>Estado</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in Model)
                         {
-                            <tr>
+                                <tr>
+                                    <td>
+                                @Html.DisplayFor(modelItem => item.Applicant.User.FullName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Intern.User.FullName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LoanDetails.Count)
+                            </td>
+                            @if (item.LoanDetails.Count == 0 || item.LoanDetails == null)
+                            {
+                                <td>-------------</td>
+                            }
+                            else
+                            {
+                                <td>@Html.DisplayFor(modelItem => item.LoanDetails.First().DateTimeOut)</td>
+                            }
+                                    @{
+                                    var regresado = true;
+                                    foreach (MAV.Web.Data.Entities.LoanDetail ld in item.LoanDetails)
+                                    {
+                                        if (ld.Status.Id == 2)
+                                        {
+                                            regresado = false;
+                                        }
+                                    }
+                                    if (regresado == false)
+                                    {
+                                        <td>Prestado</td>
+                                    }
+                                    else
+                                    {
+                                        <td>Regresado</td>
+                                    }
+                            }
                                 <td>
-                            @Html.DisplayFor(modelItem => item.Applicant.User.FullName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Intern.User.FullName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Id)
-                        </td>
-                        <td>
-                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info"><span class="fas fa-eye"></span></a>
-                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning"><span class="fas fa-pen"></span></a>
-                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger"><span class="fas fa-trash"></span></a>
-                        </td>
-                            </tr>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info"><span class="fas fa-eye"></span></a>
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning"><span class="fas fa-pen"></span></a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger"><span class="fas fa-trash"></span></a>
+                            </td>
+                                </tr>
                         }
                     </tbody>
                 </table>

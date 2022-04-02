@@ -9,15 +9,170 @@
 <link rel="stylesheet" href="~/css/site.css" />
 <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
 
-<h1>Details</h1>
+<h1>Detalles</h1>
 
 <div>
-    <h4>Loan</h4>
     <hr />
-    <dl class="row">
+    <dl class="dl-horizontal">
+        <dt>
+            Solicitante: 
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Applicant.User.FullName)
+        </dd>
+        <dt>
+            
+        </dt>
+        <dt>
+            Becario: 
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Intern.User.FullName)
+        </dd>
+        <dt>
+            
+        </dt>
     </dl>
 </div>
+
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <hr />
+    @if (Model.LoanDetails == null || Model.LoanDetails.Count == 0)
+    {
+        <h4>Este préstamo no tiene ningun detalle de préstamo</h4>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h2>Detalle de préstamo</h2>
+                    </div>
+                    <div class="panel-body">
+                        <div>
+                            <p>
+                                <a asp-action="Index" class="btn btn-primary"> <span class="fas fa-arrow-left"></span></a>
+
+                                @{
+                                    var returned = true;
+                                    foreach (MAV.Web.Data.Entities.LoanDetail ld in Model.LoanDetails)
+                                    {
+                                        if (ld.Status.Id == 2)
+                                        {
+                                            returned = false;
+                                        }
+                                    }
+                                    if (returned == false && this.User.IsInRole("Administrador"))
+                                    {
+                                        <a asp-controller="LoanDetails" asp-action="Create" asp-route-id="@Model.Id" class="btn btn-success"><span class="fas fa-plus"></span></a>
+                                    }
+                                }
+
+
+                            </p>
+                                </div>
+                        <table id="MiTabla">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.LoanDetails.FirstOrDefault().Material.Name)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(Model => Model.LoanDetails.FirstOrDefault().Material.ImageURL)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.LoanDetails.FirstOrDefault().Material.Label)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.LoanDetails.FirstOrDefault().DateTimeOut)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.LoanDetails.FirstOrDefault().DateTimeIn)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.LoanDetails.FirstOrDefault().Observations)
+                                    </th>
+                                    <th>
+                                        Status
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+
+                                @foreach (var itemi in Model.LoanDetails)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => itemi.Material.Name)
+                                        </td>
+                                        <td>
+                                            @if (!string.IsNullOrEmpty(Model.LoanDetails.FirstOrDefault().Material.ImageURL))
+                                            {
+                                                <img src="@Url.Content(Model.LoanDetails.FirstOrDefault().Material.ImageURL)" style="width:100px;height:100px" />
+                                            }
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => itemi.Material.Label)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => itemi.DateTimeOut)
+                                        </td>
+                                        <td>
+                                            @if (itemi.DateTimeIn.Year != 0001)
+                                            {
+                                                @Html.DisplayFor(modelItem => itemi.DateTimeIn);
+                                            }
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => itemi.Observations)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => itemi.Status.Name)
+                                        </td>
+                                        <td>
+                                            @if (this.User.IsInRole("Administrador"))
+                                            {
+                                                <a asp-controller="LoanDetails" asp-action="Details" asp-route-id="@itemi.Id" class="btn btn-info"><span class="fas fa-eye"></span></a>
+                                                @if (itemi.Status.Id == 2)
+                                                {
+                                                    <a asp-controller="LoanDetails" asp-action="Edit" asp-route-id="@itemi.Id" class="btn btn-success"><span class="fas fa-check"></span></a>
+                                                }
+                                            }
+                                            @if (this.User.IsInRole("Administrador"))
+                                            {
+                                                <a asp-controller="LoanDetails" asp-action="Delete" asp-route-id="@itemi.Id" class="btn btn-danger"><span class="fas fa-trash"></span></a>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#MiTabla').DataTable();
+            // Delete item
+            var item_to_delete;
+            $('.deleteItem').click((e) => {
+                item_to_delete = e.currentTarget.dataset.id;
+            });
+            $("#btnYesDelete").click(function () {
+                window.location.href = '/Careers/Delete/' + item_to_delete;
+            });
+        });
+    </script>
+}

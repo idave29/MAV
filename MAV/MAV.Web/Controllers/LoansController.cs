@@ -8,24 +8,58 @@ using Microsoft.EntityFrameworkCore;
 using MAV.Web.Data;
 using MAV.Web.Data.Entities;
 using MAV.Web.Data.Repositories;
+using MAV.Web.Helpers;
+using MAV.Web.Models;
 
 namespace MAV.Web.Controllers
 {
     public class LoansController : Controller
     {
         private readonly DataContext _context;
-
+        private readonly ICombosHelper combosHelper;
+        private readonly IImageHelper imageHelper;
+        private readonly IUserHelper userHelper;
         private readonly ILoanRepository loanRepository;
 
-        public LoansController(ILoanRepository loanRepository)
-        {
+        public LoansController(ILoanRepository loanRepository, DataContext context,
+            ICombosHelper combosHelper,
+            IImageHelper imageHelper,
+            IUserHelper userHelper)
+        { 
+            _context = context;
             this.loanRepository = loanRepository;
+            this.combosHelper = combosHelper;
+            this.imageHelper = imageHelper;
+            this.userHelper = userHelper;
         }
 
         // GET: Loans
         public IActionResult Index()
         {
-            return View(this.loanRepository.GetLoanWithAplicantsAndInterns());
+            var applicant = _context.Applicants.FirstOrDefault();
+
+            applicant = null;
+
+            foreach (Applicant applicantObj in _context.Applicants.Include(s => s.User).Include(c => c.Loans))
+            {
+                if (applicantObj.User.UserName == this.User.Identity.Name)
+                {
+                    applicant = applicantObj;
+                }
+            }
+
+            if (applicant != null && this.User.IsInRole("Solicitante"))
+            {
+                if (applicant.Loans == null || applicant.Loans.Count == 0)
+                    return new NotFoundViewResult("LoanNotFound");
+            }
+
+            return View(_context.Loans
+                 .Include(s => s.Applicant)
+                 .ThenInclude(c => c.User)
+                 .Include(s => s.Intern).ThenInclude(c => c.User)
+                 .Include(s => s.LoanDetails).ThenInclude(c => c.Material)
+                 .Include(s => s.LoanDetails).ThenInclude(c => c.Status));
         }
 
         // GET: Loans/Details/5
@@ -33,15 +67,29 @@ namespace MAV.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("LoanNotFound");
             }
 
             var loan = await _context.Loans
+                .Include(s => s.Applicant)
+                .ThenInclude(c => c.User)
+                .Include(s => s.Intern).ThenInclude(c => c.User)
+                .Include(c => c.LoanDetails)
+                .ThenInclude(v => v.Status)
+                .Include(c => c.LoanDetails)
+                .ThenInclude(v => v.Material)
+                .Include(c => c.LoanDetails)
+                .ThenInclude(v => v.Loan)
+                .ThenInclude(x => x.Applicant)
+                .ThenInclude(y => y.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (loan == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("LoanNotFound");
             }
+
+            if (this.User.Identity.Name != loan.Intern.User.UserName && !this.User.IsInRole("Responsable") && !this.User.IsInRole("Administrador"))
+                return new NotFoundViewResult("LoanNotFound");
 
             return View(loan);
         }
@@ -49,7 +97,13 @@ namespace MAV.Web.Controllers
         // GET: Loans/Create
         public IActionResult Create()
         {
-            return View();
+            var model = new LoanViewModel
+            {
+                Applicants = combosHelper.GetComboApplicants(),
+                Materials = combosHelper.GetComboMaterials(),
+            };
+
+            return View(model);
         }
 
         // POST: Loans/Create
@@ -57,65 +111,36 @@ namespace MAV.Web.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id")] Loan loan)
+        public async Task<IActionResult> Create(LoanViewModel model)
         {
             if (ModelState.IsValid)
             {
-                await this.loanRepository.CreateAsync(loan);
-                return RedirectToAction(nameof(Index));
-            }
-            return View(loan);
-        }
-
-        // GET: Loans/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var loan = await _context.Loans.FindAsync(id);
-            if (loan == null)
-            {
-                return NotFound();
-            }
-            return View(loan);
-        }
-
-        // POST: Loans/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id")] Loan loan)
-        {
-            if (id != loan.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+                var applicant = await _context.Applicants.FirstOrDefaultAsync(m => m.Id == model.ApplicantId);
+                var intern = await _context.Interns.FirstOrDefaultAsync();
+                foreach (Intern internObj in _context.Interns.Include(s => s.User))
                 {
-                    _context.Update(loan);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!LoanExists(loan.Id))
+                    if (internObj.User.UserName == this.User.Identity.Name)
                     {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
+                        intern = internObj;
                     }
                 }
+                var loan = new Loan { Applicant = applicant, Intern = intern };
+
+                var status = _context.Statuses.FirstOrDefault(m => m.Id == 2);
+                var material = await _context.Materials.FirstOrDefaultAsync(m => m.Id == model.MaterialId);
+                _context.LoanDetails.Add(new LoanDetail { Loan = loan, DateTimeOut = DateTime.Now, DateTimeIn = DateTime.MinValue, Material = material, Status = status, Observations = string.Empty });
+
+                material.Status = status;
+                applicant.Debtor = true;
+
+                _context.Materials.Update(material);
+                _context.Applicants.Update(applicant);
+                _context.Add(loan);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(loan);
+
+            return View(model);
         }
 
         // GET: Loans/Delete/5
@@ -123,14 +148,31 @@ namespace MAV.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("LoanNotFound");
             }
 
             var loan = await _context.Loans
+                .Include(s => s.Applicant)
+                .ThenInclude(c => c.User)
+                .Include(s => s.Intern).ThenInclude(c => c.User)
+                .Include(c => c.LoanDetails)
+                .ThenInclude(v => v.Status)
+                .Include(c => c.LoanDetails)
+                .ThenInclude(v => v.Material)
+                .Include(c => c.LoanDetails)
+                .ThenInclude(v => v.Loan)
+                .ThenInclude(x => x.Applicant)
+                .ThenInclude(y => y.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (loan == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("LoanNotFound");
+            }
+
+            if (loan.LoanDetails.Count != 0)
+            {
+                ModelState.AddModelError(string.Empty, "This loan has details, delete them first before deleting this.");
+                return RedirectToAction("Index", "Loans");
             }
 
             return View(loan);
