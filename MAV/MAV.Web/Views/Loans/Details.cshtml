@@ -109,9 +109,9 @@
                                             @Html.DisplayFor(modelItem => itemi.Material.Name)
                                         </td>
                                         <td>
-                                            @if (!string.IsNullOrEmpty(Model.LoanDetails.FirstOrDefault().Material.ImageURL))
+                                            @if (!string.IsNullOrEmpty(itemi.Material.ImageURL))
                                             {
-                                                <img src="@Url.Content(Model.LoanDetails.FirstOrDefault().Material.ImageURL)" style="width:100px;height:100px" />
+                                                <img src="@Url.Content(itemi.Material.ImageURL)" style="width:100px;height:100px" />
                                             }
                                         </td>
                                         <td>
@@ -141,11 +141,11 @@
                                                     <a asp-controller="LoanDetails" asp-action="Edit" asp-route-id="@itemi.Id" class="btn btn-success"><span class="fas fa-check"></span></a>
                                                 }
                                             }
-                                            @if (this.User.IsInRole("Administrador"))
+@*                                            @if (this.User.IsInRole("Administrador"))
                                             {
                                                 <a asp-controller="LoanDetails" asp-action="Delete" asp-route-id="@itemi.Id" class="btn btn-danger"><span class="fas fa-trash"></span></a>
                                             }
-                                        </td>
+*@                                        </td>
                                     </tr>
                                 }
 

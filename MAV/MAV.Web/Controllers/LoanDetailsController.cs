@@ -106,7 +106,7 @@ namespace MAV.Web.Controllers
 
             _context.LoanDetails.Add(ld);
             await _context.SaveChangesAsync();
-            return RedirectToAction(String.Format("Details/{0}", ld.Loan.Id), "Loans");
+            return RedirectToAction("Details", "Loans", new { id = model.Id });
         }
 
         // GET: LoanDetails/Edit/5
@@ -145,8 +145,8 @@ namespace MAV.Web.Controllers
                 Materials = combosHelper.GetComboMaterials()
             };
 
-            if (this.User.Identity.Name != loanDetail.Loan.Intern.User.UserName && !this.User.IsInRole("Owner") && !this.User.IsInRole("Administrator"))
-                return new NotFoundViewResult("LoanDetailNotFound");
+            //if (this.User.Identity.Name != loanDetail.Loan.Intern.User.UserName && !this.User.IsInRole("Owner") && !this.User.IsInRole("Administrator"))
+            //    return new NotFoundViewResult("LoanDetailNotFound");
 
             return View(model);
         }
@@ -201,7 +201,7 @@ namespace MAV.Web.Controllers
             _context.Materials.Update(ld.Material);
             _context.Update(ld);
             await _context.SaveChangesAsync();
-            return RedirectToAction(String.Format("Details/{0}", ld.Loan.Id), "Loans");
+            return RedirectToAction("Details", "Loans", new { id = model.Id });
         }
 
         // GET: LoanDetails/Delete/5
@@ -238,7 +238,7 @@ namespace MAV.Web.Controllers
             var loanDetail = await _context.LoanDetails.Include(s => s.Loan).FirstOrDefaultAsync(m => m.Id == id);
             _context.LoanDetails.Remove(loanDetail);
             await _context.SaveChangesAsync();
-            return RedirectToAction(String.Format("Details/{0}", loanDetail.Loan.Id), "Loans");
+            return RedirectToAction("Details", "Loans", new { id =  loanDetail.Loan.Id });
         }
 
         //private bool LoanDetailExists(int id)
