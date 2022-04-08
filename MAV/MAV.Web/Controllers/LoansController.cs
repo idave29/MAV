@@ -54,12 +54,7 @@ namespace MAV.Web.Controllers
                     return new NotFoundViewResult("LoanNotFound");
             }
 
-            return View(_context.Loans
-                 .Include(s => s.Applicant)
-                 .ThenInclude(c => c.User)
-                 .Include(s => s.Intern).ThenInclude(c => c.User)
-                 .Include(s => s.LoanDetails).ThenInclude(c => c.Material)
-                 .Include(s => s.LoanDetails).ThenInclude(c => c.Status));
+            return View(this.loanRepository.GetLoanWithAplicantsAndInterns());
         }
 
         // GET: Loans/Details/5
@@ -70,19 +65,8 @@ namespace MAV.Web.Controllers
                 return new NotFoundViewResult("LoanNotFound");
             }
 
-            var loan = await _context.Loans
-                .Include(s => s.Applicant)
-                .ThenInclude(c => c.User)
-                .Include(s => s.Intern).ThenInclude(c => c.User)
-                .Include(c => c.LoanDetails)
-                .ThenInclude(v => v.Status)
-                .Include(c => c.LoanDetails)
-                .ThenInclude(v => v.Material)
-                .Include(c => c.LoanDetails)
-                .ThenInclude(v => v.Loan)
-                .ThenInclude(x => x.Applicant)
-                .ThenInclude(y => y.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var loan = await this.loanRepository.GetByLoanIdLoanAndApplicantAsync(id.Value);
+
             if (loan == null)
             {
                 return new NotFoundViewResult("LoanNotFound");
@@ -151,19 +135,8 @@ namespace MAV.Web.Controllers
                 return new NotFoundViewResult("LoanNotFound");
             }
 
-            var loan = await _context.Loans
-                .Include(s => s.Applicant)
-                .ThenInclude(c => c.User)
-                .Include(s => s.Intern).ThenInclude(c => c.User)
-                .Include(c => c.LoanDetails)
-                .ThenInclude(v => v.Status)
-                .Include(c => c.LoanDetails)
-                .ThenInclude(v => v.Material)
-                .Include(c => c.LoanDetails)
-                .ThenInclude(v => v.Loan)
-                .ThenInclude(x => x.Applicant)
-                .ThenInclude(y => y.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var loan = await this.loanRepository.GetByLoanIdLoanAndApplicantAsync(id.Value);
+
             if (loan == null)
             {
                 return new NotFoundViewResult("LoanNotFound");

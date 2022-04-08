@@ -297,7 +297,7 @@
 
                 foreach (string rol in roles)
                 {
-                    if (rol == "Administrador") //Si es administardor, se borrara desde la tabla de admin
+                    if (rol == "Administrador")
                     {
                         var adminWithUser = await this.adminRep.GetByIdUserWithUserAdminAsync(id);
                         if (adminWithUser != null)
@@ -309,31 +309,40 @@
                         if (ownerWithUser != null)
                             await this.ownerRep.DeleteAsync(ownerWithUser);
 
-                        //Agregar metodo para quitar material
                     }
                     if (rol == "Solicitante" || rol == "Becario") 
                     {
-                        var loanDetailUser = await this.loanDetailRep.GetByIdAppOrInternLoanDetailsAsync(id);
+                        var loanDetailUser = this.loanDetailRep.GetByIdAppOrInternLoanDetailssAsync(id);
                         if(loanDetailUser != null)
-                            await this.loanDetailRep.DeleteAsync(loanDetailUser);
-                        //
-
-                        var loanUser = await this.loanRep.GetByIdAppOrInternLoansAsync(id);
-                        if (loanUser != null)
-                            await this.loanRep.DeleteAsync(loanUser);
-
+                        {
+                            foreach (LoanDetail l in loanDetailUser)
+                            {
+                                if (l.Status.Name == "Prestado")
+                                {
+                                    return new NotFoundViewResult("UserNotFound");
+                                }
+                            }
+                        }
                         if (rol == "Solicitante")
                         {
-                            var applicantWithUser = await   this.applicantRep.GetByIdUserWithUserApplicantAsync(id);
+                            var applicantWithUser = await this.applicantRep.GetByIdUserWithUserApplicantAsync(id);
                             if (applicantWithUser != null)
                                 await this.applicantRep.DeleteAsync(applicantWithUser);
                         }
-                        if (rol == "Becario") 
+                        if (rol == "Becario")
                         {
                             var internWithUser = await this.internRep.GetByIdUserInternWithUserAsync(id);
                             if (internWithUser != null)
                                 await this.internRep.DeleteAsync(internWithUser);
                         }
+
+                        //await this.loanDetailRep.DeleteAsync(loanDetailUser);
+
+                        //var loanUser = await this.loanRep.GetByIdAppOrInternLoansAsync(id);
+                        //if (loanUser != null)
+                        //    await this.loanRep.DeleteAsync(loanUser);
+
+                        
                     }
 
                 }

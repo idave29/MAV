@@ -34,7 +34,37 @@ namespace MAV.Web.Data.Repositories
         public async Task<LoanDetail> GetByIdAppOrInternLoanDetailsAsync(string id)
         {
             return await this.dataContext.LoanDetails
+                .Include(s => s.Status)
+                .Include(s => s.Material)
+                .Include(s => s.Loan)
                 .FirstOrDefaultAsync(e => e.Loan.Intern.User.Id == id || e.Loan.Applicant.User.Id == id);
+        }
+
+
+        public IEnumerable<LoanDetail> GetByIdAppOrInternLoanDetailssAsync(string id)
+        {
+            var ld = this.dataContext.LoanDetails
+                 .Include(s => s.Status)
+                 .Include(s => s.Material)
+                 .Include(s => s.Loan)
+                 .Where(e => e.Loan.Intern.User.Id == id || e.Loan.Applicant.User.Id == id);
+
+            if (ld == null)
+            {
+                return null;
+            }
+
+
+            var x = ld.Select(ldr => new LoanDetail
+            {
+                Id = ldr.Id,
+                DateTimeIn = ldr.DateTimeIn,
+                DateTimeOut = ldr.DateTimeOut,
+                Observations = ldr.Observations,
+                Status = ldr.Status
+            }).ToList();
+
+            return x;
         }
 
         public IEnumerable<LoanDetailsRequest> GetLoanDetailsWithMaterialWithoutDateTimeIn() //Where(ld => ld.DateTimeIn == null)

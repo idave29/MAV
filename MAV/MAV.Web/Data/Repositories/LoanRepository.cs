@@ -18,11 +18,50 @@
 
         public IQueryable GetLoanWithAplicantsAndInterns()
         {
-            return this.dataContext.Loans
-                .Include(t => t.Applicant.User)
-                .Include(t => t.Intern.User);
-                //Cambiarle lo de collection para que tome el id
-                //.Include(t => t.LoanDetails);
+            //return this.dataContext.Loans
+            //    .Include(t => t.Applicant.User)
+            //    .Include(t => t.Intern.User);
+            //Cambiarle lo de collection para que tome el id
+            //.Include(t => t.LoanDetails);
+
+            //return dataContext.Loans
+            //     .Include(s => s.Applicant)
+            //     .ThenInclude(c => c.User)
+            //     .Include(s => s.Intern).ThenInclude(c => c.User)
+            //     .Include(s => s.LoanDetails).ThenInclude(c => c.Material)
+            //     .Include(s => s.LoanDetails).ThenInclude(c => c.Status);
+            return dataContext.Loans
+                 .Include(s => s.Applicant.User)
+                 .Include(s => s.Intern.User)
+                 .Include(s => s.LoanDetails).ThenInclude(c => c.Material)
+                 .Include(s => s.LoanDetails).ThenInclude(c => c.Status);
+        }
+
+        //public async Loan GetLoanWithAplicantsAndInternsAsync(int id)
+        //{
+        //    return dataContext.Loans
+        //         .Include(s => s.Applicant)
+        //         .ThenInclude(c => c.User)
+        //         .Include(s => s.Intern).ThenInclude(c => c.User)
+        //         .Include(s => s.LoanDetails).ThenInclude(c => c.Material)
+        //         .Include(s => s.LoanDetails).ThenInclude(c => c.Status);
+        //}
+
+        public async Task<Loan> GetByLoanIdLoanAndApplicantAsync(int id)
+        {
+            return await dataContext.Loans
+                .Include(s => s.Applicant)
+                .ThenInclude(c => c.User)
+                .Include(s => s.Intern).ThenInclude(c => c.User)
+                .Include(c => c.LoanDetails)
+                .ThenInclude(v => v.Status)
+                .Include(c => c.LoanDetails)
+                .ThenInclude(v => v.Material)
+                .Include(c => c.LoanDetails)
+                .ThenInclude(v => v.Loan)
+                .ThenInclude(x => x.Applicant)
+                .ThenInclude(y => y.User)
+                .FirstOrDefaultAsync(m => m.Id == id);
         }
 
         public async Task<Loan> GetByIdAppOrInternLoansAsync(string id)

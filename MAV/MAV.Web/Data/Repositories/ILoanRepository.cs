@@ -9,6 +9,8 @@
     public interface ILoanRepository : IGenericRepository<Loan>
     {
         IQueryable GetLoanWithAplicantsAndInterns();
+
+        Task<Loan> GetByLoanIdLoanAndApplicantAsync(int id);
         Task<Loan> GetByIdAppOrInternLoansAsync(string id);
         IEnumerable<LoanRequest> GetLoans();
         //IEnumerable<LoanRequest> GetLoansWithInternsAndLoanDetails();
