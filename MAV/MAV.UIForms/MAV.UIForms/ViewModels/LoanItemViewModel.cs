@@ -13,6 +13,9 @@ namespace MAV.UIForms.ViewModels
         {
             MainViewModel.GetInstance().EditLoan = new EditLoanViewModel((LoanRequest)this);
             await App.Navigator.PushAsync(new EditLoanPage());
+
+            //MainViewModel.GetInstance().LoanDetails = new LoanDetailsViewModel((LoanRequest)this);
+            //await App.Navigator.PushAsync(new LoanDetailsPage());
         }
     }
 }

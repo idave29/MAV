@@ -41,6 +41,7 @@
         {
             return await this.dataContext.Interns
                  .Include(t => t.User)
+                 .Where(a => a.User.Deleted == false)
                  .FirstOrDefaultAsync(e => e.Id == id);
         }
         public InternRequest GetInternWithUserById(int id)
@@ -82,12 +83,14 @@
         public IQueryable GetInternsWithUser()
         {
             return this.dataContext.Interns
-                .Include(i => i.User);
+                .Include(i => i.User)
+                .Where(a => a.User.Deleted == false);
         }
 
         public IEnumerable<InternRequest> GetInterns()
         {
-            var i = this.dataContext.Interns;
+            var i = this.dataContext.Interns
+                    .Where(a => a.User.Deleted == false);
 
             if (i == null)
             {
@@ -227,6 +230,7 @@
         {
             var a = this.dataContext.Interns
                .Include(t => t.User)
+               .Where(a => a.User.Deleted == false)
                .FirstOrDefault(u => u.User.Email.ToLower() == email.ToString());
 
             if (a == null)
@@ -275,8 +279,8 @@
             //        return i;
             //    }
             //}
-            var a = this.dataContext.Users;
-            var b = this.dataContext.Interns.Include(o => o.User);
+            var a = this.dataContext.Users.Where(a => a.Deleted == false);
+            var b = this.dataContext.Interns.Where(a => a.User.Deleted == false).Include(o => o.User);
             foreach (Entities.User u in a)
             {
                 if (u.FullName == fullname)

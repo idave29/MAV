@@ -165,6 +165,7 @@ namespace MAV.Web.Data
                     Email = mail,
                     UserName = mail,
                     PhoneNumber = phone,
+                    Deleted = false
                 };
 
                 var result = await userHelper.AddUserAsync(user, password);

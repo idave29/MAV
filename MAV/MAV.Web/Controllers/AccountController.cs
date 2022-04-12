@@ -53,7 +53,9 @@
         // GET: Statuses
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Users.ToListAsync());
+            return View(await _context.Users
+                .Where(a => a.Deleted == false)
+                .ToListAsync());
         }
 
 
@@ -71,19 +73,23 @@
         {
             if (ModelState.IsValid)
             {
-                var result = await userHelper.LoginAsync(loginViewModel.Username, loginViewModel.Password, loginViewModel.RememberMe);
-                if (result.Succeeded)
+                var resultD = await userHelper.GetUserByEmailAsync(loginViewModel.Username);
+                if (resultD.Deleted == false)
                 {
-                    if (Request.Query.Keys.Contains("ReturnUrl"))
+                    var result = await userHelper.LoginAsync(loginViewModel.Username, loginViewModel.Password, loginViewModel.RememberMe);
+                    if (result.Succeeded)
                     {
-                        return Redirect(this.Request.Query["ReturnUrl"].First());
-                    }
+                        if (Request.Query.Keys.Contains("ReturnUrl"))
+                        {
+                            return Redirect(this.Request.Query["ReturnUrl"].First());
+                        }
 
-                    return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Index", "Home");
+                    }
                 }
             }
 
-            ModelState.AddModelError(string.Empty, "User or password invalid.");
+            ModelState.AddModelError(string.Empty, "Usuario o Contraseña Incorrecta.");
             loginViewModel.Password = string.Empty;
             return View(loginViewModel);
         }
@@ -250,6 +256,19 @@
                     }
                 }
 
+                if(user != null && user.Deleted == true)
+                {
+                    user.PhoneNumber = model.PhoneNumber;
+                    user.FirstName = model.FirstName;
+                    user.LastName = model.LastName;
+                    user.Deleted = false;
+
+                    //Cambiar comtraseña
+
+                    await this.userHelper.UpdateUserAsync(user);
+                    return RedirectToAction("Index", "Account");
+                }
+
                 ModelState.AddModelError(string.Empty, "El usuario ya existe");
             }
 
@@ -302,12 +321,14 @@
                         var adminWithUser = await this.adminRep.GetByIdUserWithUserAdminAsync(id);
                         if (adminWithUser != null)
                             await this.adminRep.DeleteAsync(adminWithUser);
+                        await this.userHelper.DeleteUserAsync(user);
                     }
                     if (rol == "Responsable") 
                     {
                         var ownerWithUser = await this.ownerRep.GetByIdUserOwnerWithUserAsync(id);
                         if (ownerWithUser != null)
                             await this.ownerRep.DeleteAsync(ownerWithUser);
+                        await this.userHelper.DeleteUserAsync(user);
 
                     }
                     if (rol == "Solicitante" || rol == "Becario") 
@@ -325,15 +346,20 @@
                         }
                         if (rol == "Solicitante")
                         {
-                            var applicantWithUser = await this.applicantRep.GetByIdUserWithUserApplicantAsync(id);
-                            if (applicantWithUser != null)
-                                await this.applicantRep.DeleteAsync(applicantWithUser);
+                            //var applicantWithUser = await this.applicantRep.GetByIdUserWithUserApplicantAsync(id);
+                            //if (applicantWithUser != null)
+                            //    await this.applicantRep.DeleteAsync(applicantWithUser);
+
+                            user.Deleted = true;
+                            await this.userHelper.UpdateUserAsync(user);
                         }
                         if (rol == "Becario")
                         {
-                            var internWithUser = await this.internRep.GetByIdUserInternWithUserAsync(id);
-                            if (internWithUser != null)
-                                await this.internRep.DeleteAsync(internWithUser);
+                            //var internWithUser = await this.internRep.GetByIdUserInternWithUserAsync(id);
+                            //if (internWithUser != null)
+                            //    await this.internRep.DeleteAsync(internWithUser);
+                            user.Deleted = true;
+                            await this.userHelper.UpdateUserAsync(user);
                         }
 
                         //await this.loanDetailRep.DeleteAsync(loanDetailUser);
@@ -347,7 +373,7 @@
 
                 }
 
-                await this.userHelper.DeleteUserAsync(user);
+                //await this.userHelper.DeleteUserAsync(user);
             }
 
             return RedirectToAction(nameof(Index));

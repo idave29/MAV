@@ -34,6 +34,8 @@
                 case "LoanDetailsPage":
                     MainViewModel.GetInstance().LoanDetails = new LoanDetailsViewModel();
                     await App.Navigator.PushAsync(new LoanDetailsPage());
+                    //MainViewModel.GetInstance().Loans = new LoansViewModel();
+                    //await App.Navigator.PushAsync(new LoansPage());
                     break;
                 case "LoansPage":
                     MainViewModel.GetInstance().Loans = new LoansViewModel();

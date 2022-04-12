@@ -11,6 +11,9 @@
 
         public DateTime DateTimeIn { set; get; }
 
+        public string Status { set; get; }
+
         public MaterialRequest Material { get; set; }
+
     }
 }

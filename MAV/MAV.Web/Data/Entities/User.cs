@@ -25,5 +25,7 @@
 
         [Display(Name = "Nombre Completo")]
         public string FullName => $"{LastName} {FirstName}";
+
+        public bool Deleted { get; set; }
     }
 }

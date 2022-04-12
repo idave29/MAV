@@ -3,36 +3,34 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MAV.UIForms.Views.EditLoanPage"
              BindingContext="{Binding Main, Source={StaticResource Locator}}"
-             Title="Edit Loan">
+             Title="Detalle de Préstamos">
     <ContentPage.Content>
-        <ScrollView BindingContext="{Binding EditLoan}">
-            <StackLayout>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Label Text="Intern" Grid.Column="0" Grid.Row="0" VerticalOptions="Center"></Label>
-                    <Picker Grid.Column="1" Grid.Row="0" Title="Selecciona un tipo de Becario" ItemsSource="{Binding InternList}" SelectedItem="{Binding Loan.Intern, Mode=TwoWay}"/>
-                    <Label Text="Applicant" Grid.Column="0" Grid.Row="1" VerticalOptions="Center"></Label>
-                    <Picker Grid.Column="1" Grid.Row="1" Title="Selecciona un tipo de Aplicante" ItemsSource="{Binding ApplicantList}" SelectedItem="{Binding Loan.Applicant, Mode=TwoWay}"/>
-                </Grid>
-                <ActivityIndicator IsRunning="{Binding IsRunning}" VerticalOptions="CenterAndExpand">
-                </ActivityIndicator>
-                <Button Text="Save" 
-                        Command="{Binding SaveCommand}"
-                        IsEnabled="{Binding IsEnabled}"
-                        Background="#67CB19" 
-                        TextColor="White" HorizontalOptions="Fill" CornerRadius="20" >
-                </Button>
-                <Button Text="Delete" 
-                        Command="{Binding DeleteCommand}"
-                        IsEnabled="{Binding IsEnabled}"
-                        Background="red" 
-                        TextColor="White" HorizontalOptions="Fill" CornerRadius="20" >
-                </Button>
-
+        <StackLayout BindingContext="{Binding EditLoan}" >
+        <StackLayout Grid.Column="0" VerticalOptions="Center">
+            <Label Text="{Binding Loan.Applicant, StringFormat= 'Solicitante: {0}'}" FontSize="Medium" TextColor="Black"></Label>
+            <Label Text="{Binding Loan.Intern, StringFormat= 'Becario: {0}'}" FontSize="Medium" TextColor="Black"></Label>
+        </StackLayout>
+        <StackLayout Grid.Column="0" VerticalOptions="Center" Grid.Row="1"  BindableLayout.ItemsSource="{Binding Loan.LoanDetails}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Label Text="{Binding Id, StringFormat= 'Prestamo: {0}'}" FontSize="Small" TextColor="Gray" Grid.Row="0"></Label>
+                            <Label Text="{Binding Material.Name, StringFormat= 'Nombre: {0}'}" FontSize="Small" TextColor="Gray" Grid.Row="1"></Label>
+                            <Label Text="{Binding Material.Label, StringFormat='Etiqueta: {0}'}"  FontSize="Small" TextColor="Gray" Grid.Row="2"></Label>
+                            <Label Text="{Binding DateTimeOut, StringFormat='Fecha y Tiempo de Préstamo: {0}'}" FontSize="Small" TextColor="Gray" Grid.Row="3"></Label>
+                            <Label Text="{Binding DateTimeIn, StringFormat='Fecha y Tiempo de Devolución: {0}'}" FontSize="Small" TextColor="Gray" Grid.Row="4"></Label>
+                            <Label Text="{Binding Observations, StringFormat='Observaciones: {0}'}" FontSize="Small" TextColor="Gray" Grid.Row="5"></Label>
+                            <Label Text="{Binding Status, StringFormat='Estado: {0}'}" FontSize="Small" TextColor="Gray" Grid.Row="6"></Label>
+                        </Grid> 
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
             </StackLayout>
-        </ScrollView>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

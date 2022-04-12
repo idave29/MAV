@@ -54,7 +54,7 @@
                 Id = l.Id,
                 Applicant = l.Applicant,
                 Intern = l.Intern,
-
+                LoanDetails = l.LoanDetails
             }).OrderBy(l => l.Id).ToList());
         }
         public void AddLoanToList(LoanRequest loan)

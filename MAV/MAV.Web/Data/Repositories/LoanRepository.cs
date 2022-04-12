@@ -96,7 +96,27 @@
                 Id = l.Id,
                 Intern = l.Intern.User.FullName,
                 Applicant = l.Applicant.User.FullName,
-                
+                LoanDetails = l.LoanDetails.Select(ld => new LoanDetailsRequest
+                {
+                    Id = ld.Id,
+                    DateTimeIn = ld.DateTimeIn,
+                    DateTimeOut = ld.DateTimeOut,
+                    Observations = ld.Observations,
+                    Status = ld.Status.Name,
+                    Material = new MaterialRequest
+                    {
+                        Id = ld.Material.Id,
+                        Brand = ld.Material.Brand,
+                        Label = ld.Material.Label,
+                        MaterialModel = ld.Material.MaterialModel,
+                        MaterialType = ld.Material.MaterialType.Name,
+                        Name = ld.Material.Name,
+                        SerialNum = ld.Material.SerialNum,
+                        Status = ld.Material.Status.Name,
+                        Owner = ld.Material.Owner.User.FullName
+                    }
+                }).ToList()
+
             }).ToList();
 
             return x;

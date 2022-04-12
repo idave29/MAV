@@ -45,7 +45,7 @@ namespace MAV.Web.Helpers
 
         public IEnumerable<SelectListItem> GetComboInterns()
         {
-            var list = this.dataContext.Interns.Select(t => new SelectListItem
+            var list = this.dataContext.Interns.Where(a => a.User.Deleted == false).Select(t => new SelectListItem
             {
                 Text = t.User.FullName,
                 Value = $"{t.Id}"
@@ -60,7 +60,7 @@ namespace MAV.Web.Helpers
 
         public IEnumerable<SelectListItem> GetComboApplicants()
         {
-            var list = dataContext.Applicants.Where(item => item.Debtor != true)
+            var list = dataContext.Applicants.Where(item => item.Debtor != true).Where(a => a.User.Deleted == false)
                 .Select(
                 c => new SelectListItem
                 {
@@ -95,7 +95,7 @@ namespace MAV.Web.Helpers
 
         public IEnumerable<SelectListItem> GetComboUsers()
         {
-            var list = this.dataContext.Users
+            var list = this.dataContext.Users.Where(a => a.Deleted == false)
                 .Select(
                 c => new SelectListItem
                 {

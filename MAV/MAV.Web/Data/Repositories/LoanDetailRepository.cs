@@ -28,6 +28,9 @@ namespace MAV.Web.Data.Repositories
         public IQueryable GetLoanDetails()
         {
             return this.dataContext.LoanDetails
+                .Include(l => l.Loan)
+                .Include(l => l.Material)
+                .Include(l => l.Status)
                 .Where(ld => ld.DateTimeIn != null);
         }
 
@@ -127,6 +130,12 @@ namespace MAV.Web.Data.Repositories
                 DateTimeIn = ldr.DateTimeIn,
                 DateTimeOut = ldr.DateTimeOut,
                 Observations = ldr.Observations,
+                Status = ldr.Status.Name,
+                //Loan = new LoanRequest
+                //{
+                //   Applicant = ldr.Loan.Applicant.User.FullName, 
+                //   Intern = ldr.Loan.Intern.User.FullName 
+                //},
                 Material = new MaterialRequest
                 {
                     Id = ldr.Material.Id,

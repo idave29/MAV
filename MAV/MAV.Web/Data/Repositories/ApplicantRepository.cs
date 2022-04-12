@@ -19,7 +19,7 @@
 
         public IEnumerable<SelectListItem> GetComboApplicants()
         {
-            var list = this.dataContext.Applicants.Select(t => new SelectListItem
+            var list = this.dataContext.Applicants.Where(a => a.User.Deleted == false).Select(t => new SelectListItem
             {
                 Text = t.User.FullName,
                 Value = $"{t.Id}"
@@ -44,7 +44,8 @@
         {
             return this.dataContext.Applicants
                 .Include(a => a.User)
-                .Include(a => a.ApplicantType);
+                .Include(a => a.ApplicantType)
+                .Where(a => a.User.Deleted == false);
         }
 
         public async Task<Applicant> GetByIdWithUserAsync(int id)
@@ -63,6 +64,7 @@
                 .ThenInclude(x => x.Intern)
                 .ThenInclude(y => y.User)
                 .Include(s => s.ApplicantType)
+                .Where(a => a.User.Deleted == false)
                 .FirstOrDefaultAsync(e => e.Id == id);
         }
 
@@ -343,7 +345,8 @@
         {
             var a = this.dataContext.Applicants
                     .Include(a => a.User)
-                    .Include(at => at.ApplicantType);
+                    .Include(at => at.ApplicantType)
+                    .Where(a => a.User.Deleted == false);
 
             if (a == null)
             {
@@ -371,8 +374,8 @@
             //        return app;
             //    }
             //}
-            var a = this.dataContext.Users;
-            var b = this.dataContext.Applicants.Include(o => o.User);
+            var a = this.dataContext.Users.Where(a => a.Deleted == false);
+            var b = this.dataContext.Applicants.Include(o => o.User).Where(a => a.User.Deleted == false);
             foreach (Entities.User u in a)
             {
                 if (u.FullName == fullname)
