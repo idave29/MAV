@@ -121,7 +121,7 @@ namespace MAV.Web.Controllers
                 _context.Applicants.Update(applicant);
                 _context.Add(loan);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Loans", new { id = loan.Id });
             }
 
             return View(model);
