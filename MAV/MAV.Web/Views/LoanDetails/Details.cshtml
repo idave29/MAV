@@ -36,5 +36,12 @@
     </dl>
 </div>
 <div>
-    <a asp-controller="Loans" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-primary"><span class="fas fa-arrow-left"></span></a>
+    <a onclick="goBack()" class="btn btn-outline-primary"><span class="fas fa-arrow-left"></span></a>
 </div>
+
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>

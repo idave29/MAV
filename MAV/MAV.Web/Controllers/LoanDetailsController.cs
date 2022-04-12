@@ -61,8 +61,8 @@ namespace MAV.Web.Controllers
                 return new NotFoundViewResult("LoanDetailNotFound");
             }
 
-            if (this.User.Identity.Name != loandetail.Loan.Intern.User.UserName && !this.User.IsInRole("Responsable") && !this.User.IsInRole("Administrador"))
-                return new NotFoundViewResult("LoanDetailNotFound");
+            //if (this.User.Identity.Name != loandetail.Loan.Intern.User.UserName && !this.User.IsInRole("Responsable") && !this.User.IsInRole("Administrador"))
+            //    return new NotFoundViewResult("LoanDetailNotFound");
 
             return View(loandetail);
         }
@@ -106,7 +106,7 @@ namespace MAV.Web.Controllers
 
             _context.LoanDetails.Add(ld);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Details", "Loans", new { id = model.Id });
+            return RedirectToAction("Details", "Loans", new { id = ld.Loan.Id });
         }
 
         // GET: LoanDetails/Edit/5
@@ -201,7 +201,7 @@ namespace MAV.Web.Controllers
             _context.Materials.Update(ld.Material);
             _context.Update(ld);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Details", "Loans", new { id = model.Id });
+            return RedirectToAction("Details", "Loans", new { id = ld.Loan.Id });
         }
 
         // GET: LoanDetails/Delete/5
