@@ -19,7 +19,7 @@
                 <h2>Préstamos</h2>
             </div>
             <div class="panel-body">
-                @if (this.User.IsInRole("Administrador"))
+                @if (this.User.IsInRole("Administrador") || this.User.IsInRole("Becario"))
                 {
                     <p>
                         <a asp-action="Create" class="btn btn-outline-success"><span class="fas fa-plus"></span></a>

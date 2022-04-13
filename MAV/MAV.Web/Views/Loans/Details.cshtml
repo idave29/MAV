@@ -63,7 +63,7 @@
                                             returned = false;
                                         }
                                     }
-                                    if (returned == false && this.User.IsInRole("Administrador"))
+                                    if (returned == false && (this.User.IsInRole("Administrador") || this.User.IsInRole("Responsable") || this.User.IsInRole("Becario")))
                                     {
                                         <a asp-controller="LoanDetails" asp-action="Create" asp-route-id="@Model.Id" class="btn btn-success"><span class="fas fa-plus"></span></a>
                                     }
@@ -133,7 +133,7 @@
                                             @Html.DisplayFor(modelItem => itemi.Status.Name)
                                         </td>
                                         <td>
-                                            @if (this.User.IsInRole("Administrador"))
+                                            @if (this.User.IsInRole("Administrador") || this.User.IsInRole("Responsable") || this.User.IsInRole("Becario"))
                                             {
                                                 <a asp-controller="LoanDetails" asp-action="Details" asp-route-id="@itemi.Id" class="btn btn-info"><span class="fas fa-eye"></span></a>
                                                 @if (itemi.Status.Id == 2)

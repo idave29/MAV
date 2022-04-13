@@ -72,7 +72,7 @@ namespace MAV.Web.Controllers
                 return new NotFoundViewResult("LoanNotFound");
             }
 
-            if (this.User.Identity.Name != loan.Intern.User.UserName && !this.User.IsInRole("Responsable") && !this.User.IsInRole("Administrador"))
+            if (!this.User.IsInRole("Responsable") && !this.User.IsInRole("Administrador") && !this.User.IsInRole("Becario"))
                 return new NotFoundViewResult("LoanNotFound");
 
             return View(loan);
