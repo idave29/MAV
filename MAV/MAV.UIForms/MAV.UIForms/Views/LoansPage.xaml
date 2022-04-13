@@ -26,10 +26,14 @@
                                     <TapGestureRecognizer Command="{Binding SelectLoanCommand}" />
                                 </Grid.GestureRecognizers>
                                 <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
                                 <StackLayout Grid.Column="0" VerticalOptions="Center" Margin="0,0,10,0">
                                     <Label Text="{Binding Id}" 
                                            FontSize="Large" 
@@ -41,11 +45,11 @@
                                            FontSize="Medium"
                                            TextColor="Black"></Label>
                                     <Label Text="{Binding Intern, StringFormat= 'Becario: {0}'}" 
-                                           FontSize="Small"
-                                           TextColor="Gray"></Label>
+                                           FontSize="Medium"
+                                           TextColor="Black"></Label>
                                     <Label Text="{Binding LoanDetails.Count, StringFormat= 'Numero de Préstamos: {0}'}" 
                                            FontSize="Small"
-                                           TextColor="Gray"></Label>
+                                           TextColor="DarkSlateBlue"></Label>
                                 </StackLayout>
                                 <StackLayout Grid.Column="1" VerticalOptions="Center" Grid.Row="1"  BindableLayout.ItemsSource="{Binding LoanDetails}">
                                     <BindableLayout.ItemTemplate>
@@ -59,7 +63,7 @@
                                                 </Grid.RowDefinitions>
                                                 <Label Text="{Binding Id, StringFormat= 'Prestamo Id: {0}'}"  
                                                        FontSize="Small"
-                                                       TextColor="Gray"
+                                                       TextColor="DarkOliveGreen"
                                                        Grid.Row="0"></Label>
                                                 <Label Text="{Binding DateTimeIn, StringFormat= 'Fecha: {0}'}"  
                                                        FontSize="Small"

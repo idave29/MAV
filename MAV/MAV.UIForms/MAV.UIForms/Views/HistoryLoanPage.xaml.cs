@@ -10,17 +10,11 @@ using Xamarin.Forms.Xaml;
 namespace MAV.UIForms.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class EditLoanDetailPage : ContentPage
+    public partial class HistoryLoanPage : ContentPage
     {
-        public EditLoanDetailPage()
+        public HistoryLoanPage()
         {
             InitializeComponent();
-            if (lbEstado.Text == "Regresado")
-            {
-                btnCerrar.IsEnabled = false;
-                //btnCerrar.BackgroundColor.
-                etObserv.IsEnabled = false;
-            }
         }
     }
 }

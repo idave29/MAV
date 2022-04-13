@@ -15,5 +15,7 @@
 
         public MaterialRequest Material { get; set; }
 
+        public LoanRequest Loan { get; set; }
+
     }
 }

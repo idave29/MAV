@@ -76,6 +76,36 @@
             }
             var newLoan = await this.loanRepository.CreateAsync(entityLoan);
             return Ok(newLoan);
+
+
+            //if (ModelState.IsValid)
+            //{
+            //    var applicant = await _context.Applicants.FirstOrDefaultAsync(m => m.Id == model.ApplicantId);
+            //    var intern = await _context.Interns.FirstOrDefaultAsync();
+            //    foreach (Intern internObj in _context.Interns.Include(s => s.User))
+            //    {
+            //        if (internObj.User.UserName == this.User.Identity.Name)
+            //        {
+            //            intern = internObj;
+            //        }
+            //    }
+            //    var loan = new Loan { Applicant = applicant, Intern = intern };
+
+            //    var status = _context.Statuses.FirstOrDefault(m => m.Id == 2);
+            //    var material = await _context.Materials.FirstOrDefaultAsync(m => m.Id == model.MaterialId);
+            //    _context.LoanDetails.Add(new LoanDetail { Loan = loan, DateTimeOut = DateTime.Now, DateTimeIn = DateTime.MinValue, Material = material, Status = status, Observations = string.Empty });
+
+            //    material.Status = status;
+            //    applicant.Debtor = true;
+
+            //    _context.Materials.Update(material);
+            //    _context.Applicants.Update(applicant);
+            //    _context.Add(loan);
+            //    await _context.SaveChangesAsync();
+            //    return RedirectToAction("Details", "Loans", new { id = loan.Id });
+            //}
+
+            //return View(model);
         }
 
         [HttpPut("{id}")]

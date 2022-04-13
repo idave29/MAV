@@ -117,7 +117,10 @@ namespace MAV.Web.Data.Repositories
                 .Include(ld => ld.Material)
                 .ThenInclude(m => m.MaterialType)
                 .Include(ld => ld.Material)
-                .ThenInclude(m => m.Owner.User);
+                .ThenInclude(m => m.Owner.User)
+                .Include(l => l.Loan)
+                .Include(l => l.Loan.Applicant.User)
+                .Include(l => l.Loan.Intern.User);
 
             if (ld == null)
             {
@@ -131,11 +134,12 @@ namespace MAV.Web.Data.Repositories
                 DateTimeOut = ldr.DateTimeOut,
                 Observations = ldr.Observations,
                 Status = ldr.Status.Name,
-                //Loan = new LoanRequest
-                //{
-                //   Applicant = ldr.Loan.Applicant.User.FullName, 
-                //   Intern = ldr.Loan.Intern.User.FullName 
-                //},
+                Loan = new LoanRequest
+                {
+                    Id = ldr.Id,
+                    Applicant = ldr.Loan.Applicant.User.FullName,
+                    Intern = ldr.Loan.Intern.User.FullName
+                },
                 Material = new MaterialRequest
                 {
                     Id = ldr.Material.Id,

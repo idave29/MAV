@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MAV.UIForms.Views.HistoryLoanPage"
+             BindingContext="{Binding Main, Source={StaticResource Locator}}"
+             Title="Detalles de Préstamos">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem IconImageSource="ic_action_add_circle" Command="{Binding AddLoanCommand}"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout
+            BindingContext="{Binding HistorysLoan}" Padding="30">
+            <ListView ItemsSource="{Binding LoansDetails}"
+                      IsPullToRefreshEnabled="True"
+                      HasUnevenRows="True"
+                      IsRefreshing="{Binding IsRefreshing}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding SelectLoanDetailCommand}" />
+                                </Grid.GestureRecognizers>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="40"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Label Text="{Binding Id}" FontSize="Medium" FontAttributes="Bold" Grid.Column="0" TextColor="Red" VerticalOptions="Center" HorizontalOptions="Center"></Label>
+                                <Label Text="Nombre:" FontSize="Small" TextColor="Gray" Grid.Row="0" Grid.Column="1" FontAttributes="Bold" VerticalOptions="Center"></Label>
+                                <Label Text="{Binding Material.Name}" FontSize="Small" TextColor="Gray" Grid.Row="0" Grid.Column="2" VerticalOptions="Center"></Label>
+                                <Label Text="Etiqueta:"  FontSize="Small" TextColor="Gray" Grid.Row="1" Grid.Column="1" FontAttributes="Bold" VerticalOptions="Center"></Label>
+                                <Label Text="{Binding Material.Label}"  FontSize="Small" TextColor="Gray" Grid.Row="1" Grid.Column="2" VerticalOptions="Center"></Label>
+                                <Label Text="Préstamo:" FontSize="Small" TextColor="Gray" Grid.Row="2" Grid.Column="1" FontAttributes="Bold" VerticalOptions="Center"></Label>
+                                <Label Text="{Binding DateTimeOut, StringFormat='{0:dd/MM/yyyy hh:mm tt}'}" FontSize="Small" TextColor="Gray" Grid.Row="2" Grid.Column="2" VerticalOptions="Center"></Label>
+                                <Label Text="Devolución:" FontSize="Small" TextColor="Gray" Grid.Row="3" Grid.Column="1" FontAttributes="Bold" VerticalOptions="Center"></Label>
+                                <Label Text="{Binding DateTimeIn, StringFormat='{0:dd/MM/yyyy hh:mm tt}'}" FontSize="Small" TextColor="Gray" Grid.Row="3" Grid.Column="2" VerticalOptions="Center"></Label>
+                                <Label Text="Observacion:" FontSize="Small" TextColor="Gray" Grid.Row="4" Grid.Column="1" FontAttributes="Bold" VerticalOptions="Center"></Label>
+                                <Label Text="{Binding Observations}" FontSize="Small" TextColor="Gray" Grid.Row="4" Grid.Column="2" VerticalOptions="Center"></Label>
+                                <Label Text="Estado:" FontSize="Small" TextColor="Gray" Grid.Row="5" Grid.Column="1" FontAttributes="Bold" VerticalOptions="Center"></Label>
+                                <Label Text="{Binding Status}" FontSize="Small" TextColor="Gray" Grid.Row="5" Grid.Column="2" VerticalOptions="Center"></Label>
+                                <Image Grid.Column="3" Grid.RowSpan="6" Source="info" HorizontalOptions="Center"></Image>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

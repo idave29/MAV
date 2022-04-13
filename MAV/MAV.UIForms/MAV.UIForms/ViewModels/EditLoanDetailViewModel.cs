@@ -15,7 +15,6 @@ namespace MAV.UIForms.ViewModels
         public LoanDetailsRequest LoanDetails { get; set; }
 
         private bool isRunning;
-        private IList<string> materialList;
         public bool IsRunning
         {
             get { return isRunning; }
@@ -27,12 +26,6 @@ namespace MAV.UIForms.ViewModels
         {
             get { return isEnabled; }
             set { this.SetValue(ref this.isEnabled, value); }
-        }
-
-        public IList<string> MaterialList
-        {
-            get { return this.materialList; }
-            set { this.SetValue(ref this.materialList, value); }
         }
 
         public ICommand SaveCommand { get { return new RelayCommand(Save); } }
@@ -69,21 +62,9 @@ namespace MAV.UIForms.ViewModels
 
         private async void Save()
         {
-            if (string.IsNullOrEmpty(this.LoanDetails.Observations))
+            if (string.IsNullOrEmpty(Convert.ToString(this.LoanDetails.Material.Status == "Regresado")))
             {
-                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir una observación", "Aceptar");
-            }
-            if (string.IsNullOrEmpty(Convert.ToString(this.LoanDetails.DateTimeOut)))
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", "Debes una fecha y hora de salida", "Aceptar");
-            }
-            if (string.IsNullOrEmpty(Convert.ToString(this.LoanDetails.DateTimeIn)))
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", "Debes una fecha y hora de entrega", "Aceptar");
-            }
-            if (string.IsNullOrEmpty(Convert.ToString(this.LoanDetails.Material == null)))
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un material", "Aceptar");
+                await Application.Current.MainPage.DisplayAlert("Error", "Este prestamo ya se ha devuelto", "Aceptar");
             }
             isEnabled = false;
             isRunning = true;
@@ -102,29 +83,10 @@ namespace MAV.UIForms.ViewModels
                 return;
             }
             var modifyLoanDetail = (LoanDetailsRequest)response.Result;
-            MainViewModel.GetInstance().LoanDetails.UpdateLoanDetailToList(modifyLoanDetail);
+            MainViewModel.GetInstance().HistorysLoan.UpdateLoanDetailsInList(modifyLoanDetail);
             this.isEnabled = true;
             this.isRunning = false;
             await App.Navigator.PopAsync();
-        }
-
-        private async void LoadMaterial()
-        {
-            var url = Application.Current.Resources["URLApi"].ToString();
-            var response = await this.apiService.GetListAsync<MaterialRequest>(
-                url,
-                "/api",
-                "/Materials",
-                "bearer",
-                MainViewModel.GetInstance().Token.Token);
-
-            if (!response.IsSuccess)
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
-                return;
-            }
-            MaterialList = ((List<MaterialRequest>)response.Result).Select(m => m.Name).ToList();
-
         }
 
         public EditLoanDetailViewModel(LoanDetailsRequest loanDetail)
@@ -132,7 +94,9 @@ namespace MAV.UIForms.ViewModels
             this.LoanDetails = loanDetail;
             this.apiService = new ApiService();
             this.IsEnabled = true;
-            this.LoadMaterial();
+            
+            //if(LoanDetails.Material.Status == "Regresado")
+              //Views.EditLoanDetailPage.
         }
     }
 }

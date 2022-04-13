@@ -51,6 +51,8 @@
         public EditLoanViewModel EditLoan{ get; set; }
         public AddLoanViewModel AddLoan { get; set; }
 
+        public HistoryLoanPageViewModel HistorysLoan { get; set; }
+
 
 
         public ICommand AddStatusCommand { get { return new RelayCommand(GoStatusCommand); } }

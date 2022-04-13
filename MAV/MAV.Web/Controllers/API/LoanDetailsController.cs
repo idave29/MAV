@@ -16,11 +16,13 @@
     public class LoanDetailsController : Controller
     {
         private readonly ILoanDetailRepository loanDetailRepository;
+        private readonly IStatusRepository statusRepository;
         private readonly DataContext dataContext;
 
-        public LoanDetailsController(ILoanDetailRepository loanDetailRepository, DataContext dataContext)
+        public LoanDetailsController(ILoanDetailRepository loanDetailRepository, DataContext dataContext, IStatusRepository statusRepository)
         {
             this.loanDetailRepository = loanDetailRepository;
+            this.statusRepository = statusRepository;
             this.dataContext = dataContext;
         }
 
@@ -32,7 +34,7 @@
                 return BadRequest(ModelState);
             }
 
-            return Ok(this.loanDetailRepository.GetLoanDetails());
+            return Ok(this.loanDetailRepository.GetLoansDetailsWithMaterialAndOwner());
             //return Ok(this.loanDetailRepository.GetLoanDetailsWithMaterialWithoutDateTimeIn()); 
             //return Ok(this.loanDetailRepository.GetLoansDetailsWithMaterialAndOwner());
             //return Ok(this.loanDetailRepository.GetLoanDetailWithMaterialAndOwnerById(1));
@@ -61,7 +63,7 @@
             return Ok(newLoanDetail);
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutLoanDetail([FromRoute] int id, [FromBody] MAV.Common.Models.LoanDetailsRequest loanDetail)
+        public async Task<IActionResult> PutLoanDetail([FromRoute] int id, [FromBody] LoanDetailsRequest loanDetail)
         {
             if (!ModelState.IsValid)
             {
@@ -71,15 +73,23 @@
             {
                 return BadRequest();
             }
-            var oldLoanDetail = await this.loanDetailRepository.GetByIdAsync(id);
+            var oldLoanDetail = await this.loanDetailRepository.GetByIdAsync(loanDetail.Id);
             if (oldLoanDetail == null)
             {
                 return BadRequest("Id not found");
             }
+
+            var status = this.statusRepository.GetStatusByName("Regresado");
+            oldLoanDetail.Status = status;
+            if(oldLoanDetail.Status == null)
+            {
+                oldLoanDetail.Status = new Data.Entities.Status
+                {
+                    Id = status.Id,
+                    Name = status.Name
+                };
+            }
             oldLoanDetail.Observations = loanDetail.Observations;
-            //oldLoanDetail.Material = loanDetail.Material;
-            oldLoanDetail.DateTimeIn = loanDetail.DateTimeIn;
-            oldLoanDetail.DateTimeOut = loanDetail.DateTimeOut;
             var updateLoanDetail = await this.loanDetailRepository.UpdateAsync(oldLoanDetail);
             return Ok(updateLoanDetail);
         }
