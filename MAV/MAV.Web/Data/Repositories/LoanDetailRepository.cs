@@ -43,6 +43,18 @@ namespace MAV.Web.Data.Repositories
                 .FirstOrDefaultAsync(e => e.Loan.Intern.User.Id == id || e.Loan.Applicant.User.Id == id);
         }
 
+        public async Task<LoanDetail> GetByIdLoanDetailAsync(int id)
+        {
+            return await dataContext.LoanDetails
+                .Include(s => s.Loan)
+                .ThenInclude(c => c.Applicant)
+                .ThenInclude(x => x.Loans)
+                .ThenInclude(y => y.LoanDetails)
+                .ThenInclude(z => z.Status)
+                .Include(s => s.Material)
+                .ThenInclude(c => c.Status)
+                .FirstOrDefaultAsync(m => m.Id == id);
+        }
 
         public IEnumerable<LoanDetail> GetByIdAppOrInternLoanDetailssAsync(string id)
         {
@@ -144,6 +156,8 @@ namespace MAV.Web.Data.Repositories
                 {
                     Id = ldr.Material.Id,
                     Brand = ldr.Material.Brand,
+                    Function = ldr.Material.Function,
+                    ImageURL = ldr.Material.ImageURL,
                     Label = ldr.Material.Label,
                     MaterialModel = ldr.Material.MaterialModel,
                     MaterialType = ldr.Material.MaterialType.Name,

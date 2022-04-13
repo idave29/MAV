@@ -117,16 +117,8 @@ namespace MAV.Web.Controllers
                 return new NotFoundViewResult("LoanDetailNotFound");
             }
 
-            var loanDetail = await _context.LoanDetails
-                .Include(s => s.Status)
-                .Include(s => s.Material)
-                .Include(s => s.Loan)
-                .ThenInclude(c => c.Intern)
-                .ThenInclude(v => v.User)
-                .Include(s => s.Loan)
-                .ThenInclude(c => c.Applicant)
-                .ThenInclude(v => v.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var loanDetail = await this.loanDetailRepository.GetByIdLoanDetailAsync(id.Value);
+
             if (loanDetail == null)
             {
                 return new NotFoundViewResult("LoanDetailNotFound");
@@ -158,15 +150,7 @@ namespace MAV.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, LoanDetailViewModel model)
         {
-            var ld = await _context.LoanDetails
-                .Include(s => s.Loan)
-                .ThenInclude(c => c.Applicant)
-                .ThenInclude(x => x.Loans)
-                .ThenInclude(y => y.LoanDetails)
-                .ThenInclude(z => z.Status)
-                .Include(s => s.Material)
-                .ThenInclude(c => c.Status)
-                .FirstOrDefaultAsync(m => m.Id == model.Id);
+            var ld = await this.loanDetailRepository.GetByIdLoanDetailAsync(model.Id);
 
             if (ld == null)
             {
@@ -212,16 +196,8 @@ namespace MAV.Web.Controllers
                 return new NotFoundViewResult("LoanDetailNotFound");
             }
 
-            var loandetail = await _context.LoanDetails
-                .Include(s => s.Status)
-                .Include(s => s.Material)
-                .Include(s => s.Loan)
-                .ThenInclude(c => c.Applicant)
-                .ThenInclude(v => v.User)
-                .Include(s => s.Loan)
-                .ThenInclude(c => c.Intern)
-                .ThenInclude(v => v.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var loandetail = await this.loanDetailRepository.GetByIdLoanDetailAsync(id.Value);
+
             if (loandetail == null)
             {
                 return new NotFoundViewResult("LoanDetailNotFound");

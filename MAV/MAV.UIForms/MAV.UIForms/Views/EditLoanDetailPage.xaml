@@ -16,6 +16,7 @@
                         <Label Text="Nombre:" FontSize="Small" TextColor="Gray" Grid.Row="0" Grid.Column="0" FontAttributes="Bold" VerticalOptions="Center"></Label>
                         <Label Text="{Binding Material.Name}" FontSize="Small" TextColor="Gray" Grid.Row="0" Grid.Column="1" VerticalOptions="Center"></Label>
                         <Label Text="Foto:" FontSize="Small" TextColor="Gray" Grid.Row="1" Grid.Column="0" FontAttributes="Bold" VerticalOptions="Center"></Label>
+                        <Image x:Name="imgMaterial" Source="encabezadoumad" WidthRequest="25" Grid.Row="1" Grid.Column="0" VerticalOptions="Center"></Image>
                         <Label Text="Etiqueta:" FontSize="Small" TextColor="Gray" Grid.Row="2" Grid.Column="0" FontAttributes="Bold" VerticalOptions="Center"></Label>
                         <Label Text="{Binding Material.Label}"  FontSize="Small" TextColor="Gray" Grid.Row="2" Grid.Column="1" VerticalOptions="Center"></Label>
                         <Label Text="Préstamo:" FontSize="Small" TextColor="Gray" Grid.Row="3" Grid.Column="0" FontAttributes="Bold" VerticalOptions="Center"></Label>
@@ -24,8 +25,11 @@
                         <Label Text="{Binding DateTimeIn, StringFormat='{0:dd/MM/yyyy hh:mm tt}'}" FontSize="Small" TextColor="Gray" Grid.Row="4" Grid.Column="1" VerticalOptions="Center"></Label>
                         <Label Text="Estado:" FontSize="Small" TextColor="Gray" Grid.Row="5" Grid.Column="0" FontAttributes="Bold" VerticalOptions="Center"></Label>
                         <Label x:Name="lbEstado" Text="{Binding Status}" FontSize="Small" TextColor="Gray" Grid.Row="5" Grid.Column="1" VerticalOptions="Center"></Label>
-                        <Label Text="Observations" Grid.Column="0" Grid.Row="6" VerticalOptions="Center"  FontAttributes="Bold"></Label>
-                        <Entry x:Name="etObserv" Grid.Column="1" Grid.Row="6" Keyboard="Text"  Placeholder="Introduce las observaciones" Text="{Binding Observations}">
+                        <Label Text="Funcion:" FontSize="Small" TextColor="Gray" Grid.Row="6" Grid.Column="0" FontAttributes="Bold" VerticalOptions="Center"></Label>
+                        <Label Text="{Binding Material.Function}" FontSize="Small" TextColor="Gray" Grid.Row="6" Grid.Column="1" FontAttributes="Bold" VerticalOptions="Center"></Label>
+                        
+                        <Label Text="Observations" Grid.Column="0" Grid.Row="7" VerticalOptions="Center"  FontAttributes="Bold"></Label>
+                        <Entry x:Name="etObserv" Grid.Column="1" Grid.Row="7" Keyboard="Text"  Placeholder="Introduce las observaciones" Text="{Binding Observations}">
                         </Entry>
                     </Grid>
                 </StackLayout>

@@ -12,16 +12,15 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Label Text="Intern" Grid.Column="0" Grid.Row="0" VerticalOptions="Center"></Label>
-                    <Picker Grid.Column="1" Grid.Row="0" Title="Selecciona un tipo de Becario" ItemsSource="{Binding InternList}" SelectedItem="{Binding Intern, Mode=TwoWay}"/>
-                    <Label Text="Applicant" Grid.Column="0" Grid.Row="1" VerticalOptions="Center"></Label>
-                    <Picker Grid.Column="1" Grid.Row="1" Title="Selecciona un tipo de Aplicante" ItemsSource="{Binding ApplicantList}" SelectedItem="{Binding Applicant, Mode=TwoWay}"/>
-
+                    <Label Text="Solicitante: " Grid.Column="0" Grid.Row="0" VerticalOptions="Center"></Label>
+                    <Picker Grid.Column="1" Grid.Row="0" Title="Selecciona un Solicitante" ItemsSource="{Binding ApplicantList}" SelectedItem="{Binding Applicant, Mode=TwoWay}"/>
+                    <Label Text="Material: " Grid.Column="0" Grid.Row="1" VerticalOptions="Center"></Label>
+                    <Picker Grid.Column="1" Grid.Row="1" Title="Selecciona un Material" ItemsSource="{Binding MaterialList}" SelectedItem="{Binding Material, Mode=TwoWay}"/>
                 </Grid>
 
                 <ActivityIndicator IsRunning="{Binding IsRunning}" VerticalOptions="CenterAndExpand">
                 </ActivityIndicator>
-                <Button Text="Save" 
+                <Button Text="Crear Prestamo" 
                         Command="{Binding SaveCommand}"
                         IsEnabled="{Binding IsEnabled}"
                         Background="#67CB19" 

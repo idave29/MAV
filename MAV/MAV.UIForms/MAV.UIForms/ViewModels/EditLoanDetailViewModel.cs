@@ -95,8 +95,6 @@ namespace MAV.UIForms.ViewModels
             this.apiService = new ApiService();
             this.IsEnabled = true;
             
-            //if(LoanDetails.Material.Status == "Regresado")
-              //Views.EditLoanDetailPage.
         }
     }
 }

@@ -21,6 +21,8 @@ namespace MAV.UIForms.Views
                 //btnCerrar.BackgroundColor.
                 etObserv.IsEnabled = false;
             }
+
+            imgMaterial.Source = ImageSource.FromFile(imgMaterial.BindingContext as string);
         }
     }
 }

@@ -309,6 +309,8 @@
                 Name = mr.Name,
                 Label = mr.Label,
                 Brand = mr.Brand,
+                Function = mr.Function,
+                ImageURL = mr.ImageURL,
                 MaterialModel = mr.MaterialModel,
                 SerialNum = mr.SerialNum,
                 Status = mr.Status.Name,

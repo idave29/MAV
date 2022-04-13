@@ -71,7 +71,7 @@
                 .FirstOrDefaultAsync(e => e.Intern.User.Id == id || e.Applicant.User.Id == id);
         }
 
-            public IEnumerable<LoanRequest> GetLoans()
+        public IEnumerable<LoanRequest> GetLoans()
         {
             var l = this.dataContext.Loans
                     .Include(i => i.Intern.User)
@@ -107,6 +107,8 @@
                     {
                         Id = ld.Material.Id,
                         Brand = ld.Material.Brand,
+                        Function = ld.Material.Function,
+                        ImageURL = ld.Material.ImageURL,
                         Label = ld.Material.Label,
                         MaterialModel = ld.Material.MaterialModel,
                         MaterialType = ld.Material.MaterialType.Name,

@@ -2,6 +2,7 @@
 {
     using MAV.Common.Models;
     using MAV.Web.Data;
+    using MAV.Web.Data.Entities;
     using MAV.Web.Data.Repositories;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Authorization;
@@ -16,13 +17,18 @@
     public class LoanDetailsController : Controller
     {
         private readonly ILoanDetailRepository loanDetailRepository;
+        private readonly IMaterialRepository materialRepository;
         private readonly IStatusRepository statusRepository;
+        private readonly ILoanRepository loanRepository;
+        private readonly IApplicantRepository applicantRepository;
         private readonly DataContext dataContext;
 
-        public LoanDetailsController(ILoanDetailRepository loanDetailRepository, DataContext dataContext, IStatusRepository statusRepository)
+        public LoanDetailsController(ILoanDetailRepository loanDetailRepository, DataContext dataContext, IStatusRepository statusRepository, IMaterialRepository materialRepository, ILoanRepository loanRepository)
         {
             this.loanDetailRepository = loanDetailRepository;
             this.statusRepository = statusRepository;
+            this.materialRepository = materialRepository;
+            this.loanRepository = loanRepository;
             this.dataContext = dataContext;
         }
 
@@ -52,14 +58,40 @@
             {
                 return BadRequest(ModelState);
             }
-            var entityLoanDetail = new MAV.Web.Data.Entities.LoanDetail
+            //var entityLoanDetail = new MAV.Web.Data.Entities.LoanDetail
+            //{
+            //    Observations = loanDetails.Observations,
+            //    //Material = loanDetails.Material,
+            //    DateTimeIn = loanDetails.DateTimeIn,
+            //    DateTimeOut = loanDetails.DateTimeOut
+            //};
+            //var newLoanDetail = await this.loanDetailRepository.CreateAsync(entityLoanDetail);
+
+            var loan = await this.loanRepository.GetByLoanIdLoanAndApplicantAsync(loanDetails.Loan.Id);
+            var status = this.statusRepository.GetStatusByName("Prestado");
+            //var material = await _context.Materials.FirstOrDefaultAsync(m => m.Id == model.MaterialId);
+            var material = await this.materialRepository.GetByIdWithMaterialTypeOwnerStatusAsync(loanDetails.Material.Id);
+
+            material.Status = status;
+            await this.materialRepository.UpdateAsync(material);
+
+            var entityLoanDetails = new MAV.Web.Data.Entities.LoanDetail
             {
-                Observations = loanDetails.Observations,
-                //Material = loanDetails.Material,
-                DateTimeIn = loanDetails.DateTimeIn,
-                DateTimeOut = loanDetails.DateTimeOut
+                Loan = loan,
+                DateTimeOut = DateTime.Now,
+                DateTimeIn = DateTime.MinValue,
+                Material = material,
+                Status = status,
+                Observations = string.Empty
             };
-            var newLoanDetail = await this.loanDetailRepository.CreateAsync(entityLoanDetail);
+
+            if (entityLoanDetails == null)
+            {
+                return BadRequest("loan not found");
+            }
+
+            var newLoanDetail = await this.loanDetailRepository.CreateAsync(entityLoanDetails);
+
             return Ok(newLoanDetail);
         }
         [HttpPut("{id}")]
@@ -73,23 +105,44 @@
             {
                 return BadRequest();
             }
-            var oldLoanDetail = await this.loanDetailRepository.GetByIdAsync(loanDetail.Id);
+            var oldLoanDetail = await this.loanDetailRepository.GetByIdLoanDetailAsync(loanDetail.Id);
             if (oldLoanDetail == null)
             {
                 return BadRequest("Id not found");
             }
 
-            var status = this.statusRepository.GetStatusByName("Regresado");
-            oldLoanDetail.Status = status;
-            if(oldLoanDetail.Status == null)
-            {
-                oldLoanDetail.Status = new Data.Entities.Status
-                {
-                    Id = status.Id,
-                    Name = status.Name
-                };
-            }
             oldLoanDetail.Observations = loanDetail.Observations;
+            oldLoanDetail.DateTimeIn = DateTime.Now;
+
+            //var status = this.statusRepository.GetStatusByName("Regresado");
+            var status = await this.statusRepository.GetByIdStatusAsync(3);
+            oldLoanDetail.Status = status;
+
+            if (oldLoanDetail.Status == null)
+            {
+                return BadRequest("status not found");
+            }
+
+            var debtor = false;
+
+            foreach (Loan loanApp in oldLoanDetail.Loan.Applicant.Loans)
+            {
+                foreach (LoanDetail loanDetails in loanApp.LoanDetails)
+                {
+                    if (loanDetails.Status.Id == 2)
+                    {
+                        debtor = true;
+                    }
+                }
+            }
+
+            status = await this.statusRepository.GetByIdStatusAsync(2);
+            oldLoanDetail.Material.Status = status;
+
+            oldLoanDetail.Loan.Applicant.Debtor = debtor;
+
+            await this.applicantRepository.UpdateAsync(oldLoanDetail.Loan.Applicant);
+            await this.materialRepository.UpdateAsync(oldLoanDetail.Material);
             var updateLoanDetail = await this.loanDetailRepository.UpdateAsync(oldLoanDetail);
             return Ok(updateLoanDetail);
         }

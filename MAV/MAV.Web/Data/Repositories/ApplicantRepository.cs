@@ -120,7 +120,8 @@
                 Email = a.User.Email,
                 PhoneNumber = a.User.PhoneNumber,
                 ApplicantType = a.ApplicantType.Name,
-                
+                Deleted = a.User.Deleted
+
             };
             //.Where(ld => ld.Observations != null)
             return x;
@@ -335,7 +336,8 @@
                 LastName = a.User.LastName,
                 Email = a.User.Email,
                 PhoneNumber = a.User.PhoneNumber,
-                ApplicantType = a.ApplicantType.Name
+                ApplicantType = a.ApplicantType.Name,
+                Deleted = a.User.Deleted
             };
 
             return x;
@@ -359,7 +361,8 @@
                 LastName = ar.User.LastName,
                 Email = ar.User.Email,
                 PhoneNumber = ar.User.PhoneNumber,
-                ApplicantType = ar.ApplicantType.Name
+                ApplicantType = ar.ApplicantType.Name,
+                Deleted = ar.User.Deleted
             }).ToList();
 
             return x;

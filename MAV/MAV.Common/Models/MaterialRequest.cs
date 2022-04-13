@@ -9,6 +9,9 @@
 
         public string Brand { set; get; }
 
+        public string Function { set; get; }
+        public string ImageURL { set; get; }
+
         public string MaterialModel { set; get; }
 
         public string SerialNum { set; get; }

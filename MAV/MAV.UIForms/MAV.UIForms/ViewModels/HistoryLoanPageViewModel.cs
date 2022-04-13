@@ -37,7 +37,8 @@ namespace MAV.UIForms.ViewModels
 
         public void RefreshLoanDList()
         {
-            this.LoansDetails = new ObservableCollection<LoanDetailItemViewModel>(myLoansD.Select(l => new LoanDetailItemViewModel
+
+            this.LoansDetails = new ObservableCollection<LoanDetailItemViewModel>(Loan.LoanDetails.Select(l => new LoanDetailItemViewModel
             {
                 Id = l.Id,
                 DateTimeIn = l.DateTimeIn,
@@ -65,9 +66,16 @@ namespace MAV.UIForms.ViewModels
                 return;
             }
 
-            myLoansD = ((List<LoanDetailsRequest>)response.Result).Where(l => l.Loan.Id == Loan.Id).ToList().ToList();
+            myLoansD = ((List<LoanDetailsRequest>)response.Result).ToList();
             RefreshLoanDList();
         }
+
+        //public override void OnNavigatedto(INavigationPageController controller)
+        //{
+        //    base.OnPropertyChanged(controller);
+
+        //    //if()
+        //}
 
         public void AddLoanDetailsToList(LoanDetailsRequest loanDetail)
         {

@@ -61,22 +61,22 @@ namespace MAV.UIForms.ViewModels
 
         private async void Save()
         {
-            if (string.IsNullOrEmpty(Observations))
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir una observación", "Aceptar");
-                return;
-            }
-            if (string.IsNullOrEmpty(Convert.ToString(DateTimeOut)))
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir una fecha y hora de salida", "Aceptar");
-                return;
-            }
-            if (string.IsNullOrEmpty(Convert.ToString(DateTimeIn)))
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir una fecha y hora de devolución", "Aceptar");
-                return;
-            }
-            if (string.IsNullOrEmpty(Convert.ToString(MaterialList)))
+            //if (string.IsNullOrEmpty(Observations))
+            //{
+            //    await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir una observación", "Aceptar");
+            //    return;
+            //}
+            //if (string.IsNullOrEmpty(Convert.ToString(DateTimeOut)))
+            //{
+            //    await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir una fecha y hora de salida", "Aceptar");
+            //    return;
+            //}
+            //if (string.IsNullOrEmpty(Convert.ToString(DateTimeIn)))
+            //{
+            //    await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir una fecha y hora de devolución", "Aceptar");
+            //    return;
+            //}
+            if (string.IsNullOrEmpty(Convert.ToString(Material)))
             {
                 await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un material", "Aceptar");
                 return;
@@ -84,7 +84,7 @@ namespace MAV.UIForms.ViewModels
 
             isEnabled = false;
             isRunning = true;
-            var loanDetail = new LoanDetailsRequest { Observations = Observations, DateTimeIn = DateTimeIn, DateTimeOut = DateTimeOut, Material = Material };
+            var loanDetail = new LoanDetailsRequest { Material = Material };
             var url = Application.Current.Resources["URLApi"].ToString();
             var response = await this.apiService.PostAsync(url,
                 "/api",

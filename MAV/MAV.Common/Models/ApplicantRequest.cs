@@ -16,6 +16,7 @@
         public string ApplicantType { get; set; }
         public string Password { get; set; }
         public string OldPassword { get; set; }
+        public bool Deleted { get; set; }
         public string FullName => $"{LastName} {FirstName}";
 
         //public ICollection<LoanRequest> Loans { get; set; }
