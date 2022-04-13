@@ -14,7 +14,7 @@
 
 
         public PruebaViewModel Prueba { get; set; }
-
+        public HomeViewModel Home { get; set; }
         private static MainViewModel instance;
         public TokenResponse Token { get; set; }
         public LoginViewModel Login { get; set; }
@@ -48,7 +48,7 @@
         public EditAdministratorViewModel EditAdministrator { get; set; }
         public EditLoanDetailViewModel EditLoanDetail { get; set; }
         public EditApplicantViewModel EditApplicant { get; set; }
-        public EditLoanViewModel EditLoan{ get; set; }
+        public EditLoanViewModel EditLoan { get; set; }
         public AddLoanViewModel AddLoan { get; set; }
 
         public HistoryLoanPageViewModel HistorysLoan { get; set; }

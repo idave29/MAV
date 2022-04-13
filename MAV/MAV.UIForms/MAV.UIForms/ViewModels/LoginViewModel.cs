@@ -79,9 +79,14 @@ namespace MAV.UIForms.ViewModels
             //await Application.Current.MainPage.DisplayAlert("OK", "Liiiisto", "Aceptar");
             //return;
             var token = (TokenResponse)response.Result; 
-            var mainViewModel = MainViewModel.GetInstance();
-            mainViewModel.Token = token;
-
+            var mainViewModel2 = MainViewModel.GetInstance();
+            //MainViewModel.GetInstance().Home = new HomeViewModel();
+            mainViewModel2.Token = token;
+            MainViewModel.GetInstance().Home = new HomeViewModel();
+            //await Application.Current.MainPage.Navigation.PushAsync(new HomePage());
+            Application.Current.MainPage = new MasterPage();
+            
+            
             //MainViewModel.GetInstance().Statuses = new StatusesViewModel();
             ////await Application.Current.MainPage.Navigation.PushAsync(new StatusesPage());
             //Application.Current.MainPage = new MasterPage();
@@ -114,9 +119,6 @@ namespace MAV.UIForms.ViewModels
 
             //MainViewModel.GetInstance().LoanDetails = new LoanDetailsViewModel();
             //await Application.Current.MainPage.Navigation.PushAsync(new LoanDetailsPage());
-
-            Application.Current.MainPage = new MasterPage();
-
         }
     }
 }
