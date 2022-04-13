@@ -3,10 +3,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MAV.UIForms.Views.HomePage"
              Title="Home" 
-             BackgroundImageSource="audiohome">
+             BackgroundImageSource="audiohome"
+             BindingContext="{Binding Main, Source={StaticResource Locator}}">
     <ContentPage.Content>
-        <StackLayout>
-        <Image Source="logoumad.png" Margin="0,10,0,50"/>
+        <StackLayout
+            BindingContext="{Binding Home}">
+            <Image Source="logoumad.png" Margin="0,10,0,50"/>
+            <Label FontSize="Title" Text="Mensaje de prueba de hora"
+                VerticalOptions="Center" 
+                HorizontalOptions="Center" />
+            <Label FontSize="Title" Text="{Binding Greeting}"
+                VerticalOptions="Center" 
+                HorizontalOptions="Center" />
             <Label FontSize="Title" Text="Welcome to"
                 VerticalOptions="Center" 
                 HorizontalOptions="Center" />

@@ -451,5 +451,82 @@
             return View(model);
         }
 
+        // GET: Administrators/Edit/5
+        public async Task<IActionResult> ChangePassword(string Id)
+        {
+
+            if (Id == null)
+            {
+                return new NotFoundViewResult("UserNotFound");
+            }
+
+            var user = await _context.Users.FirstOrDefaultAsync(m => m.Id == Id);
+
+            if (user == null)
+            {
+                return new NotFoundViewResult("UserNotFound");
+            }
+
+            var model = new ChangePasswordViewModel
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                PhoneNumber = user.PhoneNumber,
+                Email = user.Email
+
+            };
+
+            if (!this.User.IsInRole("Owner") && !this.User.IsInRole("Administrator") && user.UserName != this.User.Identity.Name)
+            {
+                return new NotFoundViewResult("UserNotFound");
+            }
+
+            return View(model);
+        }
+
+
+        // POST: Administrators/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(string id, ChangePasswordViewModel model)
+        {
+            if (id != model.Id)
+            {
+                return new NotFoundViewResult("UserNotFound");
+            }
+
+            if (model.Password != null && model.Password != string.Empty && model.OldPassword != null && model.OldPassword != string.Empty)
+            {
+
+                var user = await userHelper.GetUserByNameAsync(model.UserName);
+
+                if (user == null)
+                {
+                    return new NotFoundViewResult("UserNotFound");
+                }
+
+                var result = await userHelper.ChangePasswordAsync(user, model.OldPassword, model.Password);
+
+                if (result != IdentityResult.Success)
+                {
+                    ModelState.AddModelError(string.Empty, "La contraseña no se pudo cambiar");
+                    return View(model);
+                }
+
+
+                _context.Update(user);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction("Details", "Account", new { id = user.Id });
+            }
+
+            return View(model);
+        }
+
+
     }
 }
