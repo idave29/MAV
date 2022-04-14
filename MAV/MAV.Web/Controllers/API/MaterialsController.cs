@@ -35,10 +35,10 @@
         [HttpGet]
         public IActionResult GetMaterials()
         {
-            return Ok(this.materialRepository.GetMaterials());
+            //return Ok(this.materialRepository.GetMaterials());
             //return Ok(this.materialRepository.GetMaterialWithLoansById(1));
             //return Ok(this.materialRepository.GetMaterialWithLoans());
-            //return Ok(this.materialRepository.GetAllMaterialsWithTypeWithStatusAndOwner());
+            return Ok(this.materialRepository.GetAllMaterialsWithTypeWithStatusAndOwner());
             //return Ok(this.materialRepository.GetMaterialWithTypeWithStatusAndOwnerById(1));
             //return Ok(this.materialRepository.GetMaterialWithTypeAndStatusBySerialNum("6817654"));
             //return Ok(this.materialRepository.GetMaterialBySerialNum("897654"));
@@ -57,54 +57,54 @@
                 return BadRequest(ModelState);
             }
 
-            var status = this.statusRepository.GetStatusByName(material.Status);
-            if (status == null)
-            {
-                return BadRequest(ModelState);
-            }
-            var materialType = this.materialTypeRepository.GetMaterialTypesByName(material.MaterialType);
-            if (materialType == null)
-            {
-                return BadRequest(ModelState);
-            }
-            var owner = this.ownerRepository.GetGoodOwnerWithEmail(material.Owner);          
-            if (owner == null)
-            {
-                return BadRequest(ModelState);
-            }
+            //var status = this.statusRepository.GetStatusByName(material.Status);
+            //if (status == null)
+            //{
+            //    return BadRequest(ModelState);
+            //}
+            //var materialType = this.materialTypeRepository.GetMaterialTypesByName(material.MaterialType);
+            //if (materialType == null)
+            //{
+            //    return BadRequest(ModelState);
+            //}
+            //var owner = this.ownerRepository.GetGoodOwnerWithEmail(material.Owner);          
+            //if (owner == null)
+            //{
+            //    return BadRequest(ModelState);
+            //}
 
-            var imageUrl = string.Empty;
-            if (material.ImageArray != null && material.ImageArray.Length > 0)
-            {
-                var stream = new MemoryStream(material.ImageArray);
-                var guid = Guid.NewGuid().ToString();
-                var file = $"{guid}.jpg";
-                var folder = "wwwroot\\Images\\Materiales";
-                var fullPath = $"~/Images/Materiales/{file}";
-                var response = FilesHelper.UploadPhoto(stream, folder, file);
+            //var imageUrl = string.Empty;
+            //if (material.ImageArray != null && material.ImageArray.Length > 0)
+            //{
+            //    var stream = new MemoryStream(material.ImageArray);
+            //    var guid = Guid.NewGuid().ToString();
+            //    var file = $"{guid}.jpg";
+            //    var folder = "wwwroot\\Images\\Materiales";
+            //    var fullPath = $"~/Images/Materiales/{file}";
+            //    var response = FilesHelper.UploadPhoto(stream, folder, file);
 
-                if (response)
-                {
-                    imageUrl = fullPath;
-                }
-            }
+            //    if (response)
+            //    {
+            //        imageUrl = fullPath;
+            //    }
+            //}
 
             var entityMaterial = new MAV.Web.Data.Entities.Material
             {
+
                 Name = material.Name,
-                Owner = owner,
-                Status = status,
-                MaterialType = materialType,
-                Brand = material.Brand,
                 Label = material.Label,
+                Brand = material.Brand,
                 MaterialModel = material.MaterialModel,
-                SerialNum = material.SerialNum, 
-                ImageURL = imageUrl                
+                SerialNum = material.SerialNum
+                //Owner = owner,
+                //Status = status,
+                //ImageURL = imageUrl                
             };
-            if (entityMaterial == null)
-            {
-                return BadRequest("entityMaterial not found");
-            }
+            //if (entityMaterial == null)
+            //{
+            //    return BadRequest("entityMaterial not found");
+            //}
             var newMaterial = await this.materialRepository.CreateAsync(entityMaterial);
             return Ok(newMaterial);
         }

@@ -253,30 +253,30 @@ namespace MAV.UIForms.ViewModels
                 await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un numero de serie", "Aceptar");
                 return;
             }
-            if (this.StatusRequest == null)
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", "Debes seleccionar un status", "Aceptar");
-                return;
-            }
-            if (this.MaterialTypeRequest == null)
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", "Debes seleccionar un tipo de material", "Aceptar");
-                return;
-            }
-            if (this.OwnerRequest == null)
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", "Debes seleccionar un dueño", "Aceptar");
-                return;
-            }
+            //if (this.StatusRequest == null)
+            //{
+            //    await Application.Current.MainPage.DisplayAlert("Error", "Debes seleccionar un status", "Aceptar");
+            //    return;
+            //}
+            //if (this.MaterialTypeRequest == null)
+            //{
+            //    await Application.Current.MainPage.DisplayAlert("Error", "Debes seleccionar un tipo de material", "Aceptar");
+            //    return;
+            //}
+            //if (this.OwnerRequest == null)
+            //{
+            //    await Application.Current.MainPage.DisplayAlert("Error", "Debes seleccionar un dueño", "Aceptar");
+            //    return;
+            //}
 
             isEnabled = false;
             isRunning = true;
 
-            byte[] imageArray = null;
-            if (this.file != null)
-            {
-                imageArray = FilesHelper.ReadFully(this.file.GetStream());
-            }
+            //byte[] imageArray = null;
+            //if (this.file != null)
+            //{
+            //    imageArray = FilesHelper.ReadFully(this.file.GetStream());
+            //}
 
             var material = new MaterialRequest 
             { 
@@ -284,11 +284,11 @@ namespace MAV.UIForms.ViewModels
                 Label = Label,
                 Brand = Brand, 
                 MaterialModel = MaterialModel, 
-                SerialNum = SerialNum, 
-                Status = Status, 
-                MaterialType = MaterialType, 
-                Owner = Owner,
-                ImageArray = imageArray
+                SerialNum = SerialNum 
+                //Status = Status, 
+                //MaterialType = MaterialType, 
+                //Owner = Owner,
+                //ImageArray = imageArray
             };
             var url = Application.Current.Resources["URLApi"].ToString();
             var response = await this.apiService.PostAsync(url,
@@ -317,7 +317,7 @@ namespace MAV.UIForms.ViewModels
             this.LoadMaterialTypes();
             this.LoadOwners();
             this.LoadStatuses();
-            this.ImageSource = "noImage"; 
+            //this.ImageSource = "noImage"; 
         }
     }
 }

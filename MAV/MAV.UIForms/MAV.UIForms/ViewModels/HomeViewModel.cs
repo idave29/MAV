@@ -19,31 +19,41 @@ namespace MAV.UIForms.ViewModels
 
         }
 
+        private string dateApp;
+        public string DateApp
+        {
+            get { return this.dateApp; }
+            set { this.SetValue(ref this.dateApp, value); }
+
+        }
+
         private ApiService apiService;
 
-        private void LoadMaterialTypes()
+        private void LoadMessage()
         {
             int dateTime = DateTime.Now.Hour;
-
+            string hora = DateTime.Now.ToShortTimeString();
+            string fecha = DateTime.Now.ToLongDateString();
+            
             if (dateTime >= 0 && dateTime <= 11)
             {
-                Greeting = "Good Morning";
+                Greeting = "Buenos días!";
             }
             else if (dateTime >= 12 && dateTime <= 17)
             {
-                Greeting = "Good Afternoon";
+                Greeting = "Buenas tardes!";
             }
             else if (dateTime >= 18 && dateTime <= 23)
             {
-                Greeting = "Good Night";
+                Greeting = "Buenas noches!";
             }
-
+            DateApp = fecha; 
         }
 
         public HomeViewModel()
         {
             this.apiService = new ApiService();
-            this.LoadMaterialTypes(); 
+            this.LoadMessage(); 
         }
     }
 }

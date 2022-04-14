@@ -46,6 +46,16 @@
                 .Include(t => t.Owner.User);
         }
 
+        public IQueryable GetMaterialsWithTypeWithStatusAndOwnerandImage()
+        {
+            return this.dataContext.Materials
+                .Include(t => t.ImageFullPath)
+                .Include(t => t.ImageURL)
+                .Include(t => t.MaterialType)
+                .Include(t => t.Status)
+                .Include(t => t.Owner.User);
+        }
+
         public IQueryable GetMaterials()
         {
             return this.dataContext.Materials;
@@ -316,6 +326,39 @@
                 Status = mr.Status.Name,
                 MaterialType = mr.MaterialType.Name,
                 Owner = mr.Owner.User.FullName
+            }).ToList();
+
+            return x;
+        }
+
+        public IEnumerable<MaterialRequest> GetAllMaterialsWithTypeWithStatusAndOwnerandImage()
+        {
+            var m = this.dataContext.Materials
+                .Include(t => t.ImageFullPath)
+                .Include(t => t.ImageURL)
+                .Include(s => s.Status)
+                .Include(m => m.MaterialType)
+                .Include(o => o.Owner.User);
+
+            if (m == null)
+            {
+                return null;
+            }
+
+            var x = m.Select(mr => new MaterialRequest
+            {
+                Id = mr.Id,
+                Name = mr.Name,
+                Label = mr.Label,
+                Brand = mr.Brand,
+                Function = mr.Function,
+                ImageURL = mr.ImageFullPath,
+                MaterialModel = mr.MaterialModel,
+                SerialNum = mr.SerialNum,
+                Status = mr.Status.Name,
+                MaterialType = mr.MaterialType.Name,
+                Owner = mr.Owner.User.FullName, 
+                ImageFullPath = mr.ImageURL
             }).ToList();
 
             return x;

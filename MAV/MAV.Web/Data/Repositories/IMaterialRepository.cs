@@ -12,6 +12,7 @@
         IEnumerable<SelectListItem> GetComboMaterial();
         //Task<Material> GetByIdMaterialsAsync(int id);
         IQueryable GetMaterialsWithTypeWithStatusAndOwner();
+        IQueryable GetMaterialsWithTypeWithStatusAndOwnerandImage();
         IQueryable GetMaterials();
         IQueryable GetMaterialsWithOwner();
         Task<Material> GetByIdWithMaterialTypeOwnerStatusAsync(int id);

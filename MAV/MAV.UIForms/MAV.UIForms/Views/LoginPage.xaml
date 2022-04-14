@@ -2,29 +2,41 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MAV.UIForms.Views.LoginPage"
+             BackgroundImageSource="fondopolygon"
              BindingContext="{Binding Main, Source={StaticResource Locator}}">
     <ContentPage.Content>
-        <ScrollView BindingContext="{Binding Login}">
-            <StackLayout Padding="10">
-                <Image Source="logoumad" HeightRequest="150" WidthRequest="150"></Image>
-                <Label FontSize="Large" HorizontalOptions="Center" FontAttributes="Bold" 
-                       Margin="0,50,0,20" TextColor="Gray">Medios Audiovisuales</Label>
-                <Label Text="Email"></Label>
-                <Entry Keyboard="Email" 
-                       Placeholder="Introduce tu email..."
-                       Text="{Binding Email}"></Entry>
-                <Label Text="Password"></Label>
-                <Entry IsPassword="True" 
-                       Placeholder="Introduce tu contraseña..."
-                       Text="{Binding Password}"></Entry>
-                <ActivityIndicator IsRunning="{Binding IsRunning}">
-                </ActivityIndicator>
-                <Button Text="Login" 
-                        Command="{Binding LoginCommand}"
-                        IsEnabled="{Binding IsEnabled}"
-                        Background="#67CB19" 
-                        TextColor="White" HorizontalOptions="Fill" CornerRadius="20" ></Button>
-            </StackLayout>
-        </ScrollView>
+        <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BindingContext="{Binding Login}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Image Grid.Row="0" Margin="0,30" Source="logoumad" Aspect="AspectFit" HeightRequest="150" WidthRequest="150"></Image>
+            <Frame Grid.Row="1" Margin="0,0,0,-40" CornerRadius="50" HeightRequest="700">
+                <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" RowSpacing="20" Padding="20,50,20,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" TextColor="Gray" Text="¡Bienvenidos!" FontSize="24" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"></Label>
+                    <Label Grid.Row="1" TextColor="Gray" Margin="0,-10,0,0"  Text="Medios Audiovisuales" FontSize="24" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"></Label>
+                    <Label Grid.Row="2" TextColor="Gray" Margin="0,10,0,0" Text="Iniciar Sesión" FontSize="20" HorizontalOptions="CenterAndExpand"></Label>
+                    <Entry Grid.Row="3" TextColor="Gray" Keyboard="Email" Text="{Binding Email}" Placeholder="Email" Margin="0,20,0,0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"></Entry>
+                    <Entry Grid.Row="4" TextColor="Gray" IsPassword="True" Text="{Binding Password}" Placeholder="Password" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"></Entry>
+                    <ActivityIndicator IsRunning="{Binding IsRunning}">
+                    </ActivityIndicator>
+                    <Button Grid.Row="5" 
+                            Command="{Binding LoginCommand}"
+                            IsEnabled="{Binding IsEnabled}" 
+                            Text="Login" TextColor="White" BackgroundColor="#67CB19" CornerRadius="20"></Button>
+                </Grid>
+            </Frame>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

@@ -34,16 +34,8 @@
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
-                                        <StackLayout Grid.Column="0" VerticalOptions="Center" Margin="0,0,10,0">
-                                            <ffimageloading:CachedImage
-	                                        Source="{Binding ImageFullPath}"
-	                                        LoadingPlaceholder= "LoaderImage"
-	                                        ErrorPlaceholder= "ErrorImage"
-	                                        CacheDuration= "50"
-	                                        RetryCount= "3"
-	                                        RetryDelay= "600"
-	                                        DownsampleToViewSize = "true"
-	                                        WidthRequest="100"/>
+                                        <StackLayout Grid.Column="0" VerticalOptions="Center">
+                                            <Image WidthRequest="90" HeightRequest="90" Source="{Binding ImageURL}"/>
                                         </StackLayout>
                                         <StackLayout Grid.Column="1" VerticalOptions="Center">
                                             <Label Text="{Binding Name}" 

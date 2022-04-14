@@ -8,14 +8,20 @@
     <ContentPage.Content>
         <StackLayout
             BindingContext="{Binding Home}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" FontSize="Title" Text="{Binding Greeting}"
+                VerticalOptions="Center" 
+                HorizontalOptions="Center" />
+                <Label Grid.Row="1" FontSize="Medium" Text="{Binding DateApp}"
+                VerticalOptions="Center" 
+                HorizontalOptions="Center" />
+            </Grid>
             <Image Source="logoumad.png" Margin="0,10,0,50"/>
-            <Label FontSize="Title" Text="Mensaje de prueba de hora"
-                VerticalOptions="Center" 
-                HorizontalOptions="Center" />
-            <Label FontSize="Title" Text="{Binding Greeting}"
-                VerticalOptions="Center" 
-                HorizontalOptions="Center" />
-            <Label FontSize="Title" Text="Welcome to"
+            <Label FontSize="Title" Text="Bienvenido a"
                 VerticalOptions="Center" 
                 HorizontalOptions="Center" />
             <Label Text="Medios Audiovisuales" FontSize="Title"
