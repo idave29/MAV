@@ -310,7 +310,7 @@
                 Label = mr.Label,
                 Brand = mr.Brand,
                 Function = mr.Function,
-                ImageURL = mr.ImageURL,
+                ImageURL = mr.ImageFullPath,
                 MaterialModel = mr.MaterialModel,
                 SerialNum = mr.SerialNum,
                 Status = mr.Status.Name,

@@ -62,7 +62,10 @@
                 Name = m.Name,
                 Owner = m.Owner,
                 SerialNum = m.SerialNum,
-                Status = m.Status
+                Status = m.Status,
+                ImageURL = m.ImageURL,
+                ImageFullPath = m.ImageFullPath,
+                Function = m.Function,
             }).OrderBy(m => m.Name).ToList());
         }
     

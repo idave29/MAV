@@ -47,5 +47,9 @@
         public ICollection<LoanDetail> LoanDetails { get; set; }
 
         public MaterialType MaterialType { get; set; }
+
+        public string ImageFullPath => string.IsNullOrEmpty(ImageURL)
+            ? null
+            : $"https://mediosaudiovisualesweb.azurewebsites.net{ImageURL.Substring(1)}";
     }
 }

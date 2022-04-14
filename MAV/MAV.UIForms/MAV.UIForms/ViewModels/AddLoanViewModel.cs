@@ -86,7 +86,7 @@ namespace MAV.UIForms.ViewModels
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
             }
-            ApplicantList = ((List<ApplicantRequest>)response.Result).Where(l => l.Deleted == false).Select(l => l.FullName).ToList();
+            ApplicantList = ((List<ApplicantRequest>)response.Result).Where(l => l.Deleted == false).Where(l => l.Debtor == false).Select(l => l.FullName).ToList();
         }
 
         public ICommand SaveCommand { get { return new RelayCommand(Save); } }

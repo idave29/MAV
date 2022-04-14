@@ -120,7 +120,9 @@
                 Email = a.User.Email,
                 PhoneNumber = a.User.PhoneNumber,
                 ApplicantType = a.ApplicantType.Name,
-                Deleted = a.User.Deleted
+                Deleted = a.User.Deleted, 
+                Debtor = a.Debtor
+                
 
             };
             //.Where(ld => ld.Observations != null)
@@ -362,7 +364,8 @@
                 Email = ar.User.Email,
                 PhoneNumber = ar.User.PhoneNumber,
                 ApplicantType = ar.ApplicantType.Name,
-                Deleted = ar.User.Deleted
+                Deleted = ar.User.Deleted, 
+                Debtor = ar.Debtor
             }).ToList();
 
             return x;
@@ -378,7 +381,7 @@
             //    }
             //}
             var a = this.dataContext.Users.Where(a => a.Deleted == false);
-            var b = this.dataContext.Applicants.Include(o => o.User).Where(a => a.User.Deleted == false);
+            var b = this.dataContext.Applicants.Include(o => o.User).Where(a => a.User.Deleted == false).Where(a => a.Debtor == false);
             foreach (Entities.User u in a)
             {
                 if (u.FullName == fullname)

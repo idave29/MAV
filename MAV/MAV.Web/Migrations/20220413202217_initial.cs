@@ -54,7 +54,8 @@ namespace MAV.Web.Migrations
                     FirstName = table.Column<string>(maxLength: 50, nullable: false),
                     LastName = table.Column<string>(maxLength: 50, nullable: false),
                     PhoneNumber = table.Column<string>(maxLength: 10, nullable: false),
-                    Email = table.Column<string>(maxLength: 256, nullable: false)
+                    Email = table.Column<string>(maxLength: 256, nullable: false),
+                    Deleted = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {

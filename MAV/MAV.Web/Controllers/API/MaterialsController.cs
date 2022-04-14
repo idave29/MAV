@@ -6,6 +6,8 @@
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using System;
+    using System.IO;
     using System.Threading.Tasks;
 
     [Route("api/[Controller]")]
@@ -33,10 +35,10 @@
         [HttpGet]
         public IActionResult GetMaterials()
         {
-           // return Ok(this.materialRepository.GetMaterials());
+            return Ok(this.materialRepository.GetMaterials());
             //return Ok(this.materialRepository.GetMaterialWithLoansById(1));
             //return Ok(this.materialRepository.GetMaterialWithLoans());
-            return Ok(this.materialRepository.GetAllMaterialsWithTypeWithStatusAndOwner());
+            //return Ok(this.materialRepository.GetAllMaterialsWithTypeWithStatusAndOwner());
             //return Ok(this.materialRepository.GetMaterialWithTypeWithStatusAndOwnerById(1));
             //return Ok(this.materialRepository.GetMaterialWithTypeAndStatusBySerialNum("6817654"));
             //return Ok(this.materialRepository.GetMaterialBySerialNum("897654"));
@@ -52,29 +54,40 @@
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest("ModelState mal");
+                return BadRequest(ModelState);
             }
 
             var status = this.statusRepository.GetStatusByName(material.Status);
             if (status == null)
             {
-                return BadRequest("status not found");
+                return BadRequest(ModelState);
             }
             var materialType = this.materialTypeRepository.GetMaterialTypesByName(material.MaterialType);
             if (materialType == null)
             {
-                return BadRequest("materialtype not found");
+                return BadRequest(ModelState);
             }
             var owner = this.ownerRepository.GetGoodOwnerWithEmail(material.Owner);          
             if (owner == null)
             {
-                return BadRequest("owner not found");
+                return BadRequest(ModelState);
             }
-            //else
-            //{
-            //    return BadRequest("Owner bien");
-            //}
 
+            var imageUrl = string.Empty;
+            if (material.ImageArray != null && material.ImageArray.Length > 0)
+            {
+                var stream = new MemoryStream(material.ImageArray);
+                var guid = Guid.NewGuid().ToString();
+                var file = $"{guid}.jpg";
+                var folder = "wwwroot\\Images\\Materiales";
+                var fullPath = $"~/Images/Materiales/{file}";
+                var response = FilesHelper.UploadPhoto(stream, folder, file);
+
+                if (response)
+                {
+                    imageUrl = fullPath;
+                }
+            }
 
             var entityMaterial = new MAV.Web.Data.Entities.Material
             {
@@ -85,7 +98,8 @@
                 Brand = material.Brand,
                 Label = material.Label,
                 MaterialModel = material.MaterialModel,
-                SerialNum = material.SerialNum
+                SerialNum = material.SerialNum, 
+                ImageURL = imageUrl                
             };
             if (entityMaterial == null)
             {

@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              x:Class="MAV.UIForms.Views.MaterialsPage"
              BindingContext="{Binding Main, Source={StaticResource Locator}}"
              Title="Material">
@@ -21,50 +22,59 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Grid>
-                                    <Grid.GestureRecognizers>
+                                <Frame CornerRadius="10"
+                                        HasShadow="True"
+                                        Margin="5,5,5,15">
+                                    <Frame.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding SelectMaterialCommand}"/>
-                                    </Grid.GestureRecognizers>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-                                <StackLayout Grid.Column="0" VerticalOptions="Center" Margin="0,0,10,0">
-                                    <Label Text="{Binding Id}" 
-                                           FontSize="Large" 
-                                           FontAttributes="Bold" 
-                                           TextColor="Red"></Label>
-                                </StackLayout>
-                                <StackLayout Grid.Column="1" VerticalOptions="Center">
-                                    <Label Text="{Binding Name}" 
+                                    </Frame.GestureRecognizers>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackLayout Grid.Column="0" VerticalOptions="Center" Margin="0,0,10,0">
+                                            <ffimageloading:CachedImage
+	                                        Source="{Binding ImageFullPath}"
+	                                        LoadingPlaceholder= "LoaderImage"
+	                                        ErrorPlaceholder= "ErrorImage"
+	                                        CacheDuration= "50"
+	                                        RetryCount= "3"
+	                                        RetryDelay= "600"
+	                                        DownsampleToViewSize = "true"
+	                                        WidthRequest="100"/>
+                                        </StackLayout>
+                                        <StackLayout Grid.Column="1" VerticalOptions="Center">
+                                            <Label Text="{Binding Name}" 
                                            FontSize="Medium"
                                            TextColor="Black"></Label>
-                                    <Label Text="{Binding Label, StringFormat= 'Label: {0}'}" 
+                                            <Label Text="{Binding Label, StringFormat= 'Label: {0}'}" 
                                            FontSize="Small"
                                            TextColor="Gray"></Label>
-                                    <Label Text="{Binding Brand, StringFormat= 'Brand: {0}'}" 
+                                            <Label Text="{Binding Brand, StringFormat= 'Brand: {0}'}" 
                                            FontSize="Small"
                                            TextColor="Gray"></Label>
-                                    <Label Text="{Binding MaterialModel, StringFormat= 'Model: {0}'}" 
+                                            <Label Text="{Binding MaterialModel, StringFormat= 'Model: {0}'}" 
                                            FontSize="Small"
                                            TextColor="Gray"></Label>
-                                    <Label Text="{Binding SerialNum, StringFormat= 'Serial Number: {0}'}" 
+                                            <Label Text="{Binding SerialNum, StringFormat= 'Serial Number: {0}'}" 
                                            FontSize="Small"
                                            TextColor="Gray"></Label>
-                                    <Label Text="{Binding Status, StringFormat= 'Status: {0}'}" 
+                                            <Label Text="{Binding Status, StringFormat= 'Status: {0}'}" 
                                            FontSize="Small"
                                            TextColor="Gray"></Label>
-                                    <Label Text="{Binding MaterialType, StringFormat= 'Material Type: {0}'}" 
+                                            <Label Text="{Binding MaterialType, StringFormat= 'Material Type: {0}'}" 
                                            FontSize="Small"
                                            TextColor="Gray"></Label>
-                                    <Label Text="{Binding Owner, StringFormat= 'Owner: {0}'}" 
+                                            <Label Text="{Binding Owner, StringFormat= 'Owner: {0}'}" 
                                            FontSize="Small"
                                            TextColor="Gray"></Label>
-                                </StackLayout>
-                                    <Image Grid.Column="2" Source="select"/>
-                                </Grid>
-                        </ViewCell>
+                                        </StackLayout>
+                                        <Image Grid.Column="2" Source="select"/>
+                                    </Grid>
+                                </Frame>
+                            </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

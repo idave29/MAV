@@ -1,8 +1,12 @@
 ﻿using GalaSoft.MvvmLight.Command;
+using MAV.Common.Helpers;
 using MAV.Common.Models;
 using MAV.Common.Services;
+using Plugin.Media;
+using Plugin.Media.Abstractions;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -40,26 +44,81 @@ namespace MAV.UIForms.ViewModels
             get { return isEnabled; }
             set { this.SetValue(ref this.isEnabled, value); }
         }
-        private IList<string> statusList;
-        private IList<string> materialTypeList;
-        private IList<string> ownerList;
-        public IList<string> StatusList
+
+        private ImageSource imageSource;
+        public ImageSource ImageSource
         {
-            get { return this.statusList; }
-            set { this.SetValue(ref this.statusList, value); }
+            get => imageSource;
+            set => this.SetValue(ref this.imageSource, value);
         }
 
-        public IList<string> MaterialTypeList
+        private MediaFile file;
+
+        //private IList<string> statusList;
+        //private IList<string> materialTypeList;
+        //private IList<string> ownerList;
+
+        private ObservableCollection<StatusRequest> statuses;
+        private StatusRequest status; 
+        private ObservableCollection<MaterialTypeRequest> materialTypes;
+        private MaterialTypeRequest materialType;
+        private ObservableCollection<OwnerRequest> owners;
+        private OwnerRequest owner;
+
+        //public IList<string> StatusList
+        //{
+        //    get { return this.statusList; }
+        //    set { this.SetValue(ref this.statusList, value); }
+        //}
+
+        //public IList<string> MaterialTypeList
+        //{
+        //    get { return this.materialTypeList; }
+        //    set { this.SetValue(ref this.materialTypeList, value); }
+        //}
+
+        //public IList<string> OwnerList
+        //{
+        //    get { return this.ownerList; }
+        //    set { this.SetValue(ref this.ownerList, value); }
+        //}
+
+        public StatusRequest StatusRequest
         {
-            get { return this.materialTypeList; }
-            set { this.SetValue(ref this.materialTypeList, value); }
+            get => this.status;
+            set => this.SetValue(ref this.status, value);
         }
 
-        public IList<string> OwnerList
+        public MaterialTypeRequest MaterialTypeRequest
         {
-            get { return this.ownerList; }
-            set { this.SetValue(ref this.ownerList, value); }
+            get => this.materialType;
+            set => this.SetValue(ref this.materialType, value);
         }
+
+        public OwnerRequest OwnerRequest
+        {
+            get => this.owner;
+            set => this.SetValue(ref this.owner, value);
+        }
+
+        public ObservableCollection<StatusRequest> Statuses
+        {
+            get => this.statuses;
+            set => this.SetValue(ref this.statuses, value);
+        }
+
+        public ObservableCollection<MaterialTypeRequest> MaterialTypes
+        {
+            get => this.materialTypes;
+            set => this.SetValue(ref this.materialTypes, value);
+        }
+        public ObservableCollection<OwnerRequest> Owners
+        {
+            get => this.owners;
+            set => this.SetValue(ref this.owners, value);
+        }
+
+
         private async void LoadStatuses()
         {
             var url = Application.Current.Resources["URLApi"].ToString();
@@ -75,7 +134,8 @@ namespace MAV.UIForms.ViewModels
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
             }
-            StatusList = ((List<StatusRequest>)response.Result).Select(m => m.Name).ToList();
+            var myStatuses = ((List<StatusRequest>)response.Result);
+            this.Statuses = new ObservableCollection<StatusRequest>(myStatuses);
 
         }
 
@@ -94,7 +154,8 @@ namespace MAV.UIForms.ViewModels
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
             }
-            MaterialTypeList = ((List<MaterialTypeRequest>)response.Result).Select(m => m.Name).ToList();
+            var myMaterialTypes = ((List<MaterialTypeRequest>)response.Result);
+            this.MaterialTypes = new ObservableCollection<MaterialTypeRequest>(myMaterialTypes);
 
         }
 
@@ -113,10 +174,57 @@ namespace MAV.UIForms.ViewModels
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
             }
-            OwnerList = ((List<OwnerRequest>)response.Result).Select(m => m.Email).ToList();
+            var myOwners = ((List<OwnerRequest>)response.Result);
+            this.Owners = new ObservableCollection<OwnerRequest>(myOwners);
 
         }
         public ICommand SaveCommand { get { return new RelayCommand(Save); } }
+
+        public ICommand ChangeImageCommand => new RelayCommand(this.ChangeImage);
+
+
+        private async void ChangeImage()
+        {
+            await CrossMedia.Current.Initialize();
+
+            var source = await Application.Current.MainPage.DisplayActionSheet(
+                "¿Donde desea tomar la foto?",
+                "Cancel",
+                null,
+                "Desde la galeria",
+                "Desde la cámara");
+
+            if (source == "Cancel")
+            {
+                this.file = null;
+                return;
+            }
+
+            if (source == "Desde la cámara")
+            {
+                this.file = await CrossMedia.Current.TakePhotoAsync(
+                    new StoreCameraMediaOptions
+                    {
+                        Directory = "Pictures",
+                        Name = "test.jpg",
+                        PhotoSize = PhotoSize.Small,
+                    }
+                );
+            }
+            else
+            {
+                this.file = await CrossMedia.Current.PickPhotoAsync();
+            }
+
+            if (this.file != null)
+            {
+                this.ImageSource = ImageSource.FromStream(() =>
+                {
+                    var stream = file.GetStream();
+                    return stream;
+                });
+            }
+        }
 
         private async void Save()
         {
@@ -145,17 +253,17 @@ namespace MAV.UIForms.ViewModels
                 await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un numero de serie", "Aceptar");
                 return;
             }
-            if (string.IsNullOrEmpty(Status))
+            if (this.StatusRequest == null)
             {
                 await Application.Current.MainPage.DisplayAlert("Error", "Debes seleccionar un status", "Aceptar");
                 return;
             }
-            if (string.IsNullOrEmpty(MaterialType))
+            if (this.MaterialTypeRequest == null)
             {
                 await Application.Current.MainPage.DisplayAlert("Error", "Debes seleccionar un tipo de material", "Aceptar");
                 return;
             }
-            if (string.IsNullOrEmpty(Owner))
+            if (this.OwnerRequest == null)
             {
                 await Application.Current.MainPage.DisplayAlert("Error", "Debes seleccionar un dueño", "Aceptar");
                 return;
@@ -163,6 +271,13 @@ namespace MAV.UIForms.ViewModels
 
             isEnabled = false;
             isRunning = true;
+
+            byte[] imageArray = null;
+            if (this.file != null)
+            {
+                imageArray = FilesHelper.ReadFully(this.file.GetStream());
+            }
+
             var material = new MaterialRequest 
             { 
                 Name = Name,
@@ -172,7 +287,8 @@ namespace MAV.UIForms.ViewModels
                 SerialNum = SerialNum, 
                 Status = Status, 
                 MaterialType = MaterialType, 
-                Owner = Owner
+                Owner = Owner,
+                ImageArray = imageArray
             };
             var url = Application.Current.Resources["URLApi"].ToString();
             var response = await this.apiService.PostAsync(url,
@@ -201,6 +317,7 @@ namespace MAV.UIForms.ViewModels
             this.LoadMaterialTypes();
             this.LoadOwners();
             this.LoadStatuses();
+            this.ImageSource = "noImage"; 
         }
     }
 }

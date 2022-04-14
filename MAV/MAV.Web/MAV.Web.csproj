@@ -22,6 +22,10 @@
     <Compile Remove="Migrations\20220318144534_initial.Designer.cs" />
     <Compile Remove="Migrations\20220329001938_initial.cs" />
     <Compile Remove="Migrations\20220329001938_initial.Designer.cs" />
+    <Compile Remove="Migrations\20220329005051_initial.cs" />
+    <Compile Remove="Migrations\20220329005051_initial.Designer.cs" />
+    <Compile Remove="Migrations\20220411204726_Delete.cs" />
+    <Compile Remove="Migrations\20220411204726_Delete.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -40,6 +44,8 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
     <PackageReference Include="System.Text.Json" Version="6.0.2" />
+    <PackageReference Include="Xam.Plugin.Media" Version="5.0.1" />
+    <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
   </ItemGroup>
 
   <ItemGroup>

@@ -21,5 +21,9 @@
         public string MaterialType { set; get; }
 
         public string Owner { get; set; }
+
+        public string ImageFullPath { get; set; }
+
+        public byte[] ImageArray { get; set; }
     }
 }

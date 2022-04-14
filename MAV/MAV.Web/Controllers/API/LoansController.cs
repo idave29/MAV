@@ -115,6 +115,8 @@
             //mat.FirstOrDefault().ToString;
 
             var material = await this.materialRepository.GetByIdWithMaterialTypeOwnerStatusAsync(idm);
+            material.Status = status;
+            applicant.Debtor = true;
 
 
 
@@ -135,9 +137,6 @@
 
             await this.loanDetailRepository.CreateAsync(entityLoanDetails);
             //_context.LoanDetails.Add(new LoanDetail { Loan = loan, DateTimeOut = DateTime.Now, DateTimeIn = DateTime.MinValue, Material = material, Status = status, Observations = string.Empty });
-
-            material.Status = status;
-            applicant.Debtor = true;
 
             await this.materialRepository.UpdateAsync(material);
             await this.applicantRepository.UpdateAsync(applicant);
