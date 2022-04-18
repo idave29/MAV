@@ -146,7 +146,7 @@ namespace MAV.UIForms.ViewModels
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
             }
-            MaterialList = ((List<MaterialRequest>)response.Result).Where(t => t.Status == "Disponible").Select(m => m.Name).ToList();
+            MaterialList = ((List<MaterialRequest>)response.Result).Where(t => t.Status == 1).Select(m => m.Name).ToList();
 
         }
 

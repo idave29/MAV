@@ -11,7 +11,8 @@
     public class MaterialsViewModel : BaseViewModel
     {
         private ApiService apiService;
-        private List<MaterialRequest> myMaterials;
+        private List<MaterialResponse> myMaterials;
+        private List<MaterialRequest> myMaterialsRequest;
         private ObservableCollection<MaterialItemViewModel> materials;
         public ObservableCollection<MaterialItemViewModel> Materials
         {
@@ -35,7 +36,7 @@
         {
             this.IsRefreshing = true;
             var url = Application.Current.Resources["URLApi"].ToString();
-            var response = await this.apiService.GetListAsync<MaterialRequest>(
+            var response = await this.apiService.GetListAsync<MaterialResponse>(
                 url,
                 "/api",
                 "/Materials",
@@ -47,7 +48,7 @@
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
             }
-            myMaterials = (List<MaterialRequest>)response.Result;
+            myMaterials = (List<MaterialResponse>)response.Result;
             RefreshMaterialList();
         }
         private void RefreshMaterialList()
@@ -72,11 +73,11 @@
 
         public void AddMaterialToList(MaterialRequest material)
         {
-            this.myMaterials.Add(material);
+            this.myMaterialsRequest.Add(material);
             RefreshMaterialList();
         }
 
-        public void UpdateMaterialInList(MaterialRequest material)
+        public void UpdateMaterialInList(MaterialResponse material)
         {
             var previousMaterial = myMaterials.Where(mt => mt.Id == material.Id).FirstOrDefault();
             if (previousMaterial != null)

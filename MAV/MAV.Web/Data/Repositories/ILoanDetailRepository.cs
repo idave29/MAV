@@ -16,12 +16,12 @@
         Task<LoanDetail> GetByIdAppOrInternLoanDetailsAsync(string id);
         IEnumerable<LoanDetail> GetByIdAppOrInternLoanDetailssAsync(string id);
         Task<LoanDetail> GetByIdLoanDetailAsync(int id);
-        IEnumerable<LoanDetailsRequest> GetLoanDetailsWithMaterialWithoutDateTimeIn(); //Where(ld => ld.DateTimeIn == null)
-        IEnumerable<LoanDetailsRequest> GetLoansDetailsWithMaterialAndOwner();
-        LoanDetailsRequest GetLoanDetailWithMaterialAndOwnerById(int id);
-        LoanDetailsRequest GetLoanDetailById(int id);
-        LoanDetailsRequest GetLoansDetailsWithMaterialByDateTimeOut(DateTime time);
-        LoanDetailsRequest GetLoansDetailsWithMaterialAndOwnerByNameMaterial(string nameMaterial);
+        //IEnumerable<LoanDetailsRequest> GetLoanDetailsWithMaterialWithoutDateTimeIn(); //Where(ld => ld.DateTimeIn == null)
+        //IEnumerable<LoanDetailsRequest> GetLoansDetailsWithMaterialAndOwner();
+        //LoanDetailsRequest GetLoanDetailWithMaterialAndOwnerById(int id);
+        //LoanDetailsRequest GetLoanDetailById(int id);
+        //LoanDetailsRequest GetLoansDetailsWithMaterialByDateTimeOut(DateTime time);
+        //LoanDetailsRequest GetLoansDetailsWithMaterialAndOwnerByNameMaterial(string nameMaterial);
 
 
         //LoanDetail GetLoanDetailsWithEmail(EmailRequest emailApplicant);

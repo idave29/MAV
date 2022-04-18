@@ -12,7 +12,7 @@ namespace MAV.UIForms.ViewModels
     public class EditMaterialViewModel : BaseViewModel
     {
         private readonly ApiService apiService;
-        public MaterialRequest Material { get; set; }
+        public MaterialResponse Material { get; set; }
 
         private bool isRunning;
         public bool IsRunning
@@ -82,13 +82,13 @@ namespace MAV.UIForms.ViewModels
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
             }
-            var modifyMaterial = (MaterialRequest)response.Result;
+            var modifyMaterial = (MaterialResponse)response.Result;
             MainViewModel.GetInstance().Materials.UpdateMaterialInList(modifyMaterial);
             this.isEnabled = true;
             this.isRunning = false;
             await App.Navigator.PopAsync();
         }
-        public EditMaterialViewModel(MaterialRequest material)
+        public EditMaterialViewModel(MaterialResponse material)
         {
             this.Material = material;
             this.apiService = new ApiService();

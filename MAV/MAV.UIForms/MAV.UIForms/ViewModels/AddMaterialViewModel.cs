@@ -26,11 +26,11 @@ namespace MAV.UIForms.ViewModels
 
         public string SerialNum { set; get; }
 
-        public string Status { get; set; }
+        //public string Status { get; set; }
 
-        public string MaterialType { set; get; }
+        //public string MaterialType { set; get; }
 
-        public string Owner { get; set; }
+        //public string Owner { get; set; }
 
         private bool isRunning;
         public bool IsRunning
@@ -272,11 +272,11 @@ namespace MAV.UIForms.ViewModels
             isEnabled = false;
             isRunning = true;
 
-            //byte[] imageArray = null;
-            //if (this.file != null)
-            //{
-            //    imageArray = FilesHelper.ReadFully(this.file.GetStream());
-            //}
+            byte[] imageArray = null;
+            if (this.file != null)
+            {
+                imageArray = FilesHelper.ReadFully(this.file.GetStream());
+            }
 
             var material = new MaterialRequest 
             { 
@@ -284,11 +284,11 @@ namespace MAV.UIForms.ViewModels
                 Label = Label,
                 Brand = Brand, 
                 MaterialModel = MaterialModel, 
-                SerialNum = SerialNum 
-                //Status = Status, 
-                //MaterialType = MaterialType, 
-                //Owner = Owner,
-                //ImageArray = imageArray
+                SerialNum = SerialNum, 
+                Status = StatusRequest.Id,
+                MaterialType = MaterialTypeRequest.Id, 
+                Owner = OwnerRequest.Id,
+                ImageArray = imageArray
             };
             var url = Application.Current.Resources["URLApi"].ToString();
             var response = await this.apiService.PostAsync(url,

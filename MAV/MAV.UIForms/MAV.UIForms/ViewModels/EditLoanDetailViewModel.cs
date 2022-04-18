@@ -62,7 +62,7 @@ namespace MAV.UIForms.ViewModels
 
         private async void Save()
         {
-            if (string.IsNullOrEmpty(Convert.ToString(this.LoanDetails.Material.Status == "Regresado")))
+            if (string.IsNullOrEmpty(Convert.ToString(this.LoanDetails.Material.Status == 1)))
             {
                 await Application.Current.MainPage.DisplayAlert("Error", "Este prestamo ya se ha devuelto", "Aceptar");
             }

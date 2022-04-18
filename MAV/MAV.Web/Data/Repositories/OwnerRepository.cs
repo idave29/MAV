@@ -26,6 +26,22 @@
                 .FirstOrDefaultAsync(t => t.Id == id);
         }
 
+        public Owner GetByIdOwnerWithMaterials(int id)
+        {
+            var b = this.dataContext.Owners.Include(o => o.User);
+            foreach (Owner u in this.dataContext.Owners.Include(m => m.User))
+            {
+                if (u != null)
+                {
+                    if (u.Id == id)
+                    {
+                        return u;
+                    }
+                }
+            }
+            return null;
+        }
+
         public async Task<Owner> GetByIdUserOwnerWithUserAsync(string id)
         {
             return await this.dataContext.Owners
@@ -333,6 +349,8 @@
             //    }
             //    return (x);
         }
+
+
     }
 }
 

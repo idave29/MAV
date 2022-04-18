@@ -78,61 +78,91 @@
         }
 
 
-        public MaterialRequest GetMaterialWithTypeWithStatusAndOwnerById(int id)
-        {
-            var m = this.dataContext.Materials
-                    .Include(s => s.Status)
-                    .Include(mt => mt.MaterialType)
-                    .Include(o => o.Owner.User)
-                    .FirstOrDefault(i => i.Id == id);
+        //public IEnumerable<MaterialResponse> GetAllMaterialsWithTypeWithStatusAndOwner()
+        //{
+        //    var m = this.dataContext.Materials
+        //        .Include(s => s.Status)
+        //        .Include(m => m.MaterialType)
+        //        .Include(o => o.Owner.User);
 
-            if (m == null)
-            {
-                return null;
-            }
+        //    if (m == null)
+        //    {
+        //        return null;
+        //    }
 
-            var x = new MaterialRequest
-            {
-                Id = m.Id,
-                Name = m.Name,
-                Label = m.Label,
-                Brand = m.Brand,
-                MaterialModel = m.MaterialModel,
-                SerialNum = m.SerialNum,
-                Status = m.Status.Name,
-                MaterialType = m.MaterialType.Name,
-                Owner = m.Owner.User.FullName
-            };
+        //    var x = m.Select(mr => new MaterialResponse
+        //    {
+        //        Id = mr.Id,
+        //        Name = mr.Name,
+        //        Label = mr.Label,
+        //        Brand = mr.Brand,
+        //        Function = mr.Function,
+        //        ImageURL = mr.ImageFullPath,
+        //        MaterialModel = mr.MaterialModel,
+        //        SerialNum = mr.SerialNum,
+        //        Status = mr.Status.Name,
+        //        MaterialType = mr.MaterialType.Name,
+        //        Owner = mr.Owner.User.FullName
+        //    }).ToList();
 
-            return x;
-        }
+        //    return x;
+        //}
 
-        public MaterialRequest GetMaterialWithTypeAndStatusBySerialNum(string num)
-        {
-            var m = this.dataContext.Materials
-                    .Include(s => s.Status)
-                    .Include(m => m.MaterialType)
-                    .FirstOrDefault(n => n.SerialNum == num);
+        //public MaterialRequest GetMaterialWithTypeWithStatusAndOwnerById(int id)
+        //{
+        //    var m = this.dataContext.Materials
+        //            .Include(s => s.Status)
+        //            .Include(mt => mt.MaterialType)
+        //            .Include(o => o.Owner.User)
+        //            .FirstOrDefault(i => i.Id == id);
 
-            if (m == null)
-            {
-                return null;
-            }
+        //    if (m == null)
+        //    {
+        //        return null;
+        //    }
 
-            var x = new MaterialRequest
-            {
-                Id = m.Id,
-                Name = m.Name,
-                Label = m.Label,
-                Brand = m.Brand,
-                MaterialModel = m.MaterialModel,
-                SerialNum = m.SerialNum,
-                Status = m.Status.Name,
-                MaterialType = m.MaterialType.Name
-            };
+        //    var x = new MaterialRequest
+        //    {
+        //        Id = m.Id,
+        //        Name = m.Name,
+        //        Label = m.Label,
+        //        Brand = m.Brand,
+        //        MaterialModel = m.MaterialModel,
+        //        SerialNum = m.SerialNum,
+        //        Status = m.Status.Name,
+        //        MaterialType = m.MaterialType.Name,
+        //        Owner = m.Owner.User.FullName
+        //    };
 
-            return x;
-        }
+        //    return x;
+        //}
+
+        //public MaterialRequest GetMaterialWithTypeAndStatusBySerialNum(string num)
+        //{
+        //    var m = this.dataContext.Materials
+        //            .Include(s => s.Status)
+        //            .Include(m => m.MaterialType)
+        //            .FirstOrDefault(n => n.SerialNum == num);
+
+        //    if (m == null)
+        //    {
+        //        return null;
+        //    }
+
+        //    var x = new MaterialRequest
+        //    {
+        //        Id = m.Id,
+        //        Name = m.Name,
+        //        Label = m.Label,
+        //        Brand = m.Brand,
+        //        MaterialModel = m.MaterialModel,
+        //        SerialNum = m.SerialNum,
+        //        Status = m.Status.Name,
+        //        MaterialType = m.MaterialType.Name
+        //    };
+
+        //    return x;
+        //}
 
         public MaterialRequest GetMaterialBySerialNum(string num)
         {
@@ -156,152 +186,152 @@
             return x;
         }
 
-        public IEnumerable<MaterialRequest> GetMaterialsWithTypeWithStatusAndOwnerByBrand(string brand)
-        {
-            var m = this.dataContext.Materials
-                .Include(s => s.Status)
-                .Include(m => m.MaterialType)
-                .Include(o => o.Owner)
-                .Where(b => b.Brand == brand); 
+        //public IEnumerable<MaterialRequest> GetMaterialsWithTypeWithStatusAndOwnerByBrand(string brand)
+        //{
+        //    var m = this.dataContext.Materials
+        //        .Include(s => s.Status)
+        //        .Include(m => m.MaterialType)
+        //        .Include(o => o.Owner)
+        //        .Where(b => b.Brand == brand); 
 
-            if (m == null)
-            {
-                return null;
-            }
+        //    if (m == null)
+        //    {
+        //        return null;
+        //    }
 
-            var x = m.Select(mr => new MaterialRequest
-            {
-                Id = mr.Id,
-                Name = mr.Name,
-                Label = mr.Label,
-                Brand = mr.Brand,
-                MaterialModel = mr.MaterialModel,
-                SerialNum = mr.SerialNum,
-                Status = mr.Status.Name,
-                MaterialType = mr.MaterialType.Name,
-                Owner = mr.Owner.User.FullName
-            }).ToList();
+        //    var x = m.Select(mr => new MaterialRequest
+        //    {
+        //        Id = mr.Id,
+        //        Name = mr.Name,
+        //        Label = mr.Label,
+        //        Brand = mr.Brand,
+        //        MaterialModel = mr.MaterialModel,
+        //        SerialNum = mr.SerialNum,
+        //        Status = mr.Status.Name,
+        //        MaterialType = mr.MaterialType.Name,
+        //        Owner = mr.Owner.User.FullName
+        //    }).ToList();
 
-            return x;
-        }
+        //    return x;
+        //}
 
-        public IEnumerable<MaterialRequest> GetMaterialsWithTypeWithStatusAndOwnerByStatus(string status)
-        {
-            var m = this.dataContext.Materials
-                .Include(s => s.Status)
-                .Include(m => m.MaterialType)
-                .Include(o => o.Owner)
-                .Where(s => s.Status.Name == status);
+        //public IEnumerable<MaterialRequest> GetMaterialsWithTypeWithStatusAndOwnerByStatus(string status)
+        //{
+        //    var m = this.dataContext.Materials
+        //        .Include(s => s.Status)
+        //        .Include(m => m.MaterialType)
+        //        .Include(o => o.Owner)
+        //        .Where(s => s.Status.Name == status);
 
-            if (m == null)
-            {
-                return null;
-            }
+        //    if (m == null)
+        //    {
+        //        return null;
+        //    }
 
-            var x = m.Select(mr => new MaterialRequest
-            {
-                Id = mr.Id,
-                Name = mr.Name,
-                Label = mr.Label,
-                Brand = mr.Brand,
-                MaterialModel = mr.MaterialModel,
-                SerialNum = mr.SerialNum,
-                Status = mr.Status.Name,
-                MaterialType = mr.MaterialType.Name,
-                Owner = mr.Owner.User.FullName
-            }).ToList();
+        //    var x = m.Select(mr => new MaterialRequest
+        //    {
+        //        Id = mr.Id,
+        //        Name = mr.Name,
+        //        Label = mr.Label,
+        //        Brand = mr.Brand,
+        //        MaterialModel = mr.MaterialModel,
+        //        SerialNum = mr.SerialNum,
+        //        Status = mr.Status.Name,
+        //        MaterialType = mr.MaterialType.Name,
+        //        Owner = mr.Owner.User.FullName
+        //    }).ToList();
 
-            return x;
-        }
+        //    return x;
+        //}
 
-        public IEnumerable<MaterialRequest> GetMaterialsWithTypeWithStatusAndOwnerByType(string type)
-        {
-            var m = this.dataContext.Materials
-                .Include(s => s.Status)
-                .Include(m => m.MaterialType)
-                .Include(o => o.Owner)
-                .Where(mt => mt.MaterialType.Name == type);
+        //public IEnumerable<MaterialRequest> GetMaterialsWithTypeWithStatusAndOwnerByType(string type)
+        //{
+        //    var m = this.dataContext.Materials
+        //        .Include(s => s.Status)
+        //        .Include(m => m.MaterialType)
+        //        .Include(o => o.Owner)
+        //        .Where(mt => mt.MaterialType.Name == type);
 
-            if (m == null)
-            {
-                return null;
-            }
+        //    if (m == null)
+        //    {
+        //        return null;
+        //    }
 
-            var x = m.Select(mr => new MaterialRequest
-            {
-                Id = mr.Id,
-                Name = mr.Name,
-                Label = mr.Label,
-                Brand = mr.Brand,
-                MaterialModel = mr.MaterialModel,
-                SerialNum = mr.SerialNum,
-                Status = mr.Status.Name,
-                MaterialType = mr.MaterialType.Name,
-                Owner = mr.Owner.User.FullName
-            }).ToList();
+        //    var x = m.Select(mr => new MaterialRequest
+        //    {
+        //        Id = mr.Id,
+        //        Name = mr.Name,
+        //        Label = mr.Label,
+        //        Brand = mr.Brand,
+        //        MaterialModel = mr.MaterialModel,
+        //        SerialNum = mr.SerialNum,
+        //        Status = mr.Status.Name,
+        //        MaterialType = mr.MaterialType.Name,
+        //        Owner = mr.Owner.User.FullName
+        //    }).ToList();
 
-            return x;
-        }
+        //    return x;
+        //}
 
-        public IEnumerable<MaterialRequest> GetMaterialsWithTypeWithStatusAndOwnerByName(string name)
-        {
-            var m = this.dataContext.Materials
-                .Include(s => s.Status)
-                .Include(m => m.MaterialType)
-                .Include(o => o.Owner)
-                .Where(n => n.Name == name);
+        //public IEnumerable<MaterialRequest> GetMaterialsWithTypeWithStatusAndOwnerByName(string name)
+        //{
+        //    var m = this.dataContext.Materials
+        //        .Include(s => s.Status)
+        //        .Include(m => m.MaterialType)
+        //        .Include(o => o.Owner)
+        //        .Where(n => n.Name == name);
 
-            if (m == null)
-            {
-                return null;
-            }
+        //    if (m == null)
+        //    {
+        //        return null;
+        //    }
 
-            var x = m.Select(mr => new MaterialRequest
-            {
-                Id = mr.Id,
-                Name = mr.Name,
-                Label = mr.Label,
-                Brand = mr.Brand,
-                MaterialModel = mr.MaterialModel,
-                SerialNum = mr.SerialNum,
-                Status = mr.Status.Name,
-                MaterialType = mr.MaterialType.Name,
-                Owner = mr.Owner.User.FullName
-            }).ToList();
+        //    var x = m.Select(mr => new MaterialRequest
+        //    {
+        //        Id = mr.Id,
+        //        Name = mr.Name,
+        //        Label = mr.Label,
+        //        Brand = mr.Brand,
+        //        MaterialModel = mr.MaterialModel,
+        //        SerialNum = mr.SerialNum,
+        //        Status = mr.Status.Name,
+        //        MaterialType = mr.MaterialType.Name,
+        //        Owner = mr.Owner.User.FullName
+        //    }).ToList();
 
-            return x;
-        }
+        //    return x;
+        //}
 
-        public IEnumerable<MaterialRequest> GetMaterialsWithTypeWithStatusAndOwnerByLabel(string label)
-        {
-            var m = this.dataContext.Materials
-                .Include(s => s.Status)
-                .Include(m => m.MaterialType)
-                .Include(o => o.Owner)
-                .Where(n => n.Label == label);
+        //public IEnumerable<MaterialRequest> GetMaterialsWithTypeWithStatusAndOwnerByLabel(string label)
+        //{
+        //    var m = this.dataContext.Materials
+        //        .Include(s => s.Status)
+        //        .Include(m => m.MaterialType)
+        //        .Include(o => o.Owner)
+        //        .Where(n => n.Label == label);
 
-            if (m == null)
-            {
-                return null;
-            }
+        //    if (m == null)
+        //    {
+        //        return null;
+        //    }
 
-            var x = m.Select(mr => new MaterialRequest
-            {
-                Id = mr.Id,
-                Name = mr.Name,
-                Label = mr.Label,
-                Brand = mr.Brand,
-                MaterialModel = mr.MaterialModel,
-                SerialNum = mr.SerialNum,
-                Status = mr.Status.Name,
-                MaterialType = mr.MaterialType.Name,
-                Owner = mr.Owner.User.FullName
-            }).ToList();
+        //    var x = m.Select(mr => new MaterialRequest
+        //    {
+        //        Id = mr.Id,
+        //        Name = mr.Name,
+        //        Label = mr.Label,
+        //        Brand = mr.Brand,
+        //        MaterialModel = mr.MaterialModel,
+        //        SerialNum = mr.SerialNum,
+        //        Status = mr.Status.Name,
+        //        MaterialType = mr.MaterialType.Name,
+        //        Owner = mr.Owner.User.FullName
+        //    }).ToList();
 
-            return x;
-        }
+        //    return x;
+        //}
 
-        public IEnumerable<MaterialRequest> GetAllMaterialsWithTypeWithStatusAndOwner()
+        public IEnumerable<MaterialResponse> GetAllMaterialsWithTypeWithStatusAndOwner()
         {
             var m = this.dataContext.Materials
                 .Include(s => s.Status)
@@ -313,7 +343,7 @@
                 return null;
             }
 
-            var x = m.Select(mr => new MaterialRequest
+            var x = m.Select(mr => new MaterialResponse
             {
                 Id = mr.Id,
                 Name = mr.Name,
@@ -325,44 +355,44 @@
                 SerialNum = mr.SerialNum,
                 Status = mr.Status.Name,
                 MaterialType = mr.MaterialType.Name,
-                Owner = mr.Owner.User.FullName
+                Owner = mr.Owner.User.Email
             }).ToList();
 
             return x;
         }
 
-        public IEnumerable<MaterialRequest> GetAllMaterialsWithTypeWithStatusAndOwnerandImage()
-        {
-            var m = this.dataContext.Materials
-                .Include(t => t.ImageFullPath)
-                .Include(t => t.ImageURL)
-                .Include(s => s.Status)
-                .Include(m => m.MaterialType)
-                .Include(o => o.Owner.User);
+        //public IEnumerable<MaterialRequest> GetAllMaterialsWithTypeWithStatusAndOwnerandImage()
+        //{
+        //    var m = this.dataContext.Materials
+        //        .Include(t => t.ImageFullPath)
+        //        .Include(t => t.ImageURL)
+        //        .Include(s => s.Status)
+        //        .Include(m => m.MaterialType)
+        //        .Include(o => o.Owner.User);
 
-            if (m == null)
-            {
-                return null;
-            }
+        //    if (m == null)
+        //    {
+        //        return null;
+        //    }
 
-            var x = m.Select(mr => new MaterialRequest
-            {
-                Id = mr.Id,
-                Name = mr.Name,
-                Label = mr.Label,
-                Brand = mr.Brand,
-                Function = mr.Function,
-                ImageURL = mr.ImageFullPath,
-                MaterialModel = mr.MaterialModel,
-                SerialNum = mr.SerialNum,
-                Status = mr.Status.Name,
-                MaterialType = mr.MaterialType.Name,
-                Owner = mr.Owner.User.FullName, 
-                ImageFullPath = mr.ImageURL
-            }).ToList();
+        //    var x = m.Select(mr => new MaterialRequest
+        //    {
+        //        Id = mr.Id,
+        //        Name = mr.Name,
+        //        Label = mr.Label,
+        //        Brand = mr.Brand,
+        //        Function = mr.Function,
+        //        ImageURL = mr.ImageFullPath,
+        //        MaterialModel = mr.MaterialModel,
+        //        SerialNum = mr.SerialNum,
+        //        Status = mr.Status.Name,
+        //        MaterialType = mr.MaterialType.Name,
+        //        Owner = mr.Owner.User.FullName, 
+        //        ImageFullPath = mr.ImageURL
+        //    }).ToList();
 
-            return x;
-        }
+        //    return x;
+        //}
 
         public IEnumerable<LoanRequest> GetMaterialWithLoansById(int id)
         {
@@ -449,6 +479,47 @@
             }).ToList();
 
             return x;
+        }
+
+
+
+        public MaterialResponse ToMaterialResponse(Material material)
+        {
+            if (material == null)
+            {
+                return null;
+            }
+
+            return new MaterialResponse
+            {
+                Id = material.Id,
+                Name = material.Name,
+                Brand = material.Brand,
+                Function = material.Function,
+                Label = material.Label,
+                MaterialModel = material.MaterialModel,
+                SerialNum = material.SerialNum,
+                ImageURL = material.ImageURL,
+                Status = material.Status.Name,
+                MaterialType = material.MaterialType.Name,
+                Owner = material.Owner.User.UserName
+            };
+        }
+        public OwnerResponse ToOwnerResponse(Owner material)
+        {
+            if (material == null)
+            {
+                return null;
+            }
+
+            return new OwnerResponse
+            {
+                Id = material.Id,
+                Email = material.User.Email,
+                FirstName = material.User.FirstName,
+                LastName = material.User.LastName,
+                PhoneNumber = material.User.PhoneNumber 
+            };
         }
     }
 }
