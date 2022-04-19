@@ -71,9 +71,9 @@
         }
     
 
-        public void AddMaterialToList(MaterialRequest material)
+        public void AddMaterialToList(MaterialResponse material)
         {
-            this.myMaterialsRequest.Add(material);
+            this.myMaterials.Add(material);
             RefreshMaterialList();
         }
 

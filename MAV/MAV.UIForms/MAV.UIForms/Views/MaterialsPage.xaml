@@ -41,25 +41,25 @@
                                             <Label Text="{Binding Name}" 
                                            FontSize="Medium"
                                            TextColor="Black"></Label>
-                                            <Label Text="{Binding Label, StringFormat= 'Label: {0}'}" 
+                                            <Label Text="{Binding Label, StringFormat= 'Sala: {0}'}" 
                                            FontSize="Small"
                                            TextColor="Gray"></Label>
-                                            <Label Text="{Binding Brand, StringFormat= 'Brand: {0}'}" 
+                                            <Label Text="{Binding Brand, StringFormat= 'Marca: {0}'}" 
                                            FontSize="Small"
                                            TextColor="Gray"></Label>
-                                            <Label Text="{Binding MaterialModel, StringFormat= 'Model: {0}'}" 
+                                            <Label Text="{Binding MaterialModel, StringFormat= 'Modelo: {0}'}" 
                                            FontSize="Small"
                                            TextColor="Gray"></Label>
-                                            <Label Text="{Binding SerialNum, StringFormat= 'Serial Number: {0}'}" 
+                                            <Label Text="{Binding SerialNum, StringFormat= 'No.Serie: {0}'}" 
                                            FontSize="Small"
                                            TextColor="Gray"></Label>
-                                            <Label Text="{Binding Status, StringFormat= 'Status: {0}'}" 
+                                            <Label Text="{Binding Status, StringFormat= 'Estado: {0}'}" 
                                            FontSize="Small"
                                            TextColor="Gray"></Label>
-                                            <Label Text="{Binding MaterialType, StringFormat= 'Material Type: {0}'}" 
+                                            <Label Text="{Binding MaterialType, StringFormat= 'Tipo Material: {0}'}" 
                                            FontSize="Small"
                                            TextColor="Gray"></Label>
-                                            <Label Text="{Binding Owner, StringFormat= 'Owner: {0}'}" 
+                                            <Label Text="{Binding Owner, StringFormat= 'Dueño: {0}'}" 
                                            FontSize="Small"
                                            TextColor="Gray"></Label>
                                         </StackLayout>

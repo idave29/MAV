@@ -32,6 +32,9 @@
 
                         <Label Text="SerialNum" Grid.Column="0" Grid.Row="5" VerticalOptions="Center"></Label>
                         <Entry Grid.Column="1" Grid.Row="5" Keyboard="Text" Placeholder="Introduce el numero de serie" Text="{Binding Material.SerialNum}"></Entry>
+                        
+                        <Label Text="Función" Grid.Column="0" Grid.Row="3" VerticalOptions="Center"></Label>
+                        <Entry Grid.Column="1" Grid.Row="3" Keyboard="Text" Placeholder="Introduce su función del material" Text="{Binding Material.Function}"></Entry>
 
                         <Label Text="Status" Grid.Column="0" Grid.Row="6" VerticalOptions="Center"></Label>
                         <Picker Grid.Column="1" Grid.Row="6" Title="Selecciona un estado" ItemsSource="{Binding StatusList}" SelectedItem="{Binding Material.Status, Mode=TwoWay}"/>

@@ -124,10 +124,10 @@
                 Function = material.Function,
                 Owner = owner,
                 Status = status,
-                MaterialType = materialType
+                MaterialType = materialType,
                 //Owner = owner
                 //Status = status,
-                //ImageURL = imageUrl                
+                ImageURL = imageUrl                
             };
             //if (entityMaterial == null)
             //{

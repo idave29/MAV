@@ -2,6 +2,7 @@
 using MAV.Common.Helpers;
 using MAV.Common.Models;
 using MAV.Common.Services;
+using Newtonsoft.Json;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
 using System;
@@ -25,6 +26,7 @@ namespace MAV.UIForms.ViewModels
         public string MaterialModel { set; get; }
 
         public string SerialNum { set; get; }
+        public string Function { set; get; }
 
         //public string Status { get; set; }
 
@@ -253,6 +255,11 @@ namespace MAV.UIForms.ViewModels
                 await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un numero de serie", "Aceptar");
                 return;
             }
+            if (string.IsNullOrEmpty(Function))
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir su función", "Aceptar");
+                return;
+            }
             //if (this.StatusRequest == null)
             //{
             //    await Application.Current.MainPage.DisplayAlert("Error", "Debes seleccionar un status", "Aceptar");
@@ -279,21 +286,35 @@ namespace MAV.UIForms.ViewModels
             }
 
             var material = new MaterialRequest 
-            { 
+            {
+                //Name = "VGA2",
+                //Label = "MAV04",
+                //Brand = "AMAZON1", 
+                //Function = "Manda info chida",
+                //MaterialModel = "rojito", 
+                //SerialNum = "123456", 
+                //Status = 1,
+                //MaterialType = 1, 
+                //Owner = 1,
+                //ImageArray = imageArray
+
                 Name = Name,
                 Label = Label,
-                Brand = Brand, 
-                MaterialModel = MaterialModel, 
-                SerialNum = SerialNum, 
+                Brand = Brand,
+                Function = Function,
+                MaterialModel = MaterialModel,
+                SerialNum = SerialNum,
                 Status = StatusRequest.Id,
-                MaterialType = MaterialTypeRequest.Id, 
+                MaterialType = MaterialTypeRequest.Id,
                 Owner = OwnerRequest.Id,
                 ImageArray = imageArray
             };
+
             var url = Application.Current.Resources["URLApi"].ToString();
-            var response = await this.apiService.PostAsync(url,
+            ResponseO<object> response;
+            response = await this.apiService.PostAsyncO(url,
                 "/api",
-                "/Materials",
+                "/Materials/",
                 material,
                 "bearer",
                 MainViewModel.GetInstance().Token.Token);
@@ -303,7 +324,10 @@ namespace MAV.UIForms.ViewModels
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
             }
-            var newMaterial = (MaterialRequest)response.Result;
+
+            var materialResp = JsonConvert.DeserializeObject<MaterialResponse>(response.Message);
+            //var newMaterial = (MaterialResponse)response.Result;
+            var newMaterial = (MaterialResponse)materialResp;
             MainViewModel.GetInstance().Materials.AddMaterialToList(newMaterial);
             isEnabled = true;
             isRunning = false;
