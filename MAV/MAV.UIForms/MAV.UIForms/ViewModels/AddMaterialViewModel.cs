@@ -260,21 +260,21 @@ namespace MAV.UIForms.ViewModels
                 await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir su función", "Aceptar");
                 return;
             }
-            //if (this.StatusRequest == null)
-            //{
-            //    await Application.Current.MainPage.DisplayAlert("Error", "Debes seleccionar un status", "Aceptar");
-            //    return;
-            //}
-            //if (this.MaterialTypeRequest == null)
-            //{
-            //    await Application.Current.MainPage.DisplayAlert("Error", "Debes seleccionar un tipo de material", "Aceptar");
-            //    return;
-            //}
-            //if (this.OwnerRequest == null)
-            //{
-            //    await Application.Current.MainPage.DisplayAlert("Error", "Debes seleccionar un dueño", "Aceptar");
-            //    return;
-            //}
+            if (this.StatusRequest == null)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "Debes seleccionar un status", "Aceptar");
+                return;
+            }
+            if (this.MaterialTypeRequest == null)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "Debes seleccionar un tipo de material", "Aceptar");
+                return;
+            }
+            if (this.OwnerRequest == null)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "Debes seleccionar un dueño", "Aceptar");
+                return;
+            }
 
             isEnabled = false;
             isRunning = true;

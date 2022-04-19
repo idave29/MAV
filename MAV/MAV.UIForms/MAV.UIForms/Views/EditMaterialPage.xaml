@@ -11,12 +11,19 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
 
-                    <Image Grid.Row="0" HorizontalOptions="Center" VerticalOptions="Center" Source="{Binding Material.ImageURL}"></Image>
-
-                    <StackLayout Grid.Row="1">
+                    <Image Grid.Row="0" HorizontalOptions="Center" VerticalOptions="Center" Source="{Binding ImageSource}">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ChangeImageCommand}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                   
+                    <Label Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Center">Hacer click en la imagen para cambiarla</Label>
+                    
+                    <StackLayout Grid.Row="2">
                         <Label Text="Name" Grid.Column="0" Grid.Row="1" VerticalOptions="Center"></Label>
                         <Entry Grid.Column="1" Grid.Row="1" Keyboard="Text" Placeholder="Introduce el material" Text="{Binding Material.Name}">
                         </Entry>
@@ -37,13 +44,13 @@
                         <Entry Grid.Column="1" Grid.Row="3" Keyboard="Text" Placeholder="Introduce su función del material" Text="{Binding Material.Function}"></Entry>
 
                         <Label Text="Status" Grid.Column="0" Grid.Row="6" VerticalOptions="Center"></Label>
-                        <Picker Grid.Column="1" Grid.Row="6" Title="Selecciona un estado" ItemsSource="{Binding StatusList}" SelectedItem="{Binding Material.Status, Mode=TwoWay}"/>
+                        <Picker Grid.Column="1" Grid.Row="6" Title="Selecciona un estado" ItemDisplayBinding="{Binding Name}" ItemsSource="{Binding Statuses}" SelectedItem="{Binding StatusRequest}"/>
 
                         <Label Text="MaterialType" Grid.Column="0" Grid.Row="7" VerticalOptions="Center"></Label>
-                        <Picker Grid.Column="1" Grid.Row="7" Title="Selecciona un tipo de material" ItemsSource="{Binding MaterialTypeList}" SelectedItem="{Binding Material.MaterialType, Mode=TwoWay}"/>
+                        <Picker Grid.Column="1" Grid.Row="7" Title="Selecciona un tipo de material" ItemDisplayBinding="{Binding Name}" ItemsSource="{Binding MaterialTypes}" SelectedItem="{Binding MaterialTypeRequest}"/>
 
                         <Label Text="Owner" Grid.Column="0" Grid.Row="8" VerticalOptions="Center"></Label>
-                        <Picker Grid.Column="1" Grid.Row="8" Title="Selecciona un dueño" ItemsSource="{Binding OwnerList}" SelectedItem="{Binding Material.Owner, Mode=TwoWay}"/>
+                        <Picker Grid.Column="1" Grid.Row="8" Title="Selecciona un dueño" ItemDisplayBinding="{Binding Email}" ItemsSource="{Binding Owners}" SelectedItem="{Binding OwnerRequest}"/>
 
                     </StackLayout>
                 </Grid>

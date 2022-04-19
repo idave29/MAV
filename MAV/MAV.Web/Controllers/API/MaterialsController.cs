@@ -10,6 +10,7 @@
     using Microsoft.EntityFrameworkCore;
     using System;
     using System.IO;
+    using System.Linq;
     using System.Threading.Tasks;
 
     [Route("api/[Controller]")]
@@ -141,48 +142,77 @@
         }
 
 
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutMaterial([FromRoute] int id, [FromBody] MAV.Common.Models.MaterialRequest material)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-        //    if (id != material.Id)
-        //    {
-        //        return BadRequest();
-        //    }
-        //    var oldMaterial = await this.materialRepository.GetByIdAsync(id);
-        //    if (oldMaterial == null)
-        //    {
-        //        return BadRequest("Id not found");
-        //    }
-        //    var status = this.statusRepository.GetStatusByName(material.Status);
-        //    if (status == null)
-        //    {
-        //        return BadRequest("status not found");
-        //    }
-        //    var materialType = this.materialTypeRepository.GetMaterialTypesByName(material.MaterialType);
-        //    if (materialType == null)
-        //    {
-        //        return BadRequest("materialtype not found");
-        //    }
-        //    var owner = this.ownerRepository.GetGoodOwnerWithEmail(material.Owner);
-        //    if (owner == null)
-        //    {
-        //        return BadRequest("owner not found");
-        //    }
-        //    oldMaterial.Name = material.Name;
-        //    oldMaterial.Owner = owner;
-        //    oldMaterial.Label = material.Label;
-        //    oldMaterial.Brand = material.Brand;
-        //    oldMaterial.MaterialModel = material.MaterialModel;
-        //    oldMaterial.SerialNum = material.SerialNum;
-        //    oldMaterial.Status = status;
-        //    oldMaterial.MaterialType = materialType;
-        //    var updateMaterial = await this.materialRepository.UpdateAsync(oldMaterial);
-        //    return Ok(updateMaterial);
-        //}
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutMaterial([FromRoute] int id, [FromBody] MAV.Common.Models.MaterialRequest material)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != material.Id)
+            {
+                return BadRequest();
+            }
+
+            var oldMaterial = await this.materialRepository.GetByIdAsync(id);
+            if (oldMaterial == null)
+            {
+                return BadRequest("Id not found");
+            }
+
+
+            var owner = this.ownerRepository.GetByIdOwnerWithMaterials(material.Owner);
+
+            if (owner == null)
+            {
+                return BadRequest("Not valid owner.");
+            }
+
+            var status = await _dataContext.Statuses.FindAsync(material.Status);
+            if (status == null)
+            {
+                return BadRequest("Not valid status");
+            }
+            var materialType = await _dataContext.MaterialTypes.FindAsync(material.MaterialType);
+            if (materialType == null)
+            {
+                return BadRequest("Not valid material type");
+            }
+
+            var imageUrl = oldMaterial.ImageURL;
+            if (material.ImageArray != null && material.ImageArray.Length > 0)
+            {
+                var stream = new MemoryStream(material.ImageArray);
+                var guid = Guid.NewGuid().ToString();
+                var file = $"{guid}.jpg";
+                var folder = "wwwroot\\Images\\Materiales";
+                var fullPath = $"~/Images/Materiales/{file}";
+                var response = FilesHelper.UploadPhoto(stream, folder, file);
+
+                if (response)
+                {
+                    imageUrl = fullPath;
+                }
+            }
+
+
+
+            oldMaterial.Name = material.Name;
+            oldMaterial.Label = material.Label;
+            oldMaterial.Brand = material.Brand;
+            oldMaterial.MaterialModel = material.MaterialModel;
+            oldMaterial.SerialNum = material.SerialNum;
+            oldMaterial.Function = material.Function;
+            oldMaterial.Owner = owner;
+            oldMaterial.Status = status;
+            oldMaterial.MaterialType = materialType;
+            oldMaterial.ImageURL = imageUrl;
+
+            _dataContext.Materials.Update(oldMaterial);
+            await _dataContext.SaveChangesAsync();
+            return Ok(materialRepository.ToMaterialResponse(oldMaterial));
+        }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMaterial([FromRoute] int id)
@@ -191,13 +221,43 @@
             {
                 return BadRequest(ModelState);
             }
-            var oldMaterial = await this.materialRepository.GetByIdAsync(id);
-            if (oldMaterial == null)
+
+            var material = await this.materialRepository.GetByIdWithMaterialTypeOwnerStatusAsync(id);
+
+
+
+            //var material = this._dataContext.Materials
+            //    .Include(p => p.Status).FirstAsync(l => l.Status.Name == "Defectuoso");
+
+            if (material == null)
             {
-                return BadRequest("Id not found");
+                return BadRequest("El material no se encontró");
             }
-            await this.materialRepository.DeleteAsync(oldMaterial);
-            return Ok(oldMaterial);
+
+            if (material.Status.Name == "Prestado")
+            {
+                return BadRequest("El material no se puede eliminar porque está prestado");
+            }
+
+            if (material.Status.Name == "Disponible")
+            {
+                return BadRequest("El material no se puede eliminar porque se debe de reportar como defectuoso");
+            }
+            if (material.Status.Name == "Regresado")
+            {
+                return BadRequest("El material no se puede eliminar porque se debe de reportar como defectuoso");
+            }
+
+            //var oldMaterial = await this.materialRepository.GetByIdAsync(id);
+            //if (oldMaterial == null)
+            //{
+            //    return BadRequest("Id not found");
+            //}
+
+            _dataContext.Materials.Remove(material);
+            await _dataContext.SaveChangesAsync();
+            return Ok("Material deleted");
+
         }
     }
 }
