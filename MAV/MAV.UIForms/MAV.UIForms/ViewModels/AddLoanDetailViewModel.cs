@@ -38,7 +38,7 @@ namespace MAV.UIForms.ViewModels
             set { this.SetValue(ref this.materialList, value); }
         }
 
-        public ICommand SaveCommand { get { return new RelayCommand(Save); } }
+        //public ICommand SaveCommand { get { return new RelayCommand(Save); } }
 
         private async void LoadMaterial()
         {
@@ -59,51 +59,51 @@ namespace MAV.UIForms.ViewModels
 
         }
 
-        private async void Save()
-        {
-            //if (string.IsNullOrEmpty(Observations))
-            //{
-            //    await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir una observación", "Aceptar");
-            //    return;
-            //}
-            //if (string.IsNullOrEmpty(Convert.ToString(DateTimeOut)))
-            //{
-            //    await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir una fecha y hora de salida", "Aceptar");
-            //    return;
-            //}
-            //if (string.IsNullOrEmpty(Convert.ToString(DateTimeIn)))
-            //{
-            //    await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir una fecha y hora de devolución", "Aceptar");
-            //    return;
-            //}
-            if (string.IsNullOrEmpty(Convert.ToString(Material)))
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un material", "Aceptar");
-                return;
-            }
+        //private async void Save()
+        //{
+        //    //if (string.IsNullOrEmpty(Observations))
+        //    //{
+        //    //    await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir una observación", "Aceptar");
+        //    //    return;
+        //    //}
+        //    //if (string.IsNullOrEmpty(Convert.ToString(DateTimeOut)))
+        //    //{
+        //    //    await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir una fecha y hora de salida", "Aceptar");
+        //    //    return;
+        //    //}
+        //    //if (string.IsNullOrEmpty(Convert.ToString(DateTimeIn)))
+        //    //{
+        //    //    await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir una fecha y hora de devolución", "Aceptar");
+        //    //    return;
+        //    //}
+        //    if (string.IsNullOrEmpty(Convert.ToString(Material)))
+        //    {
+        //        await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un material", "Aceptar");
+        //        return;
+        //    }
 
-            isEnabled = false;
-            isRunning = true;
-            var loanDetail = new LoanDetailsRequest { Material = Material };
-            var url = Application.Current.Resources["URLApi"].ToString();
-            var response = await this.apiService.PostAsync(url,
-                "/api",
-                "/LoanDetails",
-                loanDetail,
-                "bearer",
-                MainViewModel.GetInstance().Token.Token);
+        //    isEnabled = false;
+        //    isRunning = true;
+        //    var loanDetail = new LoanDetailsRequest { Material = Material };
+        //    var url = Application.Current.Resources["URLApi"].ToString();
+        //    var response = await this.apiService.PostAsync(url,
+        //        "/api",
+        //        "/LoanDetails",
+        //        loanDetail,
+        //        "bearer",
+        //        MainViewModel.GetInstance().Token.Token);
 
-            if (!response.IsSuccess)
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
-                return;
-            }
-            var newLoanDetail = (LoanDetailsRequest)response.Result;
-            MainViewModel.GetInstance().LoanDetails.AddLoanDetailToList(newLoanDetail);
-            isEnabled = true;
-            isRunning = false;
-            await App.Navigator.PopAsync();
-        }
+        //    if (!response.IsSuccess)
+        //    {
+        //        await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
+        //        return;
+        //    }
+        //    var newLoanDetail = (LoanDetailsRequest)response.Result;
+        //    MainViewModel.GetInstance().LoanDetails.AddLoanDetailToList(newLoanDetail);
+        //    isEnabled = true;
+        //    isRunning = false;
+        //    await App.Navigator.PopAsync();
+        //}
 
         public AddLoanDetailViewModel()
         {

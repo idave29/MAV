@@ -13,7 +13,7 @@
 
         public string Status { set; get; }
 
-        public MaterialRequest Material { get; set; }
+        public MaterialResponse Material { get; set; }
 
         public LoanRequest Loan { get; set; }
 

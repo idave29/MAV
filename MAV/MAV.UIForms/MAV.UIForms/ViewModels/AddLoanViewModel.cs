@@ -89,47 +89,47 @@ namespace MAV.UIForms.ViewModels
             ApplicantList = ((List<ApplicantRequest>)response.Result).Where(l => l.Deleted == false).Where(l => l.Debtor == false).Select(l => l.FullName).ToList();
         }
 
-        public ICommand SaveCommand { get { return new RelayCommand(Save); } }
+        //public ICommand SaveCommand { get { return new RelayCommand(Save); } }
 
-        private async void Save()
-        {
-            if (string.IsNullOrEmpty(Applicant))
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un Solicitante", "Aceptar");
-                return;
-            }
-            if (string.IsNullOrEmpty(Material.Name))
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un Material", "Aceptar");
-                return;
-            }
+        //private async void Save()
+        //{
+        //    if (string.IsNullOrEmpty(Applicant))
+        //    {
+        //        await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un Solicitante", "Aceptar");
+        //        return;
+        //    }
+        //    if (string.IsNullOrEmpty(Material.Name))
+        //    {
+        //        await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un Material", "Aceptar");
+        //        return;
+        //    }
 
-            isEnabled = false;
-            isRunning = true;
+        //    isEnabled = false;
+        //    isRunning = true;
 
-            var loanDetail = new LoanDetailsRequest { Material = Material };
-            var Loan = new LoanRequest{ Applicant = Applicant, LoanDetails = (ICollection<LoanDetailsRequest>)loanDetail };
+        //    var loanDetail = new LoanDetailsRequest { Material = Material };
+        //    var Loan = new LoanRequest{ Applicant = Applicant, LoanDetails = (ICollection<LoanDetailsRequest>)loanDetail };
 
-            var url = Application.Current.Resources["URLApi"].ToString();
-            var response = await this.apiService.PostAsync(url,
-                "/api",
-                "/Loans",
-                Loan,
-                "bearer",
-                MainViewModel.GetInstance().Token.Token);
+        //    var url = Application.Current.Resources["URLApi"].ToString();
+        //    var response = await this.apiService.PostAsync(url,
+        //        "/api",
+        //        "/Loans",
+        //        Loan,
+        //        "bearer",
+        //        MainViewModel.GetInstance().Token.Token);
 
-            if (!response.IsSuccess)
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
-                return;
-            }
-            var newLoan = (LoanRequest)response.Result;
-            MainViewModel.GetInstance().Loans.AddLoanToList(newLoan);
+        //    if (!response.IsSuccess)
+        //    {
+        //        await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
+        //        return;
+        //    }
+        //    var newLoan = (LoanRequest)response.Result;
+        //    MainViewModel.GetInstance().Loans.AddLoanToList(newLoan);
        
-            isEnabled = true;
-            isRunning = false;
-            await App.Navigator.PopAsync();
-        }
+        //    isEnabled = true;
+        //    isRunning = false;
+        //    await App.Navigator.PopAsync();
+        //}
 
         private async void LoadMaterial()
         {

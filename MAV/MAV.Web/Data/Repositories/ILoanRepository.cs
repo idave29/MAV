@@ -12,7 +12,7 @@
 
         Task<Loan> GetByLoanIdLoanAndApplicantAsync(int id);
         Task<Loan> GetByIdAppOrInternLoansAsync(string id);
-        //IEnumerable<LoanRequest> GetLoans();
+        IEnumerable<LoanRequest> GetLoans();
         //IEnumerable<LoanRequest> GetLoansWithInternsAndLoanDetails();
         //IEnumerable<LoanRequest> GetLoansWithLoanDetailsAndMaterial();
         //LoanRequest GetLoanWithLoanDetailsById(int id);

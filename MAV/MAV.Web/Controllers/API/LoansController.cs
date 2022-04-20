@@ -47,7 +47,8 @@
                 return BadRequest(ModelState);
             }
 
-            return Ok(this.loanRepository.GetLoanWithAplicantsAndInterns());
+            return Ok(this.loanRepository.GetLoans());
+            //return Ok(this.loanRepository.GetLoanWithAplicantsAndInterns());
             //return Ok(this.loanRepository.GetLoansWithInternsAndLoanDetails());
             //return Ok(this.loanRepository.GetLoansWithLoanDetailsAndMaterial());
             //return Ok(this.loanRepository.GetLoanWithLoanDetailsById(1));

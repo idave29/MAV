@@ -28,7 +28,7 @@ namespace MAV.UIForms.ViewModels
             set { this.SetValue(ref this.isEnabled, value); }
         }
 
-        public ICommand SaveCommand { get { return new RelayCommand(Save); } }
+        //public ICommand SaveCommand { get { return new RelayCommand(Save); } }
         public ICommand DeleteCommand { get { return new RelayCommand(Delete); } }
 
         private async void Delete()
@@ -60,34 +60,34 @@ namespace MAV.UIForms.ViewModels
             await App.Navigator.PopAsync();
         }
 
-        private async void Save()
-        {
-            if (string.IsNullOrEmpty(Convert.ToString(this.LoanDetails.Material.Status == 1)))
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", "Este prestamo ya se ha devuelto", "Aceptar");
-            }
-            isEnabled = false;
-            isRunning = true;
-            var url = Application.Current.Resources["URLApi"].ToString();
-            var response = await this.apiService.PutAsync(url,
-                "/api",
-                "/LoanDetails",
-                LoanDetails.Id,
-                LoanDetails,
-                "bearer",
-                MainViewModel.GetInstance().Token.Token);
+        //private async void Save()
+        //{
+        //    if (string.IsNullOrEmpty(Convert.ToString(this.LoanDetails.Material.Status == 1)))
+        //    {
+        //        await Application.Current.MainPage.DisplayAlert("Error", "Este prestamo ya se ha devuelto", "Aceptar");
+        //    }
+        //    isEnabled = false;
+        //    isRunning = true;
+        //    var url = Application.Current.Resources["URLApi"].ToString();
+        //    var response = await this.apiService.PutAsync(url,
+        //        "/api",
+        //        "/LoanDetails",
+        //        LoanDetails.Id,
+        //        LoanDetails,
+        //        "bearer",
+        //        MainViewModel.GetInstance().Token.Token);
 
-            if (!response.IsSuccess)
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
-                return;
-            }
-            var modifyLoanDetail = (LoanDetailsRequest)response.Result;
-            MainViewModel.GetInstance().HistorysLoan.UpdateLoanDetailsInList(modifyLoanDetail);
-            this.isEnabled = true;
-            this.isRunning = false;
-            await App.Navigator.PopAsync();
-        }
+        //    if (!response.IsSuccess)
+        //    {
+        //        await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
+        //        return;
+        //    }
+        //    var modifyLoanDetail = (LoanDetailsRequest)response.Result;
+        //    MainViewModel.GetInstance().HistorysLoan.UpdateLoanDetailsInList(modifyLoanDetail);
+        //    this.isEnabled = true;
+        //    this.isRunning = false;
+        //    await App.Navigator.PopAsync();
+        //}
 
         public EditLoanDetailViewModel(LoanDetailsRequest loanDetail)
         {
