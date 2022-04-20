@@ -6,19 +6,13 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using System.Collections.Generic;
 using System.Linq;
+using System.Collections.ObjectModel;
 
 namespace MAV.UIForms.ViewModels
 {
     public class AddInternViewModel : BaseViewModel
     {
         private readonly ApiService apiService;
-        public string FirstName { get; set; }
-
-        public string LastName { get; set; }
-
-        public string Email { get; set; }
-
-        public string PhoneNumber { get; set; }
 
         private bool isRunning;
         public bool IsRunning
@@ -33,45 +27,63 @@ namespace MAV.UIForms.ViewModels
             get { return isEnabled; }
             set { this.SetValue(ref this.isEnabled, value); }
         }
+        private ObservableCollection<MAV.Common.Models.User> users;
+        private MAV.Common.Models.User user;
+
+
+        public MAV.Common.Models.User UserRequest
+        {
+            get => this.user;
+            set => this.SetValue(ref this.user, value);
+        }
+
+        public ObservableCollection<MAV.Common.Models.User> Users
+        {
+            get => this.users;
+            set => this.SetValue(ref this.users, value);
+        }
+
+        private async void LoadUsers()
+        {
+            var url = Application.Current.Resources["URLApi"].ToString();
+            var response = await this.apiService.GetListAsync<MAV.Common.Models.User>(
+                url,
+                "/api",
+                "/Account",
+                "bearer",
+                MainViewModel.GetInstance().Token.Token);
+
+            if (!response.IsSuccess)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
+                return;
+            }
+            var myUsers = ((List<MAV.Common.Models.User>)response.Result);
+            this.Users = new ObservableCollection<MAV.Common.Models.User>(myUsers);
+
+        }
+
+
         public ICommand SaveCommand { get { return new RelayCommand(Save); } }
 
         private async void Save()
         {
-            if (string.IsNullOrEmpty(FirstName))
+            if (this.UserRequest == null)
             {
-                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un nombre", "Aceptar");
-                return;
-            }
-            if (string.IsNullOrEmpty(LastName))
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un apellido", "Aceptar");
-                return;
-            }
-            if (string.IsNullOrEmpty(Email))
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un email", "Aceptar");
-                return;
-            }
-            if (string.IsNullOrEmpty(PhoneNumber))
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un numero de telefono", "Aceptar");
+                await Application.Current.MainPage.DisplayAlert("Error", "Debes seleccionar un usuario", "Aceptar");
                 return;
             }
 
             isEnabled = false;
             isRunning = true;
-            var intern = new InternRequest 
-            { 
-                FirstName = FirstName, 
-                LastName = LastName, 
-                Email = Email, 
-                PhoneNumber = PhoneNumber,
-                Password = "123456"
+            var intern = new MAV.Common.Models.InternRequest
+            {
+                Email = UserRequest.Email,
             };
             var url = Application.Current.Resources["URLApi"].ToString();
             var response = await this.apiService.PostAsync(url,
                 "/api",
-                "/Interns",
+                "/Interns/",
                 intern,
                 "bearer",
                 MainViewModel.GetInstance().Token.Token);
@@ -81,17 +93,19 @@ namespace MAV.UIForms.ViewModels
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
             }
-            var newIntern = (InternRequest)response.Result;
-            MainViewModel.GetInstance().Interns.AddInternToList(newIntern);
+
+            MainViewModel.GetInstance().Interns.LoadNewInterns();
             isEnabled = true;
             isRunning = false;
             await App.Navigator.PopAsync();
         }
 
+
         public AddInternViewModel()
         {
             this.apiService = new ApiService();
             isEnabled = true;
+            this.LoadUsers(); 
         }
     }
 }

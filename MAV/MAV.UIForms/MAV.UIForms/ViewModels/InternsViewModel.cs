@@ -49,6 +49,11 @@
             myIntern = (List<InternRequest>)response.Result;
             RefreshInternList();
         }
+
+        public void LoadNewInterns()
+        {
+            LoadInterns(); 
+        }
         private void RefreshInternList()
         {
             this.Interns = new ObservableCollection<InternItemViewModel>

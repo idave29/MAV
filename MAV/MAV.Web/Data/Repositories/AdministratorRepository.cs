@@ -38,6 +38,23 @@
                 .Include(t => t.User);
         }
 
+
+        public Administrator GetByIdAdministrator(int id)
+        {
+            var b = this.dataContext.Administrators.Include(o => o.User);
+            foreach (Administrator u in this.dataContext.Administrators.Include(m => m.User))
+            {
+                if (u != null)
+                {
+                    if (u.Id == id)
+                    {
+                        return u;
+                    }
+                }
+            }
+            return null;
+        }
+
         public IEnumerable<AdministratorRequest> GetAdministrators()
         {
             var a = this.dataContext.Administrators;
@@ -59,8 +76,29 @@
 
             return x;
         }
+        public IEnumerable<MAV.Common.Models.User> GetUsers()
+        {
+            var a = this.dataContext.Users;
 
-    public async Task<Administrator> GetByIdWithUserAsync(int id)
+            if (a == null)
+            {
+                return null;
+            }
+
+            var x = a.Select(ar => new MAV.Common.Models.User
+            {
+                Id = ar.Id,
+                FirstName = ar.FirstName,
+                LastName = ar.LastName,
+                PhoneNumber = ar.PhoneNumber,
+                Email = ar.Email,
+                //Password = ar.User.PasswordHash
+            }).ToList();
+
+            return x;
+        }
+
+        public async Task<Administrator> GetByIdWithUserAsync(int id)
         {
             return await this.dataContext.Administrators
                 .Include(t => t.User)

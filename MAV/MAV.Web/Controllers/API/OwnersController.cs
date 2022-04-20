@@ -44,95 +44,40 @@
                 return BadRequest(ModelState);
             }
 
-            var user = await this.userHelper.GetUserByEmailAsync(ownerRequest.Email);
+
+            var user = await userHelper.GetUserByEmailAsync(ownerRequest.Email);
+
+            //var admin = this.administratorRepository.GetByIdAdministrator(administrator.Id);
+
             if (user == null)
             {
-                user = new Data.Entities.User
-                {
-                    FirstName = ownerRequest.FirstName,
-                    LastName = ownerRequest.LastName,
-                    Email = ownerRequest.Email,
-                    UserName = ownerRequest.Email,
-                    PhoneNumber = ownerRequest.PhoneNumber
-                };
+                return BadRequest("Not valid owner.");
+            }
 
-                var result = await this.userHelper.AddUserAsync(user, ownerRequest.Password);
-
-                if (result != IdentityResult.Success)
+            foreach (Owner adminTemp in ownerRepository.GetOwnersWithUser())
+            {
+                if (adminTemp.User == user)
                 {
-                    return BadRequest("No se puede crear el usuario en la base de datos");
+                    return BadRequest("Ya existe este responsable");
                 }
-                await this.userHelper.AddUserToRoleAsync(user, "Owner");
             }
 
-            var emailOwner = new EmailRequest { Email = ownerRequest.Email };
-            var oldOwner = this.ownerRepository.GetOwnerWithMaterialsByEmail(emailOwner);
-            if (oldOwner != null)
+            var entityAdministrator = new MAV.Web.Data.Entities.Owner
             {
-                return BadRequest("Ya existe el usuario");
-            }
 
-            var entityOwner = new Owner
-            {
                 User = user
             };
 
-            var newOwner = await this.ownerRepository.CreateAsync(entityOwner);
-            return Ok(newOwner);
+            await userHelper.AddUserToRoleAsync(user, "Responsable");
+            //if (entityMaterial == null)
+            //{
+            //    return BadRequest("entityMaterial not found");
+            //}
+            //var newMaterial = await this.materialRepository.CreateAsync(entityMaterial);
+            var newAdmin = await this.ownerRepository.CreateAsync(entityAdministrator);
 
-        }
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutOwner([FromRoute] int id, [FromBody] OwnerRequest owner)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            if (id != owner.Id)
-            {
-                return BadRequest();
-            }
-            var user = await this.userHelper.GetUserByEmailAsync(owner.Email);
-            if (user == null)
-            {
-                return BadRequest("Id not found");
-            }
+            return Ok(newAdmin);
 
-            user.FirstName = owner.FirstName;
-            user.LastName = owner.LastName;
-            user.Email = owner.Email;
-            user.PhoneNumber = owner.PhoneNumber;
-
-            if (owner.OldPassword != owner.Password)
-            {
-                var pass = await this.userHelper.ChangePasswordAsync(user, owner.OldPassword, owner.Password);
-                if (!pass.Succeeded)
-                {
-                    return BadRequest("No coincide la contraseña anterior, intente de nuevo");
-                }
-            }
-
-            var result = await this.userHelper.UpdateUserAsync(user);
-
-            return Ok(result);
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteOwner([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var oldOwner = await this.ownerRepository.GetByIdAsync(id);
-            if (oldOwner == null)
-            {
-                return BadRequest("Id not found");
-            }
-
-            await this.ownerRepository.DeleteAsync(oldOwner);
-            return Ok(oldOwner);
         }
     }
 }

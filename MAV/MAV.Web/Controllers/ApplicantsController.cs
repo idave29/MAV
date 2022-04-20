@@ -155,7 +155,8 @@ namespace MAV.Web.Controllers
             //    await this.loanRepository.DeleteAsync(loanUser);
 
             await userHelper.RemoveUserFromRoleAsync(applicant.User, "Solicitante");
-            await this.applicantRepository.DeleteAsync(applicant);
+            //await this.applicantRepository.DeleteAsync(applicant);
+            //_context.Applicants.Remove(applicant);
             //await this.userHelper.DeleteUserAsync(user);
             return RedirectToAction(nameof(Index));
         }

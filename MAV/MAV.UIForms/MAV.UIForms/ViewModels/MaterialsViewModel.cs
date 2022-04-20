@@ -69,8 +69,11 @@
                 Function = m.Function,
             }).OrderBy(m => m.Name).ToList());
         }
-    
 
+        public void LoadEditMaterials()
+        {
+            LoadMaterials(); 
+        }
         public void AddMaterialToList(MaterialResponse material)
         {
             this.myMaterials.Add(material);

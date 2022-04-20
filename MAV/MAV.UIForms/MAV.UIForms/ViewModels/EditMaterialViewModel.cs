@@ -119,7 +119,10 @@ namespace MAV.UIForms.ViewModels
             }
             var myStatuses = ((List<StatusRequest>)response.Result);
             this.Statuses = new ObservableCollection<StatusRequest>(myStatuses);
-
+            if (!string.IsNullOrEmpty(Material.Status))
+            {
+                StatusRequest = Statuses.FirstOrDefault(pt => pt.Name == Material.Status);
+            }
         }
 
         private async void LoadMaterialTypes()
@@ -139,6 +142,10 @@ namespace MAV.UIForms.ViewModels
             }
             var myMaterialTypes = ((List<MaterialTypeRequest>)response.Result);
             this.MaterialTypes = new ObservableCollection<MaterialTypeRequest>(myMaterialTypes);
+            if (!string.IsNullOrEmpty(Material.MaterialType))
+            {
+                MaterialTypeRequest = MaterialTypes.FirstOrDefault(pt => pt.Name == Material.MaterialType);
+            }
 
         }
 
@@ -159,6 +166,10 @@ namespace MAV.UIForms.ViewModels
             }
             var myOwners = ((List<OwnerRequest>)response.Result);
             this.Owners = new ObservableCollection<OwnerRequest>(myOwners);
+            if (!string.IsNullOrEmpty(Material.Owner))
+            {
+                OwnerRequest = Owners.FirstOrDefault(pt => pt.Email == Material.Owner);
+            }
 
         }
         public ICommand SaveCommand { get { return new RelayCommand(Save); } }
@@ -172,12 +183,12 @@ namespace MAV.UIForms.ViewModels
 
             var source = await Application.Current.MainPage.DisplayActionSheet(
                 "¿Donde desea tomar la foto?",
-                "Cancel",
+                "Cancelar",
                 null,
                 "Desde la galeria",
                 "Desde la cámara");
 
-            if (source == "Cancel")
+            if (source == "Cancelar")
             {
                 this.file = null;
                 return;
@@ -339,12 +350,10 @@ namespace MAV.UIForms.ViewModels
             }
 
 
-            var materialResp = JsonConvert.DeserializeObject<MaterialResponse>(response.Message);
+            //var materialResp = JsonConvert.DeserializeObject<MaterialResponse>(response.Message);
             //var newMaterial = (MaterialResponse)response.Result;
-            var modifyMaterial = (MaterialResponse)materialResp;
-
-            //var modifyMaterial = (MaterialResponse)response.Result;
-            MainViewModel.GetInstance().Materials.UpdateMaterialInList(modifyMaterial);
+            //var newMaterial = (MaterialResponse)materialResp;
+            MainViewModel.GetInstance().Materials.LoadEditMaterials(); 
             this.isEnabled = true;
             this.isRunning = false;
             await App.Navigator.PopAsync();

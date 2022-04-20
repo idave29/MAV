@@ -50,6 +50,11 @@
             RefreshApplicantList();
 
         }
+
+        public void LoadNewApplicants()
+        {
+            LoadApplicants();
+        }
         public void RefreshApplicantList()
         {
             this.Applicants = new ObservableCollection<ApplicantItemViewModel>(myApplicants.Select(a => new ApplicantItemViewModel

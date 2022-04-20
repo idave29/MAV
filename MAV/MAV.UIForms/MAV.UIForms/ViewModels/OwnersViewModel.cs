@@ -50,7 +50,10 @@ namespace MAV.UIForms.ViewModels
             myOwners = (List<OwnerRequest>)response.Result;
             RefreshOwnersList(); 
         }
-
+        public void LoadNewOwners()
+        {
+            LoadOwners(); 
+        }
         private void RefreshOwnersList()
         {
             this.Owners = new ObservableCollection<OwnerItemViewModel>(myOwners.Select(ow => new OwnerItemViewModel

@@ -12,18 +12,10 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Label Text="FirstName" Grid.Column="0" Grid.Row="0" VerticalOptions="Center"></Label>
-                    <Entry Grid.Column="1" Grid.Row="0" Keyboard="Text" Placeholder="Introduce el nombre" Text="{Binding FirstName}"></Entry>
-
-                    <Label Text="LastName" Grid.Column="0" Grid.Row="1" VerticalOptions="Center"></Label>
-                    <Entry Grid.Column="1" Grid.Row="1" Keyboard="Text" Placeholder="Introduce el apellido" Text="{Binding LastName}"></Entry>
-
-                    <Label Text="Email" Grid.Column="0" Grid.Row="2" VerticalOptions="Center"></Label>
-                    <Entry Grid.Column="1" Grid.Row="2" Keyboard="Text" Placeholder="Introduce el email" Text="{Binding Email}"></Entry>
-
-                    <Label Text="PhoneNumber" Grid.Column="0" Grid.Row="3" VerticalOptions="Center"></Label>
-                    <Entry Grid.Column="1" Grid.Row="3" Keyboard="Text" Placeholder="Introduce el niumero" Text="{Binding PhoneNumber}"></Entry>
-
+                    
+                    <Label Text="USERS" Grid.Column="0" Grid.Row="6" VerticalOptions="Center"></Label>
+                    <Picker Grid.Column="1" Grid.Row="6" Title="Selecciona un USER" 
+                                ItemDisplayBinding="{Binding Email}" ItemsSource="{Binding Users}" SelectedItem="{Binding UserRequest}"/>
                 </Grid>
                 <ActivityIndicator IsRunning="{Binding IsRunning}" VerticalOptions="CenterAndExpand">
                 </ActivityIndicator>

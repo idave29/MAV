@@ -1,6 +1,7 @@
 ﻿namespace MAV.Web.Controllers.API
 {
     using MAV.Common.Models;
+    using MAV.Web.Data.Entities;
     using MAV.Web.Data.Repositories;
     using MAV.Web.Helpers;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -45,116 +46,39 @@
                 return BadRequest(ModelState);
             }
 
-            var applicantType = this.applicantTypeRepository.GetApplicantTypeByName(applicant.ApplicantType);
-            if (applicantType == null)
-            {
-                return BadRequest("applicantType not found");
-            }
 
-            var user = await this.userHelper.GetUserByEmailAsync(applicant.Email);
+            var user = await userHelper.GetUserByEmailAsync(applicant.Email);
+
+            //var admin = this.administratorRepository.GetByIdAdministrator(administrator.Id);
+
             if (user == null)
             {
-                user = new Data.Entities.User
-                {
-                    FirstName = applicant.FirstName,
-                    LastName = applicant.LastName,
-                    Email = applicant.Email,
-                    UserName = applicant.Email,
-                    PhoneNumber = applicant.PhoneNumber
-                };
+                return BadRequest("Not valid applicant.");
+            }
 
-                var result = await this.userHelper.AddUserAsync(user, applicant.Password);
-
-                if (result != IdentityResult.Success)
+            foreach (Applicant adminTemp in applicantRepository.GetApplicantsWithUser())
+            {
+                if (adminTemp.User == user)
                 {
-                    return BadRequest("No se puede crear el usuario en la base de datos");
+                    return BadRequest("Ya existe este solicitante");
                 }
-                await this.userHelper.AddUserToRoleAsync(user, "Applicant");
             }
-            var emailApplicant = new EmailRequest { Email = applicant.Email };
-            var oldApplicant = this.applicantRepository.GetApplicantByEmail(emailApplicant);
-            if (oldApplicant != null)
-            {
-                return BadRequest("Ya existe el usuario");
-            }
-            var entityApplicant = new MAV.Web.Data.Entities.Applicant
-            {
-                User = user,
-                ApplicantType = applicantType
 
+            var entityAdministrator = new MAV.Web.Data.Entities.Applicant
+            {
+
+                User = user
             };
-            //if (entityApplicant == null)
+
+            await userHelper.AddUserToRoleAsync(user, "Solicitante");
+            //if (entityMaterial == null)
             //{
-            //    return BadRequest("entityApplicant not found");
+            //    return BadRequest("entityMaterial not found");
             //}
-            var newApplicant = await this.applicantRepository.CreateAsync(entityApplicant);
-            return Ok(newApplicant);
-        }
+            //var newMaterial = await this.materialRepository.CreateAsync(entityMaterial);
+            var newAdmin = await this.applicantRepository.CreateAsync(entityAdministrator);
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutApplicant([FromRoute] int id, [FromBody] ApplicantRequest applicant)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            if (id != applicant.Id)
-            {
-                return BadRequest();
-            }
-            var applicantType = this.applicantTypeRepository.GetApplicantTypeByName(applicant.ApplicantType);
-            if (applicantType == null)
-            {
-                return BadRequest("applicanttype not found");
-            }
-            var user = await this.userHelper.GetUserByEmailAsync(applicant.Email);
-            if (user == null)
-            {
-                return BadRequest("Id not found");
-            }
-            var oldApplicant = await this.applicantRepository.GetByIdAsync(id);
-
-            user.FirstName = applicant.FirstName;
-            user.LastName = applicant.LastName;
-            user.Email = applicant.Email;
-            user.PhoneNumber = applicant.PhoneNumber;
-
-            if (applicant.OldPassword != applicant.Password)
-            {
-                var pass = await this.userHelper.ChangePasswordAsync(user, applicant.OldPassword, applicant.Password);
-                if (!pass.Succeeded)
-                {
-                    return BadRequest("No coincide la contraseña anterior, intente de nuevo");
-                }
-            }
-            //else
-            //    return BadRequest("Es la misma contraseña que la anterior");
-
-            oldApplicant.User = user;
-            oldApplicant.ApplicantType = applicantType;
-
-            var result = await this.userHelper.UpdateUserAsync(user);
-
-            return Ok(result);
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteApplicant([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            var oldApplicant = await this.applicantRepository.GetByIdAsync(id);
-
-            if (oldApplicant == null)
-            {
-                return BadRequest("Id not found");
-            }
-            ;
-            await this.applicantRepository.DeleteAsync(oldApplicant);
-            return Ok(oldApplicant);
-
-        }
+            return Ok(newAdmin);
+        }     
     }
 }

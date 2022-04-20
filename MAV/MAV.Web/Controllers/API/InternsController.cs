@@ -43,93 +43,39 @@
                 return BadRequest(ModelState);
             }
 
-            var user = await this.userHelper.GetUserByEmailAsync(intern.Email);
+
+            var user = await userHelper.GetUserByEmailAsync(intern.Email);
+
+            //var admin = this.administratorRepository.GetByIdAdministrator(administrator.Id);
+
             if (user == null)
             {
-                user = new Data.Entities.User
-                {
-                    FirstName = intern.FirstName,
-                    LastName = intern.LastName,
-                    Email = intern.Email,
-                    UserName = intern.Email,
-                    PhoneNumber = intern.PhoneNumber
-                };
+                return BadRequest("Not valid intern.");
+            }
 
-                var result = await this.userHelper.AddUserAsync(user, intern.Password);
-
-                if (result != IdentityResult.Success)
+            foreach (Intern adminTemp in internRepository.GetInternsWithUser())
+            {
+                if (adminTemp.User == user)
                 {
-                    return BadRequest("No se puede crear el usuario en la base de datos");
+                    return BadRequest("Ya existe este becario");
                 }
-                await this.userHelper.AddUserToRoleAsync(user, "Intern");
             }
 
-            var emailIntern = new EmailRequest { Email = intern.Email };
-            var oldIntern = this.internRepository.GetInternWithUserByEmail(emailIntern);
-            if (oldIntern != null)
+            var entityAdministrator = new MAV.Web.Data.Entities.Intern
             {
-                return BadRequest("Ya existe el usuario");
-            }
 
-            var entityIntern = new Intern
-            {
                 User = user
             };
 
-            var newIntern = await this.internRepository.CreateAsync(entityIntern);
-            return Ok(newIntern);
-        }
+            await userHelper.AddUserToRoleAsync(user, "Becario");
+            //if (entityMaterial == null)
+            //{
+            //    return BadRequest("entityMaterial not found");
+            //}
+            //var newMaterial = await this.materialRepository.CreateAsync(entityMaterial);
+            var newAdmin = await this.internRepository.CreateAsync(entityAdministrator);
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutIntern([FromRoute] int id, [FromBody] InternRequest intern)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            if (id != intern.Id)
-            {
-                return BadRequest();
-            }
-            var oldIntern = await this.userHelper.GetUserByEmailAsync(intern.Email);
-            if (oldIntern == null)
-            {
-                return BadRequest("Id not found");
-            }
-
-            oldIntern.FirstName = intern.FirstName;
-            oldIntern.LastName = intern.LastName;
-            oldIntern.Email = intern.Email;
-            oldIntern.PhoneNumber = intern.PhoneNumber;
-
-            if (intern.OldPassword != intern.Password)
-            {
-                var pass = await this.userHelper.ChangePasswordAsync(oldIntern, intern.OldPassword, intern.Password);
-                if (!pass.Succeeded)
-                {
-                    return BadRequest("No coincide la contraseña anterior, intente de nuevo");
-                }
-            }
-            var result = await this.userHelper.UpdateUserAsync(oldIntern);
-
-            return Ok(result);
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteIntern([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            var oldIntern = await this.internRepository.GetByIdAsync(id);
-            if (oldIntern == null)
-            {
-                return BadRequest("Id not found");
-            }
-
-            await this.internRepository.DeleteAsync(oldIntern);
-            return Ok(oldIntern);
+            return Ok(newAdmin);
         }
     }
 }

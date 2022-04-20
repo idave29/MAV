@@ -22,6 +22,7 @@
 
         AdministratorRequest GetAdministratorWithUserByEmail(EmailRequest email);
 
+        Administrator GetByIdAdministrator(int id);
         IEnumerable<AdministratorRequest> GetAdministratorsWithUserByName(string name);
     }
 }

@@ -14,7 +14,10 @@
                         <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
                     <StackLayout>
-                        <Button Text="Subir imagen" Grid.Row="0" HorizontalOptions="Center" VerticalOptions="Center" Command="{Binding ChangeImageCommand}">
+                        <Button Text="Subir imagen" Grid.Row="0" HorizontalOptions="Center" 
+                                VerticalOptions="Center" Command="{Binding ChangeImageCommand}"
+                                Background="#C1B9F7" 
+                                TextColor="White" CornerRadius="20" >
                         </Button>
                         <Label Text="Foto" Grid.Column="0" Grid.Row="1" VerticalOptions="Center"></Label>
                         <Image Grid.Row="1" Grid.Column="1" HorizontalOptions="Center" VerticalOptions="Center" Source="{Binding ImageSource}"></Image>

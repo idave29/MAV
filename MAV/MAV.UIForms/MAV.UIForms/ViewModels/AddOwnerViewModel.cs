@@ -4,21 +4,13 @@
     using MAV.Common.Models;
     using MAV.Common.Services;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Windows.Input;
     using Xamarin.Forms;
 
     public class AddOwnerViewModel : BaseViewModel
     {
         private readonly ApiService apiService;
-        public string FirstName { get; set; }
-
-        public string LastName { get; set; }
-
-        public string Email { get; set; }
-
-        public string PhoneNumber { get; set; }
-
-        //public ICollection<MaterialRequest> Materials { get; set; }
 
         private bool isRunning;
         public bool IsRunning
@@ -33,46 +25,63 @@
             get { return isEnabled; }
             set { this.SetValue(ref this.isEnabled, value); }
         }
+        private ObservableCollection<MAV.Common.Models.User> users;
+        private MAV.Common.Models.User user;
+
+
+        public MAV.Common.Models.User UserRequest
+        {
+            get => this.user;
+            set => this.SetValue(ref this.user, value);
+        }
+
+        public ObservableCollection<MAV.Common.Models.User> Users
+        {
+            get => this.users;
+            set => this.SetValue(ref this.users, value);
+        }
+
+        private async void LoadUsers()
+        {
+            var url = Application.Current.Resources["URLApi"].ToString();
+            var response = await this.apiService.GetListAsync<MAV.Common.Models.User>(
+                url,
+                "/api",
+                "/Account",
+                "bearer",
+                MainViewModel.GetInstance().Token.Token);
+
+            if (!response.IsSuccess)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
+                return;
+            }
+            var myUsers = ((List<MAV.Common.Models.User>)response.Result);
+            this.Users = new ObservableCollection<MAV.Common.Models.User>(myUsers);
+
+        }
+
 
         public ICommand SaveCommand { get { return new RelayCommand(Save); } }
 
         private async void Save()
         {
-            if (string.IsNullOrEmpty(FirstName))
+            if (this.UserRequest == null)
             {
-                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un nombre", "Aceptar");
-                return;
-            }
-            if (string.IsNullOrEmpty(LastName))
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un apellido", "Aceptar");
-                return;
-            }
-            if (string.IsNullOrEmpty(Email))
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un email", "Aceptar");
-                return;
-            }
-            if (string.IsNullOrEmpty(PhoneNumber))
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir un numero de telefono", "Aceptar");
+                await Application.Current.MainPage.DisplayAlert("Error", "Debes seleccionar un usuario", "Aceptar");
                 return;
             }
 
             isEnabled = false;
             isRunning = true;
-            var owner = new OwnerRequest 
-            { 
-                FirstName = FirstName, 
-                LastName = LastName, 
-                Email = Email, 
-                PhoneNumber = PhoneNumber,
-                Password = "123456"
+            var owner = new MAV.Common.Models.OwnerRequest
+            {
+                Email = UserRequest.Email,
             };
             var url = Application.Current.Resources["URLApi"].ToString();
             var response = await this.apiService.PostAsync(url,
                 "/api",
-                "/Owners",
+                "/Owners/",
                 owner,
                 "bearer",
                 MainViewModel.GetInstance().Token.Token);
@@ -82,16 +91,17 @@
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
             }
-            var newOwner = (OwnerRequest)response.Result;
-            MainViewModel.GetInstance().Owners.AddOwnerToList(newOwner);
+            MainViewModel.GetInstance().Owners.LoadNewOwners();
             isEnabled = true;
             isRunning = false;
             await App.Navigator.PopAsync();
         }
+
         public AddOwnerViewModel()
         {
             this.apiService = new ApiService();
             isEnabled = true;
+            this.LoadUsers();
         }
     }
 }

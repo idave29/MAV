@@ -32,18 +32,6 @@
                 </Grid>
                 <ActivityIndicator IsRunning="{Binding IsRunning}" VerticalOptions="CenterAndExpand">
                 </ActivityIndicator>
-                <Button Text="Save" 
-                        Command="{Binding SaveCommand}"
-                        IsEnabled="{Binding IsEnabled}"
-                        Background="#67CB19" 
-                        TextColor="White" HorizontalOptions="Fill" CornerRadius="20" >
-                </Button>
-                <Button Text="Delete" 
-                        Command="{Binding DeleteCommand}"
-                        IsEnabled="{Binding IsEnabled}"
-                        Background="red" 
-                        TextColor="White" HorizontalOptions="Fill" CornerRadius="20" >
-                </Button>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

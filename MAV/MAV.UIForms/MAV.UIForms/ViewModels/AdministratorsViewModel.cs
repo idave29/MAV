@@ -51,6 +51,10 @@
             RefreshAdministratorsList();
         }
 
+        public void LoadNewAdministrators()
+        {
+            LoadAdministrators(); 
+        }
         private void RefreshAdministratorsList()
         {
             this.Administrators = new ObservableCollection<AdministratorItemViewModel>

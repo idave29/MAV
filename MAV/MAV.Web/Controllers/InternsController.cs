@@ -148,7 +148,9 @@ namespace MAV.Web.Controllers
             ////Agregar material para cambiarle el estatus y el loan detail se convierta en null
 
             await userHelper.RemoveUserFromRoleAsync(intern.User, "Becario");
-            await this.internRepository.DeleteAsync(intern);
+            //await this.internRepository.DeleteAsync(intern);
+            _context.Interns.Remove(intern);
+            await _context.SaveChangesAsync();
             //await this.userHelper.DeleteUserAsync(user);
             return RedirectToAction(nameof(Index));
         }

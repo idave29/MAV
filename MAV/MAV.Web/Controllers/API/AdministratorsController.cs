@@ -42,98 +42,77 @@
                 return BadRequest(ModelState);
             }
 
-            var user = await this.userHelper.GetUserByEmailAsync(administrator.Email);
+
+            var user = await userHelper.GetUserByEmailAsync(administrator.Email);
+
+            //var admin = this.administratorRepository.GetByIdAdministrator(administrator.Id);
+
             if (user == null)
             {
-                user = new Data.Entities.User
-                {
-                    FirstName = administrator.FirstName,
-                    LastName = administrator.LastName,
-                    Email = administrator.Email,
-                    UserName = administrator.Email,
-                    PhoneNumber = administrator.PhoneNumber
-                };
+                return BadRequest("Not valid admin.");
+            }
 
-                var result = await this.userHelper.AddUserAsync(user, administrator.Password);
-
-                if (result != IdentityResult.Success)
+            foreach (Administrator adminTemp in administratorRepository.GetAdministratorsWithUser())
+            {
+                if (adminTemp.User == user)
                 {
-                    return BadRequest("No se puede crear el usuario en la base de datos");
+                    return BadRequest("Ya existe este admin");
                 }
-                await this.userHelper.AddUserToRoleAsync(user, "Admininstrator");
             }
 
-            var emailAdmin = new EmailRequest { Email = administrator.Email };
-            var oldAdministrator = this.administratorRepository.GetAdministratorWithUserByEmail(emailAdmin);
-            if (oldAdministrator != null)
+            var entityAdministrator = new MAV.Web.Data.Entities.Administrator
             {
-                return BadRequest("Ya existe el usuario");
-            }
 
-            var entityAdministrators = new Administrator
-            {
                 User = user
             };
 
-            var newAdministrator = await this.administratorRepository.CreateAsync(entityAdministrators);
-            return Ok(newAdministrator);
-        }
+            await userHelper.AddUserToRoleAsync(user, "Administrador");
+            //if (entityMaterial == null)
+            //{
+            //    return BadRequest("entityMaterial not found");
+            //}
+            //var newMaterial = await this.materialRepository.CreateAsync(entityMaterial);
+            var newAdmin = await this.administratorRepository.CreateAsync(entityAdministrator);
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutAdministrator([FromRoute] int id, [FromBody] AdministratorRequest administrator)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            if (id != administrator.Id)
-            {
-                return BadRequest();
-            }
-            var user = await this.userHelper.GetUserByEmailAsync(administrator.Email);
-            if (user == null)
-            {
-                return BadRequest("Id not found");
-            }
+            return Ok(newAdmin);
 
-            user.FirstName = administrator.FirstName;
-            user.LastName = administrator.LastName;
-            user.Email = administrator.Email;
-            user.PhoneNumber = administrator.PhoneNumber;
-            
-            if (administrator.OldPassword != administrator.Password)
-            {
-                var pass = await this.userHelper.ChangePasswordAsync(user, administrator.OldPassword, administrator.Password);
-                if (!pass.Succeeded)
-                {
-                    return BadRequest("No coincide la contraseña anterior, intente de nuevo");
-                }
-            }
-            //else
-            //    return BadRequest("Es la misma contraseña que la anterior");
 
-            var result = await this.userHelper.UpdateUserAsync(user);
-            
-            return Ok(result);
-        }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAdministrator([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            var oldAdministrator = await this.administratorRepository.GetByIdAsync(id);
-            
-            if (oldAdministrator == null)
-            {
-                return BadRequest("Id not found");
-            }
-            ;
-            await this.administratorRepository.DeleteAsync(oldAdministrator);
-            return Ok(oldAdministrator);
+            //var user = await this.userHelper.GetUserByEmailAsync(administrator.Email);
+            //if (user == null)
+            //{
+            //    user = new Data.Entities.User
+            //    {
+            //        FirstName = administrator.FirstName,
+            //        LastName = administrator.LastName,
+            //        Email = administrator.Email,
+            //        UserName = administrator.Email,
+            //        PhoneNumber = administrator.PhoneNumber
+            //    };
 
+            //    var result = await this.userHelper.AddUserAsync(user, administrator.Password);
+
+            //    if (result != IdentityResult.Success)
+            //    {
+            //        return BadRequest("No se puede crear el usuario en la base de datos");
+            //    }
+            //    await this.userHelper.AddUserToRoleAsync(user, "Administrador");
+            //}
+
+            //var emailAdmin = new EmailRequest { Email = administrator.Email };
+            //var oldAdministrator = this.administratorRepository.GetAdministratorWithUserByEmail(emailAdmin);
+            //if (oldAdministrator != null)
+            //{
+            //    return BadRequest("Ya existe el usuario");
+            //}
+
+            //var entityAdministrators = new Administrator
+            //{
+            //    User = user
+            //};
+
+            //var newAdministrator = await this.administratorRepository.CreateAsync(entityAdministrators);
+            //return Ok(newAdministrator);
         }
     }
 }
