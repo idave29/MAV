@@ -102,49 +102,49 @@ namespace MAV.Web.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "Responsable, Administrador")]
-        // GET: Owners/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new NotFoundViewResult("OwnersNotFound");
-            }
+        //[Authorize(Roles = "Responsable, Administrador")]
+        //// GET: Owners/Delete/5
+        //public async Task<IActionResult> Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new NotFoundViewResult("OwnersNotFound");
+        //    }
 
-            var owner = await this.ownerRepository.GetByIdOwnerWithMaterialsAsync(id.Value);
+        //    var owner = await this.ownerRepository.GetByIdOwnerWithMaterialsAsync(id.Value);
 
-            if (owner == null)
-            {
-                return new NotFoundViewResult("OwnersNotFound");
-            }
+        //    if (owner == null)
+        //    {
+        //        return new NotFoundViewResult("OwnersNotFound");
+        //    }
 
-            if (owner.Materials.Count != 0)
-            {
-                ModelState.AddModelError(string.Empty, "This user has materials, delete them first before deleting this user");
-                return RedirectToAction("Index", "Owners");
-            }
+        //    if (owner.Materials.Count != 0)
+        //    {
+        //        ModelState.AddModelError(string.Empty, "This user has materials, delete them first before deleting this user");
+        //        return RedirectToAction("Index", "Owners");
+        //    }
 
-            return View(owner);
-        }
+        //    return View(owner);
+        //}
 
-        [Authorize(Roles = "Responsable, Administrador")]
-        // POST: Owners/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var owner = await this.ownerRepository.GetByIdOwnerWithMaterialsAsync(id);
+        //[Authorize(Roles = "Responsable, Administrador")]
+        //// POST: Owners/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    var owner = await this.ownerRepository.GetByIdOwnerWithMaterialsAsync(id);
 
-            if (owner.User == null)
-            {
-                return new NotFoundViewResult("OwnersNotFound");
-            }
+        //    if (owner.User == null)
+        //    {
+        //        return new NotFoundViewResult("OwnersNotFound");
+        //    }
 
-            await userHelper.RemoveUserFromRoleAsync(owner.User, "Responsable");
-            await this.ownerRepository.DeleteAsync(owner);
-            //await this.userHelper.DeleteUserAsync(user);
-            return RedirectToAction(nameof(Index));
-        }
+        //    await userHelper.RemoveUserFromRoleAsync(owner.User, "Responsable");
+        //    await this.ownerRepository.DeleteAsync(owner);
+        //    //await this.userHelper.DeleteUserAsync(user);
+        //    return RedirectToAction(nameof(Index));
+        //}
 
         private bool OwnerExists(int id)
         {

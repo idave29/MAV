@@ -144,7 +144,7 @@ namespace MAV.Web.Helpers
 
         public IEnumerable<SelectListItem> GetComboOwners()
         {
-            var list = dataContext.Owners.Select(
+            var list = dataContext.Owners.Where(a => a.User.Deleted == false).Select(
                 c => new SelectListItem
                 {
                     Text = c.User.FullName,

@@ -133,41 +133,41 @@ namespace MAV.Web.Controllers
         }
 
 
-        [Authorize(Roles = "Administrador")]
-        // GET: Administrators/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new NotFoundViewResult("AdministratorNotFound");
-            }
+        //[Authorize(Roles = "Administrador")]
+        //// GET: Administrators/Delete/5
+        //public async Task<IActionResult> Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new NotFoundViewResult("AdministratorNotFound");
+        //    }
 
-            var administrator = await this.administratorRepository.GetByIdWithUserAsync(id.Value);
-            if (administrator.User == null)
-            {
-                return new NotFoundViewResult("AdministratorNotFound");
-            }
+        //    var administrator = await this.administratorRepository.GetByIdWithUserAsync(id.Value);
+        //    if (administrator.User == null)
+        //    {
+        //        return new NotFoundViewResult("AdministratorNotFound");
+        //    }
 
-            return View(administrator);
-        }
+        //    return View(administrator);
+        //}
 
-        [Authorize(Roles = "Administrador")]
-        // POST: Administrators/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var administrator = await this.administratorRepository.GetByIdWithUserAsync(id);
-            //var user = await this.userHelper.GetUserByIdAsync(administrator.User.Id);
-            if (administrator.User == null)
-            {
-                return new NotFoundViewResult("AdministratorNotFound");
-            }
-            await userHelper.RemoveUserFromRoleAsync(administrator.User, "Administrador");
-            await this.administratorRepository.DeleteAsync(administrator);
-            //await this.userHelper.DeleteUserAsync(user);
-            return RedirectToAction(nameof(Index));
-        }
+        //[Authorize(Roles = "Administrador")]
+        //// POST: Administrators/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    var administrator = await this.administratorRepository.GetByIdWithUserAsync(id);
+        //    //var user = await this.userHelper.GetUserByIdAsync(administrator.User.Id);
+        //    if (administrator.User == null)
+        //    {
+        //        return new NotFoundViewResult("AdministratorNotFound");
+        //    }
+        //    await userHelper.RemoveUserFromRoleAsync(administrator.User, "Administrador");
+        //    await this.administratorRepository.DeleteAsync(administrator);
+        //    //await this.userHelper.DeleteUserAsync(user);
+        //    return RedirectToAction(nameof(Index));
+        //}
 
         private bool AdministratorExists(int id)
         {

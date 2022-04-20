@@ -110,56 +110,56 @@ namespace MAV.Web.Controllers
         }
 
         // GET: Applicants/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new NotFoundViewResult("ApplicantNotFound");
-            }
+        //public async Task<IActionResult> Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new NotFoundViewResult("ApplicantNotFound");
+        //    }
 
-            var applicant = await this.applicantRepository.GetByIdWithUserAsync(id.Value);
-            if (applicant == null)
-            {
-                return new NotFoundViewResult("ApplicantNotFound");
-            }
+        //    var applicant = await this.applicantRepository.GetByIdWithUserAsync(id.Value);
+        //    if (applicant == null)
+        //    {
+        //        return new NotFoundViewResult("ApplicantNotFound");
+        //    }
 
-            if (applicant.Loans.Count != 0)
-            {
-                ModelState.AddModelError(string.Empty, "This user has loans, delete them first before deleting this user");
-                return RedirectToAction("Index", "Applicants");
-            }
+        //    if (applicant.Loans.Count != 0)
+        //    {
+        //        ModelState.AddModelError(string.Empty, "This user has loans, delete them first before deleting this user");
+        //        return RedirectToAction("Index", "Applicants");
+        //    }
 
-            return View(applicant);
-        }
+        //    return View(applicant);
+        //}
 
-        // POST: Applicants/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var applicant = await this.applicantRepository.GetByIdWithUserAsync(id);
-            //var user = await this.userHelper.GetUserByIdAsync(applicant.User.Id);
-            if (applicant.User == null)
-            {
-                return new NotFoundViewResult("ApplicantNotFound");
-            }
+        //// POST: Applicants/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    var applicant = await this.applicantRepository.GetByIdWithUserAsync(id);
+        //    //var user = await this.userHelper.GetUserByIdAsync(applicant.User.Id);
+        //    if (applicant.User == null)
+        //    {
+        //        return new NotFoundViewResult("ApplicantNotFound");
+        //    }
 
-            //var loanDetailUser = await this.loanDetailRepository.GetByIdAppOrInternLoanDetailsAsync(applicant.User.Id);
-            //if (loanDetailUser != null)
-            //    await this.loanDetailRepository.DeleteAsync(loanDetailUser);
+        //    //var loanDetailUser = await this.loanDetailRepository.GetByIdAppOrInternLoanDetailsAsync(applicant.User.Id);
+        //    //if (loanDetailUser != null)
+        //    //    await this.loanDetailRepository.DeleteAsync(loanDetailUser);
 
-            ////Agregar material para cambiarle el estatus y el loan detail se convierta en null
+        //    ////Agregar material para cambiarle el estatus y el loan detail se convierta en null
 
-            //var loanUser = await this.loanRepository.GetByIdAppOrInternLoansAsync(applicant.User.Id);
-            //if (loanUser != null)
-            //    await this.loanRepository.DeleteAsync(loanUser);
+        //    //var loanUser = await this.loanRepository.GetByIdAppOrInternLoansAsync(applicant.User.Id);
+        //    //if (loanUser != null)
+        //    //    await this.loanRepository.DeleteAsync(loanUser);
 
-            await userHelper.RemoveUserFromRoleAsync(applicant.User, "Solicitante");
-            //await this.applicantRepository.DeleteAsync(applicant);
-            //_context.Applicants.Remove(applicant);
-            //await this.userHelper.DeleteUserAsync(user);
-            return RedirectToAction(nameof(Index));
-        }
+        //    await userHelper.RemoveUserFromRoleAsync(applicant.User, "Solicitante");
+        //    //await this.applicantRepository.DeleteAsync(applicant);
+        //    //_context.Applicants.Remove(applicant);
+        //    //await this.userHelper.DeleteUserAsync(user);
+        //    return RedirectToAction(nameof(Index));
+        //}
 
         private bool ApplicantExists(int id)
         {

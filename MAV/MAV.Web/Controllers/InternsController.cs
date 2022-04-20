@@ -106,54 +106,54 @@ namespace MAV.Web.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "Responsable, Administrador")]
-        // GET: Interns/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new NotFoundViewResult("InternsNotFound");
-            }
+        //[Authorize(Roles = "Responsable, Administrador")]
+        //// GET: Interns/Delete/5
+        //public async Task<IActionResult> Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new NotFoundViewResult("InternsNotFound");
+        //    }
 
-            var intern = await this.internRepository.GetByIdWithUserAsync(id.Value);
-            if (intern == null)
-            {
-                return new NotFoundViewResult("InternsNotFound");
-            }
+        //    var intern = await this.internRepository.GetByIdWithUserAsync(id.Value);
+        //    if (intern == null)
+        //    {
+        //        return new NotFoundViewResult("InternsNotFound");
+        //    }
 
-            return View(intern);
-        }
+        //    return View(intern);
+        //}
 
         // POST: Interns/Delete/5
-        [Authorize(Roles = "Responsable, Administrador")]
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var intern = await this.internRepository.GetByIdWithUserAsync(id);
-            //var user = await this.userHelper.GetUserByIdAsync(intern.User.Id);
-            if (intern.User == null)
-            {
-                return new NotFoundViewResult("InternsNotFound");
-            }
+        //[Authorize(Roles = "Responsable, Administrador")]
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    var intern = await this.internRepository.GetByIdWithUserAsync(id);
+        //    //var user = await this.userHelper.GetUserByIdAsync(intern.User.Id);
+        //    if (intern.User == null)
+        //    {
+        //        return new NotFoundViewResult("InternsNotFound");
+        //    }
 
-            //var loanDetailUser = await this.loanDetailRepository.GetByIdAppOrInternLoanDetailsAsync(intern.User.Id);
-            //if (loanDetailUser != null)
-            //    await this.loanDetailRepository.DeleteAsync(loanDetailUser);
+        //    //var loanDetailUser = await this.loanDetailRepository.GetByIdAppOrInternLoanDetailsAsync(intern.User.Id);
+        //    //if (loanDetailUser != null)
+        //    //    await this.loanDetailRepository.DeleteAsync(loanDetailUser);
 
-            //var loanUser = await this.loanRepository.GetByIdAppOrInternLoansAsync(intern.User.Id);
-            //if (loanUser != null)
-            //    await this.loanRepository.DeleteAsync(loanUser);
+        //    //var loanUser = await this.loanRepository.GetByIdAppOrInternLoansAsync(intern.User.Id);
+        //    //if (loanUser != null)
+        //    //    await this.loanRepository.DeleteAsync(loanUser);
 
-            ////Agregar material para cambiarle el estatus y el loan detail se convierta en null
+        //    ////Agregar material para cambiarle el estatus y el loan detail se convierta en null
 
-            await userHelper.RemoveUserFromRoleAsync(intern.User, "Becario");
-            //await this.internRepository.DeleteAsync(intern);
-            _context.Interns.Remove(intern);
-            await _context.SaveChangesAsync();
-            //await this.userHelper.DeleteUserAsync(user);
-            return RedirectToAction(nameof(Index));
-        }
+        //    await userHelper.RemoveUserFromRoleAsync(intern.User, "Becario");
+        //    //await this.internRepository.DeleteAsync(intern);
+        //    _context.Interns.Remove(intern);
+        //    await _context.SaveChangesAsync();
+        //    //await this.userHelper.DeleteUserAsync(user);
+        //    return RedirectToAction(nameof(Index));
+        //}
 
         private bool InternExists(int id)
         {

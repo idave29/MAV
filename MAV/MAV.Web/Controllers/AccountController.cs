@@ -325,11 +325,12 @@
                     }
                     if (rol == "Responsable") 
                     {
-                        var ownerWithUser = await this.ownerRep.GetByIdUserOwnerWithUserAsync(id);
-                        if (ownerWithUser != null)
-                            await this.ownerRep.DeleteAsync(ownerWithUser);
-                        await this.userHelper.DeleteUserAsync(user);
-
+                        //var ownerWithUser = await this.ownerRep.GetByIdUserOwnerWithUserAsync(id);
+                        //if (ownerWithUser != null)
+                        //    await this.ownerRep.DeleteAsync(ownerWithUser);
+                        //await this.userHelper.DeleteUserAsync(user);
+                        user.Deleted = true;
+                        await this.userHelper.UpdateUserAsync(user);
                     }
                     if (rol == "Solicitante" || rol == "Becario") 
                     {

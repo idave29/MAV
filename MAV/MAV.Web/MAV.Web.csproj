@@ -29,6 +29,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Administrators\Delete.cshtml" />
+    <Content Remove="Views\Applicants\Delete.cshtml" />
+    <Content Remove="Views\Interns\Delete.cshtml" />
+    <Content Remove="Views\Owners\Delete.cshtml" />
     <Content Remove="wwwroot\Images\plecaumad.JPG" />
   </ItemGroup>
 

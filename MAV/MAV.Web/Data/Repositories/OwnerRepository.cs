@@ -23,13 +23,14 @@
             return await this.dataContext.Owners
                 .Include(t => t.User)
                 .Include(t => t.Materials)
+                .Where(a => a.User.Deleted == false)
                 .FirstOrDefaultAsync(t => t.Id == id);
         }
 
         public Owner GetByIdOwnerWithMaterials(int id)
         {
-            var b = this.dataContext.Owners.Include(o => o.User);
-            foreach (Owner u in this.dataContext.Owners.Include(m => m.User))
+            var b = this.dataContext.Owners.Include(o => o.User).Where(a => a.User.Deleted == false);
+            foreach (Owner u in this.dataContext.Owners.Include(m => m.User).Where(a => a.User.Deleted == false))
             {
                 if (u != null)
                 {
@@ -126,13 +127,15 @@
         public IQueryable GetOwnersWithUser()
         {
             return this.dataContext.Owners
-                .Include(a => a.User);
+                .Include(a => a.User)
+                .Where(a => a.User.Deleted == false);
         }
 
         public IEnumerable<OwnerRequest> GetOwners()
         {
             var o = this.dataContext.Owners
-                .Include(a => a.User);
+                .Include(a => a.User)
+                .Where(a => a.User.Deleted == false);
 
             if (o == null)
             {
