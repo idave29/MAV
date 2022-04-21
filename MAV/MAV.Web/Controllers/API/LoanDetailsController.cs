@@ -39,8 +39,8 @@
             {
                 return BadRequest(ModelState);
             }
-            return Ok(this.loanDetailRepository.GetLoanDetails()); 
-            //return Ok(this.loanDetailRepository.GetLoansDetailsWithMaterialAndOwner());
+            //return Ok(this.loanDetailRepository.GetLoanDetails()); 
+            return Ok(this.loanDetailRepository.GetLoansDetailsWithMaterialAndOwner());
             //return Ok(this.loanDetailRepository.GetLoanDetailsWithMaterialWithoutDateTimeIn()); 
             //return Ok(this.loanDetailRepository.GetLoansDetailsWithMaterialAndOwner());
             //return Ok(this.loanDetailRepository.GetLoanDetailWithMaterialAndOwnerById(1));

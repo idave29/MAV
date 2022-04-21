@@ -17,7 +17,7 @@
         IEnumerable<LoanDetail> GetByIdAppOrInternLoanDetailssAsync(string id);
         Task<LoanDetail> GetByIdLoanDetailAsync(int id);
         //IEnumerable<LoanDetailsRequest> GetLoanDetailsWithMaterialWithoutDateTimeIn(); //Where(ld => ld.DateTimeIn == null)
-        //IEnumerable<LoanDetailsRequest> GetLoansDetailsWithMaterialAndOwner();
+        IEnumerable<LoanDetailsRequest> GetLoansDetailsWithMaterialAndOwner();
         //LoanDetailsRequest GetLoanDetailWithMaterialAndOwnerById(int id);
         //LoanDetailsRequest GetLoanDetailById(int id);
         //LoanDetailsRequest GetLoansDetailsWithMaterialByDateTimeOut(DateTime time);

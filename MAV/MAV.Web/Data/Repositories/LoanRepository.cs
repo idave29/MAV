@@ -86,6 +86,26 @@
                     .ThenInclude(ld => ld.Material)
                     .ThenInclude(m => m.Owner.User);
 
+            //var loanD = this.dataContext.LoanDetails
+            //    .Include(ld => ld.Material)
+            //    .ThenInclude(m => m.Owner.User)
+            //    .Include(ld => ld.Material)
+            //    .ThenInclude(m => m.Status)
+            //    .Include(l => l.Loan)
+            //    .Where(ld => ld.Status.Name == "Prestado");
+
+            //if (loanD == null)
+            //{
+            //    return null;
+            //}
+
+            //var LD = loanD.Select(ldr => new LoanDetailsRequest
+            //{
+            //    Status = ldr.Status.Name,
+            //}).ToList();
+                //List<int> x1 = new List<int>() { 2, 3, 4 };
+
+
             if (l == null)
             {
                 return null;
@@ -118,9 +138,46 @@
                         Status = ld.Material.Status.Name,
                         Owner = ld.Material.Owner.User.Email
                     }
-                }).ToList()
-
+                }).ToList(),
             }).ToList();
+
+            //.Where(s => s.Status == "Prestado")
+            //}).Where(ld => ld.LoanDetails.Select(i => i.Status) == LD.Select(l => l.Status)).ToList();
+
+            //var ListResult = (from e in x
+            //                  from m in 
+            //                  where e.LoanDetails == (x.Where(b => b.LoanDetails == e.LoanDetails))
+            //                  select e);
+            //select new LoanRequest
+            //{
+            //    Id = e.Id,
+            //    Intern = e.Intern,
+            //    Applicant = e.Applicant,
+            //    LoanDetails = e.LoanDetails.Select(ld => new LoanDetailsRequest
+            //    {
+            //        Id = ld.Id,
+            //        DateTimeIn = ld.DateTimeIn,
+            //        DateTimeOut = ld.DateTimeOut,
+            //        Observations = ld.Observations,
+            //        Status = ld.Status,
+            //        Material = new MaterialResponse
+            //        {
+            //            Id = ld.Material.Id,
+            //            Brand = ld.Material.Brand,
+            //            Function = ld.Material.Function,
+            //            ImageURL = ld.Material.ImageURL,
+            //            Label = ld.Material.Label,
+            //            MaterialModel = ld.Material.MaterialModel,
+            //            //MaterialType = ld.Material.MaterialType.Name,
+            //            Name = ld.Material.Name,
+            //            SerialNum = ld.Material.SerialNum,
+            //            MaterialType = ld.Material.MaterialType,
+            //            Status = ld.Material.Status,
+            //            Owner = ld.Material.Owner
+            //        }
+            //    }).ToList(),
+            //}).ToList();
+            //}).Where(s => s.LoanDetails.Contains == "").ToList();
 
             return x;
         }

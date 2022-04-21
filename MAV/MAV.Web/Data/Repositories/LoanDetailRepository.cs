@@ -121,55 +121,55 @@ namespace MAV.Web.Data.Repositories
         //    return x;
         //}
 
-        //public IEnumerable<LoanDetailsRequest> GetLoansDetailsWithMaterialAndOwner()
-        //{
-        //    var ld = this.dataContext.LoanDetails
-        //        .Include(ld => ld.Material)
-        //        .ThenInclude(m => m.Status)
-        //        .Include(ld => ld.Material)
-        //        .ThenInclude(m => m.MaterialType)
-        //        .Include(ld => ld.Material)
-        //        .ThenInclude(m => m.Owner.User)
-        //        .Include(l => l.Loan)
-        //        .Include(l => l.Loan.Applicant.User)
-        //        .Include(l => l.Loan.Intern.User);
+        public IEnumerable<LoanDetailsRequest> GetLoansDetailsWithMaterialAndOwner()
+        {
+            var ld = this.dataContext.LoanDetails
+                .Include(ld => ld.Material)
+                .ThenInclude(m => m.Status)
+                .Include(ld => ld.Material)
+                .ThenInclude(m => m.MaterialType)
+                .Include(ld => ld.Material)
+                .ThenInclude(m => m.Owner.User)
+                .Include(l => l.Loan)
+                .Include(l => l.Loan.Applicant.User)
+                .Include(l => l.Loan.Intern.User);
 
-        //    if (ld == null)
-        //    {
-        //        return null;
-        //    }
+            if (ld == null)
+            {
+                return null;
+            }
 
-        //    var x = ld.Select(ldr => new LoanDetailsRequest
-        //    {
-        //        Id = ldr.Id,
-        //        DateTimeIn = ldr.DateTimeIn,
-        //        DateTimeOut = ldr.DateTimeOut,
-        //        Observations = ldr.Observations,
-        //        Status = ldr.Status.Name,
-        //        Loan = new LoanRequest
-        //        {
-        //            Id = ldr.Id,
-        //            Applicant = ldr.Loan.Applicant.User.FullName,
-        //            Intern = ldr.Loan.Intern.User.FullName
-        //        },
-        //        Material = new MaterialRequest
-        //        {
-        //            Id = ldr.Material.Id,
-        //            Brand = ldr.Material.Brand,
-        //            Function = ldr.Material.Function,
-        //            ImageURL = ldr.Material.ImageURL,
-        //            Label = ldr.Material.Label,
-        //            MaterialModel = ldr.Material.MaterialModel,
-        //            MaterialType = ldr.Material.MaterialType.Name,
-        //            Name = ldr.Material.Name,
-        //            SerialNum = ldr.Material.SerialNum,
-        //            Status = ldr.Material.Status.Name,
-        //            Owner = ldr.Material.Owner.User.FullName
-        //        }
-        //    }).ToList();
+            var x = ld.Select(ldr => new LoanDetailsRequest
+            {
+                Id = ldr.Id,
+                DateTimeIn = ldr.DateTimeIn,
+                DateTimeOut = ldr.DateTimeOut,
+                Observations = ldr.Observations,
+                Status = ldr.Status.Name,
+                Loan = new LoanRequest
+                {
+                    Id = ldr.Id,
+                    Applicant = ldr.Loan.Applicant.User.FullName,
+                    Intern = ldr.Loan.Intern.User.FullName
+                },
+                Material = new MaterialResponse
+                {
+                    Id = ldr.Material.Id,
+                    Brand = ldr.Material.Brand,
+                    Function = ldr.Material.Function,
+                    ImageURL = ldr.Material.ImageURL,
+                    Label = ldr.Material.Label,
+                    MaterialModel = ldr.Material.MaterialModel,
+                    MaterialType = ldr.Material.MaterialType.Name,
+                    Name = ldr.Material.Name,
+                    SerialNum = ldr.Material.SerialNum,
+                    Status = ldr.Material.Status.Name,
+                    Owner = ldr.Material.Owner.User.FullName
+                }
+            }).ToList();
 
-        //    return x;
-        //}
+            return x;
+        }
 
         //public LoanDetailsRequest GetLoanDetailWithMaterialAndOwnerById(int id)
         //{
