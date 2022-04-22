@@ -157,14 +157,14 @@ namespace MAV.Web.Data.Repositories
                     Id = ldr.Material.Id,
                     Brand = ldr.Material.Brand,
                     Function = ldr.Material.Function,
-                    ImageURL = ldr.Material.ImageURL,
+                    ImageURL = ldr.Material.ImageFullPath,
                     Label = ldr.Material.Label,
                     MaterialModel = ldr.Material.MaterialModel,
                     MaterialType = ldr.Material.MaterialType.Name,
                     Name = ldr.Material.Name,
                     SerialNum = ldr.Material.SerialNum,
                     Status = ldr.Material.Status.Name,
-                    Owner = ldr.Material.Owner.User.FullName
+                    Owner = ldr.Material.Owner.User.Email
                 }
             }).ToList();
 

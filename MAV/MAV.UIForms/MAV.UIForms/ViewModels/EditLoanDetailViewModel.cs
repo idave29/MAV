@@ -13,6 +13,7 @@ namespace MAV.UIForms.ViewModels
     {
         private readonly ApiService apiService;
         public LoanDetailsRequest LoanDetails { get; set; }
+        public MaterialResponse Materials { get; set; }
 
         private bool isRunning;
         public bool IsRunning
@@ -27,6 +28,14 @@ namespace MAV.UIForms.ViewModels
             get { return isEnabled; }
             set { this.SetValue(ref this.isEnabled, value); }
         }
+
+        private ImageSource imageSource;
+        public ImageSource ImageSource
+        {
+            get => imageSource;
+            set => this.SetValue(ref this.imageSource, value);
+        }
+
 
         //public ICommand SaveCommand { get { return new RelayCommand(Save); } }
         public ICommand DeleteCommand { get { return new RelayCommand(Delete); } }
@@ -91,10 +100,10 @@ namespace MAV.UIForms.ViewModels
 
         public EditLoanDetailViewModel(LoanDetailsRequest loanDetail)
         {
-            this.LoanDetails = loanDetail;
             this.apiService = new ApiService();
             this.IsEnabled = true;
-            
+            this.LoanDetails = loanDetail;
+            this.ImageSource = loanDetail.Material.ImageURL;
         }
     }
 }

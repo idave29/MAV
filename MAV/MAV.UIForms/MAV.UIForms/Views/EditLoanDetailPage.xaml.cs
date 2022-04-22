@@ -22,7 +22,7 @@ namespace MAV.UIForms.Views
                 etObserv.IsEnabled = false;
             }
 
-            imgMaterial.Source = ImageSource.FromFile(imgMaterial.BindingContext as string);
+            //imgMaterial.Source = ImageSource.FromFile(imgMaterial.BindingContext as string);
         }
     }
 }
