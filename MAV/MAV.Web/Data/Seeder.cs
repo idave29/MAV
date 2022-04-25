@@ -260,7 +260,8 @@ namespace MAV.Web.Data
                 Label = label,
                 MaterialModel = materialModel,
                 SerialNum = serialNum, 
-                Function = function
+                Function = function,
+                Deleted = false
             });
             await this.dataContext.SaveChangesAsync();
         }

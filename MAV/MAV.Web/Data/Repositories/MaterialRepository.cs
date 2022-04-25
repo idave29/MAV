@@ -43,7 +43,8 @@
             return this.dataContext.Materials
                 .Include(t => t.MaterialType)
                 .Include(t => t.Status)
-                .Include(t => t.Owner.User);
+                .Include(t => t.Owner.User)
+                .Where(d => d.Deleted == false);
         }
 
         public IQueryable GetMaterialsWithTypeWithStatusAndOwnerandImage()
@@ -74,6 +75,7 @@
                 .Include(t => t.Status)
                 .Include(t => t.Owner.User)
                 .Include(t => t.LoanDetails)
+                .Where(d => d.Deleted == false)
                 .FirstOrDefaultAsync(m => m.Id == id);
         }
 
@@ -336,7 +338,8 @@
             var m = this.dataContext.Materials
                 .Include(s => s.Status)
                 .Include(m => m.MaterialType)
-                .Include(o => o.Owner.User);
+                .Include(o => o.Owner.User)
+                .Where(d => d.Deleted == false); 
 
             if (m == null)
             {
@@ -502,7 +505,8 @@
                 ImageURL = material.ImageURL,
                 Status = material.Status.Name,
                 MaterialType = material.MaterialType.Name,
-                Owner = material.Owner.User.UserName
+                Owner = material.Owner.User.UserName,
+                Deleted = material.Deleted
             };
         }
         public OwnerResponse ToOwnerResponse(Owner material)

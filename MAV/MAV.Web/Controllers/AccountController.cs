@@ -74,10 +74,10 @@
             if (ModelState.IsValid)
             {
                 var resultD = await userHelper.GetUserByEmailAsync(loginViewModel.Username);
-                if (resultD.Deleted == false)
-                {
+                //if (resultD.Deleted == false)
+                //{
                     var result = await userHelper.LoginAsync(loginViewModel.Username, loginViewModel.Password, loginViewModel.RememberMe);
-                    if (result.Succeeded)
+                    if (result.Succeeded && resultD.Deleted == false)
                     {
                         if (Request.Query.Keys.Contains("ReturnUrl"))
                         {
@@ -86,9 +86,8 @@
 
                         return RedirectToAction("Index", "Home");
                     }
-                }
+                //}
             }
-
             ModelState.AddModelError(string.Empty, "Usuario o Contraseña Incorrecta.");
             loginViewModel.Password = string.Empty;
             return View(loginViewModel);

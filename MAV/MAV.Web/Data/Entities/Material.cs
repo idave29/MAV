@@ -40,6 +40,8 @@
         [Display(Name = "Función")]
         public string Function { get; set; }
 
+        public bool Deleted { get; set; }
+
         public Status Status { get; set; }
 
         public Owner Owner { get; set; }

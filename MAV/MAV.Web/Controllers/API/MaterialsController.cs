@@ -254,7 +254,9 @@
             //    return BadRequest("Id not found");
             //}
 
-            _dataContext.Materials.Remove(material);
+            //_dataContext.Materials.Remove(material);
+            material.Deleted = true;
+            _dataContext.Update(material);
             await _dataContext.SaveChangesAsync();
             return Ok("Material deleted");
 

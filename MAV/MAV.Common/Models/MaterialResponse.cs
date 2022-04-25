@@ -25,6 +25,7 @@ namespace MAV.Common.Models
         public string MaterialType { set; get; }
 
         public string Owner { get; set; }
+        public bool Deleted { get; set; }
 
         public string ImageFullPath { get; set; }
 

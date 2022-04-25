@@ -250,7 +250,10 @@ namespace MAV.Web.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var material = await _context.Materials.FindAsync(id);
-            _context.Materials.Remove(material);
+
+            //_context.Materials.Remove(material);
+            material.Deleted = true;
+            _context.Update(material);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

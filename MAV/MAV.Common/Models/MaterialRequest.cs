@@ -17,6 +17,7 @@
         public string SerialNum { set; get; }
 
         public int Status { get; set; }
+        public bool Deleted { get; set; }
 
         public int MaterialType { set; get; }
 
