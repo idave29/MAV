@@ -69,75 +69,106 @@
             //    return BadRequest(ModelState);
             //}
 
-            var owner = this.ownerRepository.GetByIdOwnerWithMaterials(material.Owner);
+            var materialdelete = await materialRepository.GetBySerialNumWithMaterialTypeOwnerStatusAsync(material.SerialNum);
 
-            if (owner == null)
+            if (materialdelete == null)
             {
-                return BadRequest("Not valid owner.");
-            }
 
-            var status = await _dataContext.Statuses.FindAsync(material.Status);
-            if (status == null)
-            {
-                return BadRequest("Not valid status");
-            }
-            var materialType = await _dataContext.MaterialTypes.FindAsync(material.MaterialType);
-            if (materialType == null)
-            {
-                return BadRequest("Not valid material type");
-            }
+                var owner = this.ownerRepository.GetByIdOwnerWithMaterials(material.Owner);
 
-            //var materialType = this.materialTypeRepository.GetMaterialTypesByName(material.MaterialType);
-            //if (materialType == null)
-            //{
-            //    return BadRequest(ModelState);
-            //}
-            //var owner = this.ownerRepository.GetGoodOwnerWithEmail(material.Owner);          
-            //if (owner == null)
-            //{
-            //    return BadRequest(ModelState);
-            //}
-
-            var imageUrl = string.Empty;
-            if (material.ImageArray != null && material.ImageArray.Length > 0)
-            {
-                var stream = new MemoryStream(material.ImageArray);
-                var guid = Guid.NewGuid().ToString();
-                var file = $"{guid}.jpg";
-                var folder = "wwwroot\\Images\\Materiales";
-                var fullPath = $"~/Images/Materiales/{file}";
-                var response = FilesHelper.UploadPhoto(stream, folder, file);
-
-                if (response)
+                if (owner == null)
                 {
-                    imageUrl = fullPath;
+                    return BadRequest("Not valid owner.");
                 }
+
+                var status = await _dataContext.Statuses.FindAsync(material.Status);
+                if (status == null)
+                {
+                    return BadRequest("Not valid status");
+                }
+                var materialType = await _dataContext.MaterialTypes.FindAsync(material.MaterialType);
+                if (materialType == null)
+                {
+                    return BadRequest("Not valid material type");
+                }
+
+                //var materialType = this.materialTypeRepository.GetMaterialTypesByName(material.MaterialType);
+                //if (materialType == null)
+                //{
+                //    return BadRequest(ModelState);
+                //}
+                //var owner = this.ownerRepository.GetGoodOwnerWithEmail(material.Owner);          
+                //if (owner == null)
+                //{
+                //    return BadRequest(ModelState);
+                //}
+
+                var imageUrl = string.Empty;
+                if (material.ImageArray != null && material.ImageArray.Length > 0)
+                {
+                    var stream = new MemoryStream(material.ImageArray);
+                    var guid = Guid.NewGuid().ToString();
+                    var file = $"{guid}.jpg";
+                    var folder = "wwwroot\\Images\\Materiales";
+                    var fullPath = $"~/Images/Materiales/{file}";
+                    var response = FilesHelper.UploadPhoto(stream, folder, file);
+
+                    if (response)
+                    {
+                        imageUrl = fullPath;
+                    }
+                }
+
+                var entityMaterial = new MAV.Web.Data.Entities.Material
+                {
+
+                    Name = material.Name,
+                    Label = material.Label,
+                    Brand = material.Brand,
+                    MaterialModel = material.MaterialModel,
+                    SerialNum = material.SerialNum,
+                    Function = material.Function,
+                    Owner = owner,
+                    Status = status,
+                    MaterialType = materialType,
+                    //Owner = owner
+                    //Status = status,
+                    ImageURL = imageUrl
+                };
+                //if (entityMaterial == null)
+                //{
+                //    return BadRequest("entityMaterial not found");
+                //}
+                //var newMaterial = await this.materialRepository.CreateAsync(entityMaterial);
+                _dataContext.Materials.Add(entityMaterial);
+                await _dataContext.SaveChangesAsync();
+                return Ok(materialRepository.ToMaterialResponse(entityMaterial));
             }
-
-            var entityMaterial = new MAV.Web.Data.Entities.Material
+            else
             {
+                var entityMaterialDeleted = new MAV.Web.Data.Entities.Material
+                {
 
-                Name = material.Name,
-                Label = material.Label,
-                Brand = material.Brand,
-                MaterialModel = material.MaterialModel,
-                SerialNum = material.SerialNum,
-                Function = material.Function,
-                Owner = owner,
-                Status = status,
-                MaterialType = materialType,
-                //Owner = owner
-                //Status = status,
-                ImageURL = imageUrl                
-            };
-            //if (entityMaterial == null)
-            //{
-            //    return BadRequest("entityMaterial not found");
-            //}
-            //var newMaterial = await this.materialRepository.CreateAsync(entityMaterial);
-            _dataContext.Materials.Add(entityMaterial);
-            await _dataContext.SaveChangesAsync();
-            return Ok(materialRepository.ToMaterialResponse(entityMaterial));
+                    Name = materialdelete.Name,
+                    Label = materialdelete.Label,
+                    Brand = materialdelete.Brand,
+                    MaterialModel = materialdelete.MaterialModel,
+                    SerialNum = materialdelete.SerialNum,
+                    Function = materialdelete.Function,
+                    Owner = materialdelete.Owner,
+                    Status = materialdelete.Status,
+                    MaterialType = materialdelete.MaterialType,
+                    //Owner = owner
+                    //Status = status,
+                    ImageURL = materialdelete.ImageURL,
+                    Deleted = false
+                };
+
+                materialdelete.Deleted = false;
+                _dataContext.Update(materialdelete);
+                await _dataContext.SaveChangesAsync();
+                return Ok(materialRepository.ToMaterialResponse(entityMaterialDeleted));
+            }
             //return Ok(newMaterial); 
         }
 

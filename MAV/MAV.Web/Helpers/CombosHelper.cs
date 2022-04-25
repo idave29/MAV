@@ -77,7 +77,7 @@ namespace MAV.Web.Helpers
 
         public IEnumerable<SelectListItem> GetComboMaterials()
         {
-            var list = dataContext.Materials.Where(item => item.Status.Id != 2).Where(item => item.Status.Id != 4)
+            var list = dataContext.Materials.Where(item => item.Status.Id != 2).Where(item => item.Status.Id != 4).Where(item => item.Deleted == false)
                 .Select(
                 c => new SelectListItem
                 {

@@ -79,6 +79,16 @@
                 .FirstOrDefaultAsync(m => m.Id == id);
         }
 
+        public async Task<Material> GetBySerialNumWithMaterialTypeOwnerStatusAsync(string serialnum)
+        {
+            return await this.dataContext.Materials
+                .Include(t => t.MaterialType)
+                .Include(t => t.Status)
+                .Include(t => t.Owner.User)
+                .Include(t => t.LoanDetails)
+                .Where(d => d.Deleted == true)
+                .FirstOrDefaultAsync(m => m.SerialNum == serialnum);
+        }
 
         //public IEnumerable<MaterialResponse> GetAllMaterialsWithTypeWithStatusAndOwner()
         //{

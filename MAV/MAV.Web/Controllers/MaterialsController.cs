@@ -85,30 +85,44 @@ namespace MAV.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var status = await _context.Statuses.FirstOrDefaultAsync(m => m.Id == model.StatusId);
-                var owner = await _context.Owners.FirstOrDefaultAsync(m => m.Id == model.OwnerId);
-                var materialtype = await _context.MaterialTypes.FirstOrDefaultAsync(m => m.Id == model.MaterialTypeId);
+                var materialdeleted = await materialRepository.GetBySerialNumWithMaterialTypeOwnerStatusAsync(model.SerialNum);
 
-                var Material = new Material { 
-                    Brand = model.Brand, 
-                    Label = model.Label, 
-                    MaterialModel = model.MaterialModel, 
-                    Name = model.Name, 
-                    SerialNum = model.SerialNum, 
-                    Function = model.Function,
-                    Status = status,
-                    MaterialType = materialtype,
-                    Owner = owner, 
-                };
-
-                if (model.ImageFile != null)
+                if (materialdeleted == null)
                 {
-                    Material.ImageURL = await imageHelper.UploadImageAsync(model.ImageFile, Material.Name, "Materiales");
-                }
+                    var status = await _context.Statuses.FirstOrDefaultAsync(m => m.Id == model.StatusId);
+                    var owner = await _context.Owners.FirstOrDefaultAsync(m => m.Id == model.OwnerId);
+                    var materialtype = await _context.MaterialTypes.FirstOrDefaultAsync(m => m.Id == model.MaterialTypeId);
 
-                _context.Add(Material);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                    var Material = new Material
+                    {
+                        Brand = model.Brand,
+                        Label = model.Label,
+                        MaterialModel = model.MaterialModel,
+                        Name = model.Name,
+                        SerialNum = model.SerialNum,
+                        Function = model.Function,
+                        Status = status,
+                        MaterialType = materialtype,
+                        Owner = owner,
+                    };
+
+                    if (model.ImageFile != null)
+                    {
+                        Material.ImageURL = await imageHelper.UploadImageAsync(model.ImageFile, Material.Name, "Materiales");
+                    }
+
+                    _context.Add(Material);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                else 
+                {
+                    materialdeleted.Deleted = false;
+                    _context.Update(materialdeleted);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+
+                }
             }
 
             return View(model);
