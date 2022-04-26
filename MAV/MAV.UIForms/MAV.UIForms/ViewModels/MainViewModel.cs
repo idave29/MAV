@@ -133,85 +133,73 @@
                 {
                     Icon = "admin",
                     PageName = "AdministratorsPage",
-                    Title = "Administrators"
+                    Title = "Administradores"
                 },
                 new Menu
                 {
                     Icon = "applicant",
                     PageName = "ApplicantPage",
-                    Title = "Applicants"
+                    Title = "Solicitantes"
                 },
                 new Menu
                 {
                     Icon = "applicantType",
                     PageName = "ApplicantTypesPage",
-                    Title = "Applicant Types"
+                    Title = "Tipos de Solicitantes"
                 },
                 new Menu
                 {
                     Icon = "internt",
                     PageName = "InternsPage",
-                    Title = "Interns"
+                    Title = "Becarios"
                 },
                 new Menu
                 {
                     Icon = "loans",
                     PageName = "LoansPage",
-                    Title = "Loans"
+                    Title = "Préstamos"
                 },
                 new Menu
                 {
                     Icon = "loansDetails",
                     PageName = "LoanDetailsPage",
-                    Title = "Loan Details"
+                    Title = "Detalle de Préstamos"
                 },
                 new Menu
                 {
                     Icon = "material",
                     PageName = "MaterialsPage",
-                    Title = "Materials"
+                    Title = "Materiales"
                 },
                 new Menu
                 {
                     Icon = "materialType",
                     PageName = "MaterialTypesPage",
-                    Title = "Material Types"
+                    Title = "Tipos de Materiales"
                 },
                 new Menu
                 {
                     Icon = "owner",
                     PageName = "OwnersPage",
-                    Title = "Owners"
+                    Title = "Responsables"
                 },
                 new Menu
                 {
                     Icon = "status",
                     PageName = "StatusesPage",
-                    Title = "Status"
-                },
-                new Menu
-                {
-                    Icon = "setup",
-                    PageName = "SetupPage",
-                    Title = "Setup"
+                    Title = "Estados"
                 },
                 new Menu
                 {
                     Icon = "info",
                     PageName = "AboutPage",
-                    Title = "About"
+                    Title = "Acerca de"
                 },
                 new Menu
                 {
                     Icon = "exit",
                     PageName = "LoginPage",
                     Title = "Logout"
-                },
-                new Menu
-                {
-                    Icon = "Prueba",
-                    PageName = "pruebaPage",
-                    Title = "prueba"
                 },
             };
             this.Menus = new ObservableCollection<MenuItemViewModel>(menus.Select(m => new

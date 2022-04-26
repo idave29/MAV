@@ -15,12 +15,12 @@ namespace MAV.UIForms.Views
         public EditLoanDetailPage()
         {
             InitializeComponent();
-            if (lbEstado.Text == "Regresado")
-            {
-                btnCerrar.IsEnabled = false;
-                //btnCerrar.BackgroundColor.
-                etObserv.IsEnabled = false;
-            }
+            //if (lbEstado.Text == "Regresado")
+            //{
+            //    //btnCerrar.IsEnabled = false;
+            //    //btnCerrar.BackgroundColor.
+            //    //etObserv.IsEnabled = false;
+            //}
 
             //imgMaterial.Source = ImageSource.FromFile(imgMaterial.BindingContext as string);
         }

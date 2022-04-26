@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MAV.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220425003823_Materials")]
-    partial class Materials
+    [Migration("20220425122818_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

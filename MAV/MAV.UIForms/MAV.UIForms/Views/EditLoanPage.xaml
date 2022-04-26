@@ -20,7 +20,7 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
-                            <Label Text="{Binding Id, StringFormat= 'Prestamo: {0}'}" FontSize="Small" TextColor="Gray" Grid.Row="0"></Label>
+                            <Label Text="{Binding Id, StringFormat= 'Préstamo: {0}'}" FontSize="Small" TextColor="Gray" Grid.Row="0"></Label>
                             <Label Text="{Binding Material.Name, StringFormat= 'Nombre: {0}'}" FontSize="Small" TextColor="Gray" Grid.Row="1"></Label>
                             <Label Text="{Binding Material.Label, StringFormat='Etiqueta: {0}'}"  FontSize="Small" TextColor="Gray" Grid.Row="2"></Label>
                             <Label Text="{Binding DateTimeOut, StringFormat='Fecha y Tiempo de Préstamo: {0}'}" FontSize="Small" TextColor="Gray" Grid.Row="3"></Label>

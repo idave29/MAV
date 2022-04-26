@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MAV.UIForms.Views.StatusesPage"
              BindingContext="{Binding Main, Source={StaticResource Locator}}"
-             Title="Status">
+             Title="Estados">
     <ContentPage.ToolbarItems>
         <ToolbarItem IconImageSource="ic_action_add_circle" Command="{Binding AddStatusCommand}"/>
     </ContentPage.ToolbarItems>

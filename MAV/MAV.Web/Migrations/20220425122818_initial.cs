@@ -317,6 +317,7 @@ namespace MAV.Web.Migrations
                     MaterialModel = table.Column<string>(maxLength: 15, nullable: false),
                     SerialNum = table.Column<string>(maxLength: 15, nullable: false),
                     Function = table.Column<string>(maxLength: 100, nullable: false),
+                    Deleted = table.Column<bool>(nullable: false),
                     StatusId = table.Column<int>(nullable: true),
                     OwnerId = table.Column<int>(nullable: true),
                     MaterialTypeId = table.Column<int>(nullable: true)

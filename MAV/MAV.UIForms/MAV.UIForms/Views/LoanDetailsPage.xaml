@@ -3,10 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MAV.UIForms.Views.LoanDetailsPage"
              BindingContext="{Binding Main, Source={StaticResource Locator}}"
-             Title="Loan Detail">
+             Title="Detalle de préstamos">
+    <!--
     <ContentPage.ToolbarItems>
         <ToolbarItem IconImageSource="ic_action_add_circle" Command="{Binding AddLoanDetailCommand}"/>
     </ContentPage.ToolbarItems>
+    -->
+
     <ContentPage.Content>
         <StackLayout
             BindingContext="{Binding LoanDetails}"
@@ -36,15 +39,15 @@
                                            TextColor="Red"></Label>
                                 </StackLayout>
                                 <StackLayout Grid.Column="1" VerticalOptions="Center">
-                                    <Label FontSize="Subtitle">Date time in: </Label>
+                                    <Label FontSize="Subtitle">Fecha de devolución: </Label>
                                     <Label Text="{Binding DateTimeIn}" 
                                            FontSize="Small"
                                            TextColor="Black"></Label>
-                                    <Label FontSize="Subtitle">Date time out:</Label>
+                                    <Label FontSize="Subtitle">Fecha de salida:</Label>
                                     <Label Text="{Binding DateTimeOut}" 
                                            FontSize="Small"
                                            TextColor="Black"></Label>
-                                    <Label FontSize="Subtitle">Observations:</Label>
+                                    <Label FontSize="Subtitle">Observaciones:</Label>
                                     <Label Text="{Binding Observations}" 
                                            FontSize="Small"
                                            TextColor="Black"></Label>

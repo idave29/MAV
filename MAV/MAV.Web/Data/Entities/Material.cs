@@ -52,6 +52,6 @@
 
         public string ImageFullPath => string.IsNullOrEmpty(ImageURL)
             ? null
-            : $"https://mediosaudiovisualesweb.azurewebsites.net{ImageURL.Substring(1)}";
+            : $"https://mediosaudiovisualesumad.azurewebsites.net{ImageURL.Substring(1)}";
     }
 }

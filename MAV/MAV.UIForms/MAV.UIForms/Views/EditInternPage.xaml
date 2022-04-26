@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MAV.UIForms.Views.EditInternPage"
              BindingContext="{Binding Main, Source={StaticResource Locator}}"
-             Title="Edit Intern">
+             Title="Becario">
     <ContentPage.Content>
         <ScrollView BindingContext="{Binding EditIntern}">
             <StackLayout>
@@ -12,18 +12,19 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Label Text="FirstName" Grid.Column="0" Grid.Row="0" VerticalOptions="Center"></Label>
+                    <Label Text="Nombre" Grid.Column="0" Grid.Row="0" VerticalOptions="Center"></Label>
                     <Entry Grid.Column="1" Grid.Row="0" Keyboard="Text" Placeholder="Introduce el nombre" Text="{Binding Intern.FirstName}"></Entry>
 
-                    <Label Text="LastName" Grid.Column="0" Grid.Row="1" VerticalOptions="Center"></Label>
+                    <Label Text="Apellido" Grid.Column="0" Grid.Row="1" VerticalOptions="Center"></Label>
                     <Entry Grid.Column="1" Grid.Row="1" Keyboard="Text" Placeholder="Introduce el apellido" Text="{Binding Intern.LastName}"></Entry>
 
                     <Label Text="Email" Grid.Column="0" Grid.Row="2" VerticalOptions="Center"></Label>
                     <Entry Grid.Column="1" Grid.Row="2" Keyboard="Text" Placeholder="Introduce el email" Text="{Binding Intern.Email}"></Entry>
 
-                    <Label Text="PhoneNumber" Grid.Column="0" Grid.Row="3" VerticalOptions="Center"></Label>
+                    <Label Text="Teléfono" Grid.Column="0" Grid.Row="3" VerticalOptions="Center"></Label>
                     <Entry Grid.Column="1" Grid.Row="3" Keyboard="Text" Placeholder="Introduce el niumero" Text="{Binding Intern.PhoneNumber}"></Entry>
-
+                    
+                    <!--
                     <Label Text="Password" Grid.Column="0" Grid.Row="4" VerticalOptions="Center"></Label>
                     <Entry Grid.Column="1" Grid.Row="4" Keyboard="Text"  Placeholder="Introduce una nueva contraseña" Text="{Binding Intern.Password}"></Entry>
                     
@@ -31,7 +32,7 @@
                     <Entry Grid.Column="1" Grid.Row="5" Keyboard="Text"  Placeholder="Introduce la vieja contraseña" Text="{Binding Intern.OldPassword}"></Entry>
                     
                     <Label Text="*Si no quiere cambiar la contraseña, deje los espacios de password en blanco" Grid.Column="1" Grid.Row="6" VerticalOptions="Center"></Label>
-
+                    -->
                 </Grid>
                 <ActivityIndicator IsRunning="{Binding IsRunning}" VerticalOptions="CenterAndExpand">
                 </ActivityIndicator>

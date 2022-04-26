@@ -4,9 +4,9 @@
              x:Class="MAV.UIForms.Views.HistoryLoanPage"
              BindingContext="{Binding Main, Source={StaticResource Locator}}"
              Title="Detalles de Préstamos">
-    <ContentPage.ToolbarItems>
+    <!--<ContentPage.ToolbarItems>
         <ToolbarItem IconImageSource="ic_action_add_circle" Command="{Binding AddLoanCommand}"/>
-    </ContentPage.ToolbarItems>
+    </ContentPage.ToolbarItems>-->
     <ContentPage.Content>
         <StackLayout
             BindingContext="{Binding HistorysLoan}" Padding="30">

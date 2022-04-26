@@ -3,11 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MAV.UIForms.Views.LoansPage"
              BindingContext="{Binding Main, Source={StaticResource Locator}}"
-             Title="Loan">
+             Title="Préstamos">
+    <!--
     <ContentPage.ToolbarItems>
 
         <ToolbarItem IconImageSource="ic_action_add_circle" Command="{Binding AddLoanCommand}"/>
     </ContentPage.ToolbarItems>
+    -->
     <ContentPage.Content>
             <StackLayout
             BindingContext="{Binding Loans}"
@@ -47,7 +49,7 @@
                                     <Label Text="{Binding Intern, StringFormat= 'Becario: {0}'}" 
                                            FontSize="Medium"
                                            TextColor="Black"></Label>
-                                    <Label Text="{Binding LoanDetails.Count, StringFormat= 'Numero de Préstamos: {0}'}" 
+                                    <Label Text="{Binding LoanDetails.Count, StringFormat= 'Número de Préstamos: {0}'}" 
                                            FontSize="Small"
                                            TextColor="DarkSlateBlue"></Label>
                                 </StackLayout>
@@ -61,11 +63,11 @@
                                                     <RowDefinition Height="Auto" />
                                                     <RowDefinition Height="Auto" />
                                                 </Grid.RowDefinitions>
-                                                <Label Text="{Binding Id, StringFormat= 'Prestamo Id: {0}'}"  
+                                                <Label Text="{Binding Id, StringFormat= 'Préstamo Id: {0}'}"  
                                                        FontSize="Small"
                                                        TextColor="DarkOliveGreen"
                                                        Grid.Row="0"></Label>
-                                                <Label Text="{Binding DateTimeIn, StringFormat= 'Fecha: {0}'}"  
+                                                <Label Text="{Binding DateTimeIn, StringFormat= 'Fecha devolución: {0}'}"  
                                                        FontSize="Small"
                                                        TextColor="Gray"
                                                        Grid.Row="2"></Label>

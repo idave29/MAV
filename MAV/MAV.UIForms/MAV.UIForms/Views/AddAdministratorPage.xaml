@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MAV.UIForms.Views.AddAdministratorPage"
              BindingContext="{Binding Main, Source={StaticResource Locator}}"
-             Title="Administrator">
+             Title="Agregar un administrador">
     <ContentPage.Content>
         <ScrollView BindingContext="{Binding AddAdministrator}">
             <StackLayout>
@@ -12,8 +12,8 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Label Text="USERS" Grid.Column="0" Grid.Row="6" VerticalOptions="Center"></Label>
-                    <Picker Grid.Column="1" Grid.Row="6" Title="Selecciona un USER" 
+                    <Label Text="Usuario" Grid.Column="0" Grid.Row="6" VerticalOptions="Center"></Label>
+                    <Picker Grid.Column="1" Grid.Row="6" Title="Selecciona un usuario" 
                                 ItemDisplayBinding="{Binding Email}" ItemsSource="{Binding Users}" SelectedItem="{Binding UserRequest}"/>
                 </Grid>
                 <ActivityIndicator IsRunning="{Binding IsRunning}" VerticalOptions="CenterAndExpand">

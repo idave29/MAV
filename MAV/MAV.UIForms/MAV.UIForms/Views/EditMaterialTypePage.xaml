@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MAV.UIForms.Views.EditMaterialTypePage"
              BindingContext="{Binding Main, Source={StaticResource Locator}}"
-             Title="Edit Material Type">
+             Title="Editar tipo de material">
     <ContentPage.Content>
         <ScrollView BindingContext="{Binding EditMaterialType}">
             <StackLayout>
@@ -13,7 +13,7 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Label Text="Name" Grid.Column="0" Grid.Row="0" VerticalOptions="Center"></Label>
+                    <Label Text="Nombre" Grid.Column="0" Grid.Row="0" VerticalOptions="Center"></Label>
                     <Entry Grid.Column="1" Grid.Row="0" Keyboard="Text" Placeholder="Introduce el tipo de material" Text="{Binding MaterialType.Name}">
                     </Entry>
                 </Grid>
