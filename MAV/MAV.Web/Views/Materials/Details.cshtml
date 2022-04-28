@@ -81,5 +81,8 @@
 </div>
 <div>
     <a asp-action="Index" class="btn btn-outline-primary"><span class="fas fa-arrow-left"></span></a>
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-warning"><span class="fas fa-pencil"></span></a> 
+    @if (this.User.IsInRole("Administrador") || this.User.IsInRole("Responsable") || this.User.IsInRole("Becario"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-warning"><span class="fas fa-pencil"></span></a>
+    }
 </div>

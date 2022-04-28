@@ -14,27 +14,30 @@
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Medios Audiovisuales</a>
+                
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row">
+                    <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Materials" asp-action="Index">Materiales</a>
+                            </li>
+                        </ul>
+                </div>
                 @if (this.User.Identity.IsAuthenticated)
                 {
                     <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row">
                         <ul class="navbar-nav flex-grow-1">
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacidad</a>
-                            </li>
-                        </ul>
-                        <ul class="navbar-nav flex-grow-1">
-                            @if (this.User.IsInRole("Responsable") || this.User.IsInRole("Administrador"))
+                            @if (this.User.IsInRole("Administrador"))
                             {
                                 <li class="dropdown">
                                     <a href="#" class="nav-link text-dark" data-toggle="dropdown">Préstamos</a>
                                     <ul class="dropdown-menu">
                                         <a class="dropdown-item" asp-area="" asp-controller="Loans" asp-action="Index">Préstamos</a>
                                         <a class="dropdown-item" asp-area="" asp-controller="LoanDetails" asp-action="Index">Detalles de préstamos</a>
-                                        <a class="dropdown-item" asp-area="" asp-controller="Materials" asp-action="Index">Materiales</a>
                                     </ul>
                                 </li>
                                 <li class="dropdown">
@@ -55,6 +58,31 @@
                                     </ul>
                                 </li>
                             }
+                            else
+                            @if (this.User.IsInRole("Responsable"))
+                            {
+                                <li class="dropdown">
+                                    <a href="#" class="nav-link text-dark" data-toggle="dropdown">Préstamos</a>
+                                    <ul class="dropdown-menu">
+                                        <a class="dropdown-item" asp-area="" asp-controller="Loans" asp-action="Index">Préstamos</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="LoanDetails" asp-action="Index">Detalles de préstamos</a>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="#" class="nav-link text-dark" data-toggle="dropdown">Usuarios</a>
+                                    <ul class="dropdown-menu">
+                                        <a class="dropdown-item" asp-area="" asp-controller="Interns" asp-action="Index">Becarios</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Applicants" asp-action="Index">Solicitantes</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Owners" asp-action="Index">Responsables</a>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="#" class="nav-link text-dark" data-toggle="dropdown">Catalogos</a>
+                                    <ul class="dropdown-menu">
+                                        <a class="dropdown-item" asp-area="" asp-controller="MaterialTypes" asp-action="Index">Tipo de Materiales</a>
+                                    </ul>
+                                </li>
+                            }
                             else 
                             @if (this.User.IsInRole("Becario"))
                             {
@@ -63,17 +91,6 @@
                                     <ul class="dropdown-menu">
                                         <a class="dropdown-item" asp-area="" asp-controller="Loans" asp-action="Index">Préstamos</a>
                                         <a class="dropdown-item" asp-area="" asp-controller="LoanDetails" asp-action="Index">Detalles de préstamos</a>
-                                        <a class="dropdown-item" asp-area="" asp-controller="Materials" asp-action="Index">Materiales</a>
-                                    </ul>
-                                </li>
-                            }
-                            else
-                            @if (this.User.IsInRole("Solicitante"))
-                            {
-                                <li class="dropdown">
-                                    <a href="#" class="nav-link text-dark" data-toggle="dropdown">Préstamos</a>
-                                    <ul class="dropdown-menu">
-                                        <a class="dropdown-item" asp-area="" asp-controller="Materials" asp-action="Index">Materiales</a>
                                     </ul>
                                 </li>
                             }

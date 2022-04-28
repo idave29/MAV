@@ -274,7 +274,7 @@
             return View(model);
         }
 
-        [Authorize(Roles = "Responsable, Administrador")]
+        [Authorize(Roles = "Administrador")]
         // GET: Administrators/Delete/5
         public async Task<IActionResult> Delete(string Id)
         {
@@ -295,7 +295,7 @@
             return View(user);
         }
 
-        [Authorize(Roles = "Responsable, Administrador")]
+        [Authorize(Roles = "Administrador")]
         // POST: Administrators/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

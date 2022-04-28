@@ -10,6 +10,8 @@
     <div class="col-md-12">
         <div class="panel panel-default">
             <h2>Lista de tipo de materiales</h2>
+            @Html.ValidationMessage("CustomError")
+            <div class="text-danger">@Html.ValidationSummary(true)</div>
         </div>
         <div class="panel-body">
             @if (this.User.IsInRole("Administrador"))

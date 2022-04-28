@@ -10,6 +10,7 @@ using MAV.Web.Data.Entities;
 using MAV.Web.Data.Repositories;
 using MAV.Web.Helpers;
 using MAV.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MAV.Web.Controllers
 {
@@ -33,6 +34,7 @@ namespace MAV.Web.Controllers
             this.userHelper = userHelper;
         }
 
+        [Authorize(Roles = "Responsable, Administrador, Becario")]
         // GET: Loans
         public IActionResult Index()
         {
@@ -57,6 +59,7 @@ namespace MAV.Web.Controllers
             return View(this.loanRepository.GetLoanWithAplicantsAndInterns());
         }
 
+        [Authorize(Roles = "Responsable, Administrador, Becario")]
         // GET: Loans/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -78,6 +81,7 @@ namespace MAV.Web.Controllers
             return View(loan);
         }
 
+        [Authorize(Roles = "Becario")]
         // GET: Loans/Create
         public IActionResult Create()
         {
@@ -90,6 +94,7 @@ namespace MAV.Web.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Becario")]
         // POST: Loans/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -127,40 +132,42 @@ namespace MAV.Web.Controllers
             return View(model);
         }
 
-        // GET: Loans/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new NotFoundViewResult("LoanNotFound");
-            }
+        //[Authorize(Roles = "Responsable, Administrador, Becario")]
+        //// GET: Loans/Delete/5
+        //public async Task<IActionResult> Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new NotFoundViewResult("LoanNotFound");
+        //    }
 
-            var loan = await this.loanRepository.GetByLoanIdLoanAndApplicantAsync(id.Value);
+        //    var loan = await this.loanRepository.GetByLoanIdLoanAndApplicantAsync(id.Value);
 
-            if (loan == null)
-            {
-                return new NotFoundViewResult("LoanNotFound");
-            }
+        //    if (loan == null)
+        //    {
+        //        return new NotFoundViewResult("LoanNotFound");
+        //    }
 
-            if (loan.LoanDetails.Count != 0)
-            {
-                ModelState.AddModelError(string.Empty, "This loan has details, delete them first before deleting this.");
-                return RedirectToAction("Index", "Loans");
-            }
+        //    if (loan.LoanDetails.Count != 0)
+        //    {
+        //        ModelState.AddModelError(string.Empty, "This loan has details, delete them first before deleting this.");
+        //        return RedirectToAction("Index", "Loans");
+        //    }
 
-            return View(loan);
-        }
+        //    return View(loan);
+        //}
 
-        // POST: Loans/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var loan = await _context.Loans.FindAsync(id);
-            _context.Loans.Remove(loan);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+        //[Authorize(Roles = "Responsable, Administrador, Becario")]
+        //// POST: Loans/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    var loan = await _context.Loans.FindAsync(id);
+        //    _context.Loans.Remove(loan);
+        //    await _context.SaveChangesAsync();
+        //    return RedirectToAction(nameof(Index));
+        //}
 
         private bool LoanExists(int id)
         {

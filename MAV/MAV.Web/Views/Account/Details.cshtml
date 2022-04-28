@@ -36,10 +36,14 @@
 </div>
 
 <div>
-    @if (this.User.IsInRole("Responsable") || this.User.IsInRole("Administrador"))
-    {
-        <a asp-action="Index" class="btn btn-outline-primary"><span class="fas fa-arrow-left"></span></a>
-    }
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-warning"><span class="fas fa-pencil"></span></a>    
-
+    <a onclick="goBack()" class="btn btn-outline-primary"> <span class="fas fa-arrow-left"></span></a>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-warning"><span class="fas fa-pencil"></span></a>  
 </div>
+
+
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>

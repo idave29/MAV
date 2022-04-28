@@ -3,6 +3,7 @@ using MAV.Web.Data.Entities;
 using MAV.Web.Data.Repositories;
 using MAV.Web.Helpers;
 using MAV.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -32,12 +33,14 @@ namespace MAV.Web.Controllers
             this.userHelper = userHelper;
         }
 
+        [Authorize(Roles = "Responsable, Administrador, Becario")]
         // GET: LoanDetails
         public IActionResult Index()
         {
             return View(this.loanDetailRepository.GetLoanDetailsWithMaterialAndLoan());
         }
 
+        [Authorize(Roles = "Responsable, Administrador, Becario")]
         // GET: LoanDetails/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -67,6 +70,7 @@ namespace MAV.Web.Controllers
             return View(loandetail);
         }
 
+        [Authorize(Roles = "Becario")]
         // GET: LoanDetails/Create
         public IActionResult Create(int? id)
         {
@@ -86,6 +90,7 @@ namespace MAV.Web.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Becario")]
         // POST: LoanDetails/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -109,6 +114,7 @@ namespace MAV.Web.Controllers
             return RedirectToAction("Details", "Loans", new { id = ld.Loan.Id });
         }
 
+        [Authorize(Roles = "Becario")]
         // GET: LoanDetails/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -143,6 +149,7 @@ namespace MAV.Web.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Becario")]
         // POST: LoanDetails/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -188,34 +195,36 @@ namespace MAV.Web.Controllers
             return RedirectToAction("Details", "Loans", new { id = ld.Loan.Id });
         }
 
-        // GET: LoanDetails/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new NotFoundViewResult("LoanDetailNotFound");
-            }
+        //[Authorize(Roles = "Administrador")]
+        //// GET: LoanDetails/Delete/5
+        //public async Task<IActionResult> Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new NotFoundViewResult("LoanDetailNotFound");
+        //    }
 
-            var loandetail = await this.loanDetailRepository.GetByIdLoanDetailAsync(id.Value);
+        //    var loandetail = await this.loanDetailRepository.GetByIdLoanDetailAsync(id.Value);
 
-            if (loandetail == null)
-            {
-                return new NotFoundViewResult("LoanDetailNotFound");
-            }
+        //    if (loandetail == null)
+        //    {
+        //        return new NotFoundViewResult("LoanDetailNotFound");
+        //    }
 
-            return View(loandetail);
-        }
+        //    return View(loandetail);
+        //}
 
-        // POST: LoanDetails/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var loanDetail = await _context.LoanDetails.Include(s => s.Loan).FirstOrDefaultAsync(m => m.Id == id);
-            _context.LoanDetails.Remove(loanDetail);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Details", "Loans", new { id =  loanDetail.Loan.Id });
-        }
+        //[Authorize(Roles = "Administrador")]
+        //// POST: LoanDetails/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    var loanDetail = await _context.LoanDetails.Include(s => s.Loan).FirstOrDefaultAsync(m => m.Id == id);
+        //    _context.LoanDetails.Remove(loanDetail);
+        //    await _context.SaveChangesAsync();
+        //    return RedirectToAction("Details", "Loans", new { id =  loanDetail.Loan.Id });
+        //}
 
         //private bool LoanDetailExists(int id)
         //{

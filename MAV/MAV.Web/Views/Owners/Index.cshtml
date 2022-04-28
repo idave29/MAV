@@ -17,6 +17,8 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h2>Responsables</h2>
+                @Html.ValidationMessage("CustomError")
+                <div class="text-danger">@Html.ValidationSummary(true)</div>
             </div>
             <div class="panel-body">
                 @if (this.User.IsInRole("Administrador"))

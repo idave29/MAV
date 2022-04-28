@@ -10,10 +10,12 @@
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h2>Material's List</h2>
+                <h2>Materiales</h2>
+                @Html.ValidationMessage("CustomError")
+                <div class="text-danger">@Html.ValidationSummary(true)</div>
             </div>
             <div class="panel-body">
-                @if (this.User.IsInRole("Administrador"))
+                @if (this.User.IsInRole("Administrador") || this.User.IsInRole("Responsable") || this.User.IsInRole("Becario"))
                 {
                     <p>
                         <a asp-action="Create" class="btn btn-outline-success"><span class="fas fa-plus"></span></a>
@@ -58,7 +60,7 @@
                             </td>
                             <td>
                                 <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info"><span class="fas fa-eye"></span></a>
-                                @if (this.User.IsInRole("Administrador"))
+                                @if (this.User.IsInRole("Administrador")|| this.User.IsInRole("Responsable") || this.User.IsInRole("Becario"))
                                 {
                                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning"><span class="fas fa-pen"></span></a>
                                     <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger"><span class="fas fa-trash"></span></a>
@@ -93,5 +95,7 @@
         });
     </script>
 }
+
+
 
 

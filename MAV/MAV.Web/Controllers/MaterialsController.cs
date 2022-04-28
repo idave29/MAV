@@ -36,11 +36,15 @@ namespace MAV.Web.Controllers
             this.imageHelper = imageHelper;
         }
 
-        [Authorize(Roles = "Administrador")]
+
         // GET: Materials
         public IActionResult Index()
         {
-           
+            if (TempData["CustomError"] != null)
+            {
+                ModelState.AddModelError(string.Empty, TempData["CustomError"].ToString());
+            }
+
             return View(this.materialRepository.GetMaterialsWithTypeWithStatusAndOwner());
         }
 
@@ -62,6 +66,7 @@ namespace MAV.Web.Controllers
             return View(material);
         }
 
+        [Authorize(Roles = "Responsable, Administrador, Becario")]
         // GET: Materials/Create
         public IActionResult Create()
         {
@@ -81,6 +86,7 @@ namespace MAV.Web.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "Responsable, Administrador, Becario")]
         public async Task<IActionResult> Create(MaterialViewModel model)
         {
             if (ModelState.IsValid)
@@ -129,6 +135,7 @@ namespace MAV.Web.Controllers
         }
 
         // GET: Materials/Edit/5
+        [Authorize(Roles = "Responsable, Administrador, Becario")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -199,6 +206,7 @@ namespace MAV.Web.Controllers
         //}
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Responsable, Administrador, Becario")]
         public async Task<IActionResult> Edit(int id, MaterialViewModel model)
         {
 
@@ -235,6 +243,7 @@ namespace MAV.Web.Controllers
         }
 
         // GET: Materials/Delete/5
+        [Authorize(Roles = "Responsable, Administrador, Becario")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -249,18 +258,32 @@ namespace MAV.Web.Controllers
                 return new NotFoundViewResult("MaterialNotFound");
             }
 
-            if (material.Status.Name == "Prestado") //SOLO BORREN DEFECTUOSOS
+            if (ModelState.IsValid)
             {
-                ModelState.AddModelError(string.Empty, "Este material está en préstamo, elimínelos primero antes de eliminar a este material");
-                return RedirectToAction("Index", "Materials");
+                if (material.Status.Name == "Prestado") //SOLO BORREN DEFECTUOSOS
+                {
+                    TempData["CustomError"] = "Este material está en préstamo y solo se puede eliminar materiales defectuosos";
+                    return RedirectToAction("Index", "Materials");
+                }
+                if (material.Status.Name == "Disponible") //SOLO BORREN DEFECTUOSOS
+                {
+                    TempData["CustomError"] = "Este material está disponible, reportar como defectuoso";
+                    //ModelState.AddModelError(string.Empty, TempData["CustomError"].ToString());
+                    return RedirectToAction("Index", "Materials");
+                }
+                if (material.Status.Name == "Regresado") //SOLO BORREN DEFECTUOSOS
+                {
+                    TempData["CustomError"] = "Este material está disponible, reportar como defectuoso";
+                    return RedirectToAction("Index", "Materials");
+                }
             }
-
             return View(material);
         }
 
         // POST: Materials/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Responsable, Administrador, Becario")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var material = await _context.Materials.FindAsync(id);

@@ -24,6 +24,10 @@
         [Authorize(Roles = "Administrador")]
         public IActionResult Index()
         {
+            if (TempData["CustomError"] != null)
+            {
+                ModelState.AddModelError(string.Empty, TempData["CustomError"].ToString());
+            }
             return View(this.statusRepository.GetAll());
         }
 
@@ -127,13 +131,13 @@
 
             if (status.Materials.Count != 0)
             {
-                ModelState.AddModelError(string.Empty, "This type is used in one or more applicant, delete them first before deleting this.");
+                TempData["CustomError"] = "Este estado tiene más de una relación con un material";
                 return RedirectToAction("Index", "Status");
             }
 
             if (status.LoanDetails.Count != 0)
             {
-                ModelState.AddModelError(string.Empty, "This type is used in one or more applicant, delete them first before deleting this.");
+                TempData["CustomError"] = "Este estado tiene más de una relación con un detalle de préstamo";
                 return RedirectToAction("Index", "Status");
             }
 

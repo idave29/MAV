@@ -58,6 +58,7 @@ namespace MAV.Web.Controllers
             return View(intern);
         }
 
+        [Authorize(Roles = "Administrador, Responsable")]
         // GET: Interns/Create
         public IActionResult Create()
         {

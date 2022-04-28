@@ -24,6 +24,10 @@
         [Authorize(Roles = "Administrador")]
         public IActionResult Index()
         {
+            if (TempData["CustomError"] != null)
+            {
+                ModelState.AddModelError(string.Empty, TempData["CustomError"].ToString());
+            }
             return View(this.applicantTypeRepository.GetAll());
         }
 
@@ -127,7 +131,7 @@
 
             if (applicantType.Applicants.Count != 0 && applicantType.Applicants != null)
             {
-                ModelState.AddModelError(string.Empty, "This type is used in one or more applicant, delete them first before deleting this.");
+                TempData["CustomError"] = "Este tipo de solicitante tiene más de una relación con los solicitantes";
                 return RedirectToAction("Index", "ApplicantTypes");
             }
 

@@ -21,13 +21,18 @@
             this.materialTypeRepository = materialTypeRepository;
         }
 
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Administrador, Responsable")]
         public IActionResult Index()
         {
+            if (TempData["CustomError"] != null)
+            {
+                ModelState.AddModelError(string.Empty, TempData["CustomError"].ToString());
+            }
+
             return View(this.materialTypeRepository.GetAll());
         }
 
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Administrador, Responsable")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -44,13 +49,13 @@
             return View(materialType);
         }
 
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Administrador, Responsable")]
         public IActionResult Create()
         {
             return View();
         }
 
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Administrador, Responsable")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(MaterialType materialType)
@@ -63,7 +68,7 @@
             return View(materialType);
         }
 
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Administrador, Responsable")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -79,7 +84,7 @@
             return View(materialType);
         }
 
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Administrador, Responsable")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, MaterialType materialType)
@@ -111,7 +116,7 @@
             return View(materialType);
         }
 
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Administrador, Responsable")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -127,14 +132,14 @@
 
             if (materialType.Materials.Count != 0)
             {
-                ModelState.AddModelError(string.Empty, "This type is used in one or more applicant, delete them first before deleting this.");
+                TempData["CustomError"] = "Este tipo de material tiene más de una relación con un material";
                 return RedirectToAction("Index", "MaterialTypes");
             }
 
             return View(materialType);
         }
 
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Administrador, Responsable")]
         // POST: ApplicantTypes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
