@@ -2,13 +2,29 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MAV.UIForms.Views.AboutPage"
-             Title="About">
+             BackgroundImageSource="fondologin"
+             Title="Acerca de">
     <ContentPage.Content>
-        <StackLayout>
-            <Image Source="ascendantprojects"></Image>
-            <Label Text="Ascendant Projects"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Image Grid.Row="0" Margin="0,30" Source="ilusionteam" Aspect="AspectFit" HeightRequest="200" WidthRequest="200"></Image>
+            <Frame Grid.Row="1" Margin="0,0,0,-40" CornerRadius="50" HeightRequest="200">
+                <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" RowSpacing="20" Padding="20,50,20,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" TextColor="Gray" Text="Desarrollado por: " FontSize="24" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"></Label>
+                    <Label Grid.Row="1" TextColor="Gray" Margin="0,50,0,0"  Text="Ing. David Hernández" FontSize="24" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"></Label>
+                    <Label Grid.Row="2" TextColor="Gray" Margin="0,50,0,0" Text="Ing. Karla García" FontSize="24" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"></Label>
+                    <Label Grid.Row="3" TextColor="Gray" Margin="0,50,0,0"  Text="Generación 2018" FontSize="24" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"></Label>
+                </Grid>
+            </Frame>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

@@ -31,8 +31,6 @@ namespace MAV.UIForms.ViewModels
         {
             this.apiService = new ApiService();
             this.IsEnabled = true;
-            this.Email = "eduardo.fong@gmail.com";
-            this.Password = "123456";
         }
 
         private async void Login()

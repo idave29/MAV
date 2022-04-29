@@ -131,30 +131,6 @@
             {
                 new Menu
                 {
-                    Icon = "admin",
-                    PageName = "AdministratorsPage",
-                    Title = "Administradores"
-                },
-                new Menu
-                {
-                    Icon = "applicant",
-                    PageName = "ApplicantPage",
-                    Title = "Solicitantes"
-                },
-                new Menu
-                {
-                    Icon = "applicantType",
-                    PageName = "ApplicantTypesPage",
-                    Title = "Tipos de Solicitantes"
-                },
-                new Menu
-                {
-                    Icon = "internt",
-                    PageName = "InternsPage",
-                    Title = "Becarios"
-                },
-                new Menu
-                {
                     Icon = "loans",
                     PageName = "LoansPage",
                     Title = "Préstamos"
@@ -170,24 +146,6 @@
                     Icon = "material",
                     PageName = "MaterialsPage",
                     Title = "Materiales"
-                },
-                new Menu
-                {
-                    Icon = "materialType",
-                    PageName = "MaterialTypesPage",
-                    Title = "Tipos de Materiales"
-                },
-                new Menu
-                {
-                    Icon = "owner",
-                    PageName = "OwnersPage",
-                    Title = "Responsables"
-                },
-                new Menu
-                {
-                    Icon = "status",
-                    PageName = "StatusesPage",
-                    Title = "Estados"
                 },
                 new Menu
                 {
