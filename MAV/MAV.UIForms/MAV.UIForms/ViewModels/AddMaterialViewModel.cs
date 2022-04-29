@@ -210,6 +210,7 @@ namespace MAV.UIForms.ViewModels
                         Directory = "Pictures",
                         Name = "test.jpg",
                         PhotoSize = PhotoSize.Small,
+                        CompressionQuality = 18,
                     }
                 );
             }
@@ -238,6 +239,11 @@ namespace MAV.UIForms.ViewModels
             if (string.IsNullOrEmpty(Label))
             {
                 await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir una etiqueta", "Aceptar");
+                return;
+            }
+            if (Label.Length > 6)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "Debes introducir una etiqueta menor a 6 caracteres", "Aceptar");
                 return;
             }
             if (string.IsNullOrEmpty(Brand))

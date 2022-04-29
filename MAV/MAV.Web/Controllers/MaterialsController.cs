@@ -219,7 +219,7 @@ namespace MAV.Web.Controllers
                     return new NotFoundViewResult("MaterialNotFound");
                 }
 
-                material.ImageURL = model.ImageURL;
+                //material.ImageURL = model.ImageURL;
                 material.Name = model.Name;
                 material.Label = model.Label;
                 material.Brand = model.Brand;
@@ -233,6 +233,11 @@ namespace MAV.Web.Controllers
                 material.Owner = owner;
                 var materialType = await _context.MaterialTypes.FirstOrDefaultAsync(m => m.Id == model.MaterialTypeId);
                 material.MaterialType = materialType;
+
+                if (model.ImageFile != null)
+                {
+                    material.ImageURL = await imageHelper.UploadImageAsync(model.ImageFile, material.MaterialModel, "Materiales");
+                }
 
                 _context.Update(material);
                 await _context.SaveChangesAsync();

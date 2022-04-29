@@ -33,12 +33,8 @@ namespace MAV.Web.Data
             //Administradores
             if (!this.dataContext.Administrators.Any())
             {
-                var user = await CheckUserAsync("Fong", "Eduardo", "eduardo.fong@gmail.com", "987654321", "123456", "Administrador");
+                var user = await CheckUserAsync("Hernández", "David", "david.hdezalv29@gmail.com", "2221975824", "123456", "Administrador");
                 await CheckAdminAsync(user);
-                user = await CheckUserAsync("Ochoa", "Miguel", "miguel.ochoa@gmail.com", "987654321", "123456", "Administrador");
-                await CheckAdminAsync(user);
-                user = await CheckUserAsync("Garcia", "Miguel", "miguel.garcia@gmail.com", "123456789", "123456", "Administrador");
-                await CheckAdminAsync(user); 
             }
 
             //Tipo de solicitantes
@@ -52,29 +48,24 @@ namespace MAV.Web.Data
             //Solicitantes
             if (!this.dataContext.Applicants.Any())
             {
-                var user = await CheckUserAsync("Zambrano", "Natalia", "natalia.xambrano@gmail.com", "987654321", "123456", "Solicitante");
+                var user = await CheckUserAsync("García García", "Kevin Javier", "kevin.garcia@gmail.com", "2221815266", "123456", "Solicitante");
                 var applicantType = this.dataContext.ApplicantTypes.FirstOrDefault();
-                await CheckApplicantAsync(user, applicantType);
-                user = await CheckUserAsync("Sanchez", "Raquel", "raquel.sanchez@gmail.com", "987654321", "123456", "Solicitante");
-                applicantType = this.dataContext.ApplicantTypes.FirstOrDefault();
                 await CheckApplicantAsync(user, applicantType);
             }
 
             //Becarios
             if (!this.dataContext.Interns.Any())
             {
-                var user = await CheckUserAsync("Hernandez", "David", "deivi.hr@gmail.com", "987654321", "123456", "Becario");
+                var user = await CheckUserAsync("Hernández", "David", "isf7541@umad.edu.mx", "2221975824", "123456", "Becario");
                 await CheckInternAsync(user);
-                user = await CheckUserAsync("Villegas", "Arturo", "artur.vr@gmail.com", "987654321", "123456", "Becario");
+                user = await CheckUserAsync("Villegas", "Arturo", "artur.vr@gmail.com", "2229074543", "123456", "Becario");
                 await CheckInternAsync(user);
             }
 
             //Responsables
             if (!this.dataContext.Owners.Any())
             {
-                var user = await CheckUserAsync("Reeves", "Keanu", "keanu.reeves@gmail.com", "987654321", "123456", "Responsable");
-                await CheckOwnerAsync(user);
-                user = await CheckUserAsync("Zapata", "Carlos", "carlos.zapata@gmail.com", "987654321", "123456", "Responsable");
+                var user = await CheckUserAsync("Ochoa", "Miguel", "miguel.ochoa@umad.edu.mx", "2225675423", "123456", "Responsable");
                 await CheckOwnerAsync(user);
             }
             
@@ -82,7 +73,8 @@ namespace MAV.Web.Data
             if (!this.dataContext.MaterialTypes.Any())
             {
                 await CheckMaterialTypeAsync("Cable");
-                await CheckMaterialTypeAsync("Adaptador");
+                await CheckMaterialTypeAsync("Adaptador"); 
+                await CheckMaterialTypeAsync("Bocinas");
             }
 
             //Status
@@ -99,17 +91,10 @@ namespace MAV.Web.Data
             {
                 var applicant = this.dataContext.Applicants
                     .Include(c => c.User)
-                    .FirstOrDefault(c => c.User.FirstName == "Natalia");
+                    .FirstOrDefault(c => c.User.FirstName == "Kevin Javier");
                 var intern = this.dataContext.Interns
                     .Include(c => c.User)
                     .FirstOrDefault(c => c.User.FirstName == "David");
-                await CheckLoanAsync(applicant, intern);
-                applicant = this.dataContext.Applicants
-                    .Include(c => c.User)
-                    .FirstOrDefault(c => c.User.FirstName == "Raquel");
-                intern = this.dataContext.Interns
-                    .Include(c => c.User)
-                    .FirstOrDefault(c => c.User.FirstName == "Arturo");
                 await CheckLoanAsync(applicant, intern);
             }
 
@@ -118,7 +103,7 @@ namespace MAV.Web.Data
             {
                 var owner = this.dataContext.Owners
                     .Include(c => c.User)
-                    .FirstOrDefault(c => c.User.FirstName == "Keanu");
+                    .FirstOrDefault(c => c.User.FirstName == "Miguel");
                 var status = this.dataContext.Statuses
                     .FirstOrDefault(s => s.Name == "Disponible");
                 var materialType = this.dataContext.MaterialTypes
@@ -126,7 +111,7 @@ namespace MAV.Web.Data
                 await this.CheckMaterialAsync("HDMI1",owner, materialType, status, "Sony", "MAV01", "Azul","897654", "Manda video y audio");
                 owner = this.dataContext.Owners
                     .Include(c => c.User)
-                    .FirstOrDefault(c => c.User.FirstName == "Carlos");
+                    .FirstOrDefault(c => c.User.FirstName == "Miguel");
                 status = this.dataContext.Statuses
                     .FirstOrDefault(s => s.Name == "Disponible");
                 materialType = this.dataContext.MaterialTypes
@@ -142,13 +127,6 @@ namespace MAV.Web.Data
                 var status = this.dataContext.Statuses.FirstOrDefault(s => s.Id == 3); 
                 var dateTimeIn = new DateTime(2021, 10, 5, 8, 18, 0);
                 var dateTimeOut = new DateTime(2021, 10, 6, 8, 30, 0);
-                await CheckLoanDetailAsync(loan, material, dateTimeIn, dateTimeOut, status, "");
-
-                loan = this.dataContext.Loans.FirstOrDefault(i => i.Id == 2);
-                material = this.dataContext.Materials.FirstOrDefault(nm => nm.Name == "VGA");
-                status=this.dataContext.Statuses.FirstOrDefault(s => s.Id == 3);
-                dateTimeIn = new DateTime(2021, 10, 4, 12, 18, 0);
-                dateTimeOut = new DateTime(2021, 10, 5, 7, 30, 0);
                 await CheckLoanDetailAsync(loan, material, dateTimeIn, dateTimeOut, status, "");
             }
         }
