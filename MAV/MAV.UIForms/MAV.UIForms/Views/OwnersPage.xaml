@@ -4,9 +4,9 @@
              x:Class="MAV.UIForms.Views.OwnersPage"
              BindingContext="{Binding Main, Source={StaticResource Locator}}"
              Title="Reponsables">
-    <ContentPage.ToolbarItems>
+    <!--<ContentPage.ToolbarItems>
         <ToolbarItem IconImageSource="ic_action_add_circle" Command="{Binding AddOwnerCommand}"/>
-    </ContentPage.ToolbarItems>
+    </ContentPage.ToolbarItems>-->
     <ContentPage.Content>
         <StackLayout>
             <StackLayout

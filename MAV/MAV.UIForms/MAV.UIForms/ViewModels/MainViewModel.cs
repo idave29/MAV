@@ -131,6 +131,24 @@
             {
                 new Menu
                 {
+                    Icon = "applicant",
+                    PageName = "ApplicantPage",
+                    Title = "Solicitantes"
+                },
+                new Menu
+                {
+                    Icon = "internt",
+                    PageName = "InternsPage",
+                    Title = "Becarios"
+                },
+                new Menu
+                {
+                    Icon = "owner",
+                    PageName = "OwnersPage",
+                    Title = "Responsables"
+                },
+                new Menu
+                {
                     Icon = "loans",
                     PageName = "LoansPage",
                     Title = "Préstamos"
@@ -146,6 +164,12 @@
                     Icon = "material",
                     PageName = "MaterialsPage",
                     Title = "Materiales"
+                },
+                new Menu
+                {
+                    Icon = "materialType",
+                    PageName = "MaterialTypesPage",
+                    Title = "Tipos de Materiales"
                 },
                 new Menu
                 {
