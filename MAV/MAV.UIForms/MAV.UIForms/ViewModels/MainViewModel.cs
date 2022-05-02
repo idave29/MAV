@@ -193,6 +193,53 @@
             }).ToList());
         }
 
+
+        ////MENU DE BECARIOS
+        //private void LoadMenu()
+        //{
+        //    var menus = new List<Menu>
+        //    {
+        //        new Menu
+        //        {
+        //            Icon = "loans",
+        //            PageName = "LoansPage",
+        //            Title = "Préstamos"
+        //        },
+        //        new Menu
+        //        {
+        //            Icon = "loansDetails",
+        //            PageName = "LoanDetailsPage",
+        //            Title = "Detalle de Préstamos"
+        //        },
+        //        new Menu
+        //        {
+        //            Icon = "material",
+        //            PageName = "MaterialsPage",
+        //            Title = "Materiales"
+        //        },
+        //        new Menu
+        //        {
+        //            Icon = "info",
+        //            PageName = "AboutPage",
+        //            Title = "Acerca de"
+        //        },
+        //        new Menu
+        //        {
+        //            Icon = "exit",
+        //            PageName = "LoginPage",
+        //            Title = "Logout"
+        //        },
+        //    };
+        //    this.Menus = new ObservableCollection<MenuItemViewModel>(menus.Select(m => new
+        //    MenuItemViewModel
+        //    {
+        //        Icon = m.Icon,
+        //        PageName = m.PageName,
+        //        Title = m.Title
+        //    }).ToList());
+        //}
+
+
         public static MainViewModel GetInstance()
         {
             if (instance == null)
