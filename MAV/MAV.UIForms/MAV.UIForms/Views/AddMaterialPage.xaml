@@ -25,11 +25,11 @@
                     </StackLayout>
                     
                     <StackLayout Grid.Row="1">
-                        <Label Text="Nombre del Material" Grid.Column="0" Grid.Row="1" VerticalOptions="Center"></Label>
+                        <Label Text="Nombre" Grid.Column="0" Grid.Row="1" VerticalOptions="Center"></Label>
                         <Entry Grid.Column="1" Grid.Row="1" Keyboard="Text" Placeholder="Introduce el material" Text="{Binding MaterialR.Name}">
                         </Entry>
 
-                        <Label Text="Sala" Grid.Column="0" Grid.Row="2" VerticalOptions="Center"></Label>
+                        <Label Text="Etiqueta" Grid.Column="0" Grid.Row="2" VerticalOptions="Center"></Label>
                         <Entry Grid.Column="1" Grid.Row="2" Keyboard="Text" Placeholder="Introduce la etiqueta" Text="{Binding MaterialR.Label}"></Entry>
 
                         <Label Text="Marca" Grid.Column="0" Grid.Row="3" VerticalOptions="Center"></Label>
@@ -38,11 +38,11 @@
                         <Label Text="Función" Grid.Column="0" Grid.Row="3" VerticalOptions="Center"></Label>
                         <Entry Grid.Column="1" Grid.Row="3" Keyboard="Text" Placeholder="Introduce su función del material" Text="{Binding Material.Function}"></Entry>
 
-                        <Label Text="Modelo o Color" Grid.Column="0" Grid.Row="4" VerticalOptions="Center"></Label>
-                        <Entry Grid.Column="1" Grid.Row="4" Keyboard="Text" Placeholder="Introduce el modelo o color" Text="{Binding MaterialR.MaterialModel}"></Entry>
+                        <Label Text="Modelo" Grid.Column="0" Grid.Row="4" VerticalOptions="Center"></Label>
+                        <Entry Grid.Column="1" Grid.Row="4" Keyboard="Text" Placeholder="Introduce el modelo" Text="{Binding MaterialR.MaterialModel}"></Entry>
 
-                        <Label Text="Numero de Serie" Grid.Column="0" Grid.Row="5" VerticalOptions="Center"></Label>
-                        <Entry Grid.Column="1" Grid.Row="5" Keyboard="Text" Placeholder="Introduce el numero de serie" Text="{Binding MaterialR.SerialNum}"></Entry>
+                        <Label Text="Número de Serie" Grid.Column="0" Grid.Row="5" VerticalOptions="Center"></Label>
+                        <Entry Grid.Column="1" Grid.Row="5" Keyboard="Text" Placeholder="Introduce el número de serie" Text="{Binding MaterialR.SerialNum}"></Entry>
 
                         <Label Text="Estado" Grid.Column="0" Grid.Row="6" VerticalOptions="Center"></Label>
                         <Picker Grid.Column="1" Grid.Row="6" Title="Selecciona un estado" 
@@ -52,7 +52,7 @@
                         <Picker Grid.Column="1" Grid.Row="7" Title="Selecciona un tipo de material" 
                                 ItemDisplayBinding="{Binding Name}" ItemsSource="{Binding MaterialTypes}" SelectedItem="{Binding MaterialTypeRequest}"/>
 
-                        <Label Text="Dueño del material" Grid.Column="0" Grid.Row="8" VerticalOptions="Center"></Label>
+                        <Label Text="Responsable" Grid.Column="0" Grid.Row="8" VerticalOptions="Center"></Label>
                         <Picker Grid.Column="1" Grid.Row="8" Title="Selecciona un dueño" 
                                 ItemDisplayBinding="{Binding Email}" ItemsSource="{Binding Owners}" SelectedItem="{Binding OwnerRequest}"/>
 

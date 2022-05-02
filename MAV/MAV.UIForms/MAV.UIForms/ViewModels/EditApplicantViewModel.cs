@@ -4,6 +4,7 @@
     using MAV.Common.Models;
     using MAV.Common.Services;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
     using System.Windows.Input;
     using Xamarin.Forms;
@@ -114,13 +115,22 @@
             this.IsEnabled = true;
             this.LoadApplicantTypes();
         }
-        private IList<string> applicantTypeList;
 
-        public IList<string> ApplicantTypeList
+        private ObservableCollection<ApplicantTypeRequest> applicantTypes;
+        private ApplicantTypeRequest applicantType;
+
+        public ApplicantTypeRequest ApplicantTypeRequest
         {
-            get { return this.applicantTypeList; }
-            set { this.SetValue(ref this.applicantTypeList, value); }
+            get => this.applicantType;
+            set => this.SetValue(ref this.applicantType, value);
         }
+
+        public ObservableCollection<ApplicantTypeRequest> ApplicantTypes
+        {
+            get => this.applicantTypes;
+            set => this.SetValue(ref this.applicantTypes, value);
+        }
+
 
         private async void LoadApplicantTypes()
         {
@@ -137,8 +147,12 @@
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Aceptar");
                 return;
             }
-            ApplicantTypeList = ((List<ApplicantTypeRequest>)response.Result).Select(a => a.Name).ToList();
-
+            var myStatuses = ((List<ApplicantTypeRequest>)response.Result);
+            this.ApplicantTypes = new ObservableCollection<ApplicantTypeRequest>(myStatuses);
+            if (!string.IsNullOrEmpty(Applicant.ApplicantType))
+            {
+                ApplicantTypeRequest = ApplicantTypes.FirstOrDefault(pt => pt.Name == Applicant.ApplicantType);
+            }
         }
 
 

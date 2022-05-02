@@ -25,7 +25,7 @@
                     <Entry Grid.Column="1" Grid.Row="3" Keyboard="Telephone" Placeholder="Introduce el Telefono" Text="{Binding Applicant.PhoneNumber}">
                     </Entry>
                     <Label Text="Tipo de solicitante" Grid.Column="0" Grid.Row="4" VerticalOptions="Center"></Label>
-                    <Picker Grid.Column="1" Grid.Row="4" Title="Selecciona un tipo de aplicante" ItemsSource="{Binding ApplicantTypeList}" SelectedItem="{Binding Applicant.ApplicantType, Mode=TwoWay}"/>
+                    <Picker Grid.Column="1" Grid.Row="4" Title="Selecciona un tipo de aplicante" ItemDisplayBinding="{Binding Name}" ItemsSource="{Binding ApplicantTypes}" SelectedItem="{Binding ApplicantTypeRequest}"/>
                     
                     <!--
                     <Label Text="Password" Grid.Column="0" Grid.Row="5" VerticalOptions="Center"></Label>
